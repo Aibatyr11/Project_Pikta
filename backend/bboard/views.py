@@ -1,5 +1,4 @@
 from .models import User, Post, Comment, Like, Follow, SavedPost
-from .serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,8 +9,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework import viewsets
-from .models import Post
-from .serializers import PostSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import UserSerializer, PostSerializer
+from django.shortcuts import get_object_or_404
+
+
 class UserList(APIView):
     def get(self, request):
         users = User.objects.all()
@@ -56,7 +61,43 @@ def login_view(request):
 
     return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
+#
+# class PostViewSet(viewsets.ModelViewSet):
+#     queryset = Post.objects.all().order_by('-created_at')
+#     serializer_class = PostSerializer
+#
+#
+# class PostCreateView(APIView):
+#     parser_classes = (MultiPartParser, FormParser)
+#     permission_classes = [permissions.IsAuthenticated]
+#
+#     def post(self, request, format=None):
+#         serializer = PostSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save(user=request.user)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
+
+class UserProfileView(APIView):
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        posts = Post.objects.filter(user=user).order_by('-created_at')
+        user_data = UserSerializer(user).data
+        post_data = PostSerializer(posts, many=True).data
+        return Response({
+            "user": user_data,
+            "posts": post_data
+        })
