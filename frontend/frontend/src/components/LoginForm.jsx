@@ -1,5 +1,21 @@
 import React, { useState } from "react";
 
+// 🔹 Функция для получения CSRF токена из cookie
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -7,12 +23,15 @@ function LoginForm() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const csrftoken = getCookie("csrftoken");
+
     const response = await fetch("http://localhost:8000/api/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken, // 🔥 ОБЯЗАТЕЛЬНО
       },
-      credentials: "include", // важно для куки, если используешь сессии
+      credentials: "include",
       body: JSON.stringify({ username, password }),
     });
 
@@ -22,7 +41,7 @@ function LoginForm() {
       alert("✅ Вход выполнен");
       console.log(data);
     } else {
-      alert("❌ Ошибка входа: " + (data.detail || "неизвестная ошибка"));
+      alert("❌ Ошибка входа: " + (data.detail || data.error || "неизвестная ошибка"));
     }
   };
 

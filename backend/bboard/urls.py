@@ -1,8 +1,7 @@
-from django.urls import path
-from .views import UserList, RegisterView, login_view
 from django.urls import path, include
+from .views import UserList, RegisterView, login_view, UserProfileView, FollowView
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet  # Импортируешь свой ViewSet
+from .views import PostViewSet, current_user, is_following
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
@@ -10,7 +9,11 @@ router.register(r'posts', PostViewSet, basename='post')
 urlpatterns = [
     path('api/users/', UserList.as_view()),
     path('api/register/', RegisterView.as_view()),
-    path("api/login/", login_view),
+    path('api/login/', login_view),
     path('api/', include(router.urls)),
-
+    path('api/profile/<str:username>/', UserProfileView.as_view()),
+    path('api/follow/', FollowView.as_view()),
+    path('api/unfollow/', FollowView.as_view()),
+    path('api/current_user/', current_user),
+    path('api/is_following/<int:user_id>/', is_following),
 ]
