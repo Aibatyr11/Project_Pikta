@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import '../App.css';
 function RegisterForm() {
   const [formData, setFormData] = useState({
     username: '',
@@ -43,7 +43,7 @@ function RegisterForm() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+    <div className="center-container" style={{ textAlign: "center" }}>
       <h2>Регистрация</h2>
       <form onSubmit={handleSubmit}>
         <input

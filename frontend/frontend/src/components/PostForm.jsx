@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../App.css';
 
 function getCookie(name) {
   let cookieValue = null;
@@ -30,9 +31,9 @@ function PostForm() {
 
     const csrftoken = getCookie("csrftoken");
 
-   const response = await fetch("http://localhost:8000/api/posts/", {
+    const response = await fetch("http://localhost:8000/api/posts/", {
       method: "POST",
-      credentials: "include", // 🔥 ВАЖНО
+      credentials: "include",
       headers: {
         "X-CSRFToken": csrftoken,
       },

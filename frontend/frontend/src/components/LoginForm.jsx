@@ -1,6 +1,9 @@
+// LoginForm.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext"; // ✅ импорт
 
-// 🔹 Функция для получения CSRF токена из cookie
+
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
@@ -19,6 +22,8 @@ function getCookie(name) {
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useUser(); // ✅ достаём setUser
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,7 +34,7 @@ function LoginForm() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken, // 🔥 ОБЯЗАТЕЛЬНО
+        "X-CSRFToken": csrftoken,
       },
       credentials: "include",
       body: JSON.stringify({ username, password }),
@@ -39,7 +44,17 @@ function LoginForm() {
 
     if (response.ok) {
       alert("✅ Вход выполнен");
-      console.log(data);
+
+      // 🔥 Загрузим текущего пользователя и обновим контекст
+      const userResponse = await fetch("http://localhost:8000/api/current_user/", {
+        credentials: "include",
+      });
+
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setUser(userData); // ✅ обновляем глобального пользователя
+        navigate(`/profile/${userData.username}`); // 🔄 сразу перейти на профиль
+      }
     } else {
       alert("❌ Ошибка входа: " + (data.detail || data.error || "неизвестная ошибка"));
     }

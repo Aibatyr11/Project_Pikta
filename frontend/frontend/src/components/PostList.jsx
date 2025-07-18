@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import '../App.css';
 import React, { useEffect, useState } from "react";
 
 function PostList() {
@@ -13,7 +15,7 @@ function PostList() {
   }, []);
 
   return (
-    <div>
+    <div className="center-container" style={{ textAlign: "center" }}>
       <h2>Посты</h2>
       {posts.map((post) => (
         <div
@@ -23,21 +25,26 @@ function PostList() {
             margin: "1rem 0",
             padding: "1rem",
             borderRadius: "10px",
-            maxWidth: "500px"
+            maxWidth: "900px",
+            justifyContent: 'center'
           }}
         >
           {/* Автор поста */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {post.user.avatar && (
+              <Link to={`/profile/${post.user.username}`}>
               <img
                 src={post.user.avatar}
                 alt="Avatar"
-                width="50"
-                height="50"
+                width="80"
+                height="80"
                 style={{ borderRadius: "50%", objectFit: "cover" }}
               />
+              </Link>
             )}
-            <strong>{post.user.username}</strong>
+            <Link to={`/profile/${post.user.username}`}>
+              <strong>{post.user.username}</strong>
+            </Link>
           </div>
 
           {/* Картинка поста */}

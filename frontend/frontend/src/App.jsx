@@ -1,55 +1,56 @@
-// App.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import UserProfile from "./components/UserProfile";
-import RegisterForm from "./components/RegisterForm";
-import LoginForm from "./components/LoginForm";
-import PostList from "./components/PostList";
-import PostForm from "./components/PostForm";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import CreatePost from "./pages/CreatePost";
+import PrivacyModal from "./components/PrivacyModal";
 
-function Users() {
-  const [users, setUsers] = useState([]);
+import { UserProvider } from "./context/UserContext";
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/users/")
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
-  }, []);
-
-  return (
-    <div>
-      <h1>Пользователи</h1>
-      {users.map((user) => (
-        <div key={user.id}>
-          <h2>{user.username}</h2>
-          <p>{user.email}</p>
-          <p>{user.bio}</p>
-          {user.avatar && (
-            <img
-              src={`http://localhost:8000${user.avatar}`}
-              alt="avatar"
-              width={100}
-            />
-          )}
-        </div>
-      ))}
-      <RegisterForm />
-      <LoginForm />
-      <PostList />
-      <PostForm />
-    </div>
-  );
-}
 
 function App() {
+  const [showPolicy, setShowPolicy] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/privacy-policy/", {
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.accepted) setShowPolicy(true);
+      });
+  }, []);
+
+  const handleAccept = () => {
+    fetch("http://localhost:8000/api/privacy-policy/", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(() => setShowPolicy(false));
+  };
+
   return (
+  <UserProvider>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Users />} />
-        <Route path="/profile/:username" element={<UserProfile />} />
-      </Routes>
+      <div className="center-container">
+        <Navbar />
+        {showPolicy && <PrivacyModal onAccept={handleAccept} />}
+        {!showPolicy && (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/create-post" element={<CreatePost />} />
+          </Routes>
+        )}
+      </div>
     </BrowserRouter>
-  );
+  </UserProvider>
+);
 }
 
 export default App;

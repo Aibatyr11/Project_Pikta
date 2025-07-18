@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import '../App.css';
+import { useUser } from "../context/UserContext";
 
 function getCookie(name) {
   let cookieValue = null;
@@ -20,8 +22,10 @@ function UserProfile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
+  const { user: currentUser, setUser: setCurrentUser } = useUser();
+
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/profile/${username}/`)
@@ -39,13 +43,6 @@ function UserProfile() {
   }, [username]);
 
   useEffect(() => {
-    if (user) {
-      console.log("USER OBJECT:", user);
-    }
-    }, [user]);
-
-
-  useEffect(() => {
     if (user && currentUser && user.id !== currentUser.id) {
       fetch(`http://localhost:8000/api/is_following/${user.id}/`, {
         credentials: "include",
@@ -57,7 +54,6 @@ function UserProfile() {
 
   const handleFollow = () => {
     const csrftoken = getCookie("csrftoken");
-
     fetch("http://localhost:8000/api/follow/", {
       method: "POST",
       credentials: "include",
@@ -67,13 +63,12 @@ function UserProfile() {
       },
       body: JSON.stringify({ followed_id: user.id }),
     })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(() => setIsFollowing(true));
   };
 
   const handleUnfollow = () => {
     const csrftoken = getCookie("csrftoken");
-
     fetch("http://localhost:8000/api/unfollow/", {
       method: "DELETE",
       credentials: "include",
@@ -83,47 +78,50 @@ function UserProfile() {
       },
       body: JSON.stringify({ followed_id: user.id }),
     })
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           setIsFollowing(false);
         } else {
-          return res.json().then(err => {
+          return res.json().then((err) => {
             throw new Error(err.detail || "Ошибка при отписке");
           });
         }
       })
-      .catch(err => alert(err.message));
+      .catch((err) => alert(err.message));
   };
-
 
   if (!user) return <p>Загрузка...</p>;
 
-  
-
   return (
-    <div>
-      <h2>Профиль: {user.username}</h2>
-      {user.avatar ? (
-    <img
-      src={user.avatar}
-      alt="Аватар"
-      width="100"
-      height="100"
-      style={{ borderRadius: "50%" }}
-    />
+    <div className="center-container" style={{ textAlign: "center" }}>
+      <div>
+        {user.avatar ? (
+          <img
+            src={user.avatar}
+            alt="Аватар"
+            width="100"
+            height="100"
+            style={{ borderRadius: "50%" }}
+          />
+        ) : (
+          <p>Аватар отсутствует</p>
+        )}
+      </div>
 
-    ) : (
-    <p>Аватар отсутствует</p>
-    )}
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>О себе:</strong> {user.bio}</p>
+      <h2>@{user.username}</h2>
 
-      <p><strong>Подписчики:</strong> {user.followers_count}</p>
-      <p><strong>Подписки:</strong> {user.following_count}</p>
+      <div style={{ display: "flex", justifyContent: "center", gap: "30px", margin: "1rem 0" }}>
+        <div>
+          <strong>{user.following_count}</strong><br />Подписки
+        </div>
+        <div>
+          <strong>{user.followers_count}</strong><br />Подписчики
+        </div>
+        <div>
+          <strong>{posts.reduce((sum, p) => sum + (p.likes_count || 0), 0)}</strong><br />Лайки
+        </div>
+      </div>
 
-
-
-      {/* 🔹 КНОПКА ПОДПИСКИ */}
       {currentUser && currentUser.id !== user.id && (
         isFollowing ? (
           <button onClick={handleUnfollow}>Отписаться</button>
@@ -132,20 +130,30 @@ function UserProfile() {
         )
       )}
 
-      <h3>Посты:</h3>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <img
-            src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-            alt="post"
-          width="300"
-          />
+      <p style={{ marginTop: "1rem" }}>{user.bio || "О себе не указано"}</p>
 
-          
-          <p>{post.caption}</p>
-          <p><small>{new Date(post.created_at).toLocaleString()}</small></p>
+      {/* Кнопки выбора типа контента */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "2rem" }}>
+        <button>Посты</button>
+        <button>Лайки</button>
+        <button>Избранное</button>
+      </div>
+
+      {/* Посты */}
+      <div style={{ marginTop: "2rem" }}>
+        <h3>Посты:</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+          {posts.map((post) => (
+            <img
+              key={post.id}
+              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+              alt="post"
+              width="100%"
+              style={{ borderRadius: "10px" }}
+            />
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
