@@ -168,3 +168,28 @@ def is_following(request, user_id):
         return Response({"is_following": is_following})
     except User.DoesNotExist:
         return Response({"detail": "User not found"}, status=404)
+
+
+
+# views.py (Django)
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def privacy_policy_view(request):
+    if request.method == 'GET':
+        return Response({'accepted': request.user.has_accepted_policy})
+    elif request.method == 'POST':
+        request.user.has_accepted_policy = True
+        request.user.save()
+        return Response({'status': 'accepted'})
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def current_user_view(request):
+    user = request.user
+    return Response({
+        "username": user.username,
+        "has_accepted_policy": user.has_accepted_policy
+    })
+

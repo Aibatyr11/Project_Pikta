@@ -13,6 +13,8 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    has_accepted_policy = models.BooleanField(default=False)
+
 
 # Пост
 class Post(models.Model):
@@ -74,3 +76,7 @@ class SavedPost(models.Model):
 
     def __str__(self):
         return f"{self.user.username} saved post {self.post.id}"
+
+
+
+
