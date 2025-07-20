@@ -1,7 +1,6 @@
 from .models import User, Post, Comment, Like, Follow, SavedPost
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -11,14 +10,14 @@ import json
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, permissions
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import UserSerializer, PostSerializer
+from .serializers import UserSerializer, PostSerializer, UserDetailSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserDetailSerializer  # обязательно
+from rest_framework.response import Response
+from rest_framework import status
+
 
 class UserList(APIView):
     def get(self, request):
@@ -193,3 +192,30 @@ def current_user_view(request):
         "has_accepted_policy": user.has_accepted_policy
     })
 
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    Like.objects.get_or_create(post=post, user=request.user)
+    return Response({'detail': 'Post liked.'}, status=status.HTTP_201_CREATED)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    Like.objects.filter(post=post, user=request.user).delete()
+    return Response({'detail': 'Post unliked.'}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+@api_view(['GET'])
+def liked_posts(request, username):
+    likes = Like.objects.filter(user__username=username)
+    posts = Post.objects.filter(id__in=likes.values_list('post_id', flat=True)).order_by('-created_at')
+    serializer = PostSerializer(posts, many=True, context={'request': request})
+    return Response(serializer.data)

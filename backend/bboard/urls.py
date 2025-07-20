@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import (UserList, RegisterView, login_view, UserProfileView, FollowView,
-                    PostViewSet, current_user, is_following, privacy_policy_view,current_user_view)
+                    PostViewSet, current_user, is_following, privacy_policy_view,current_user_view,
+                    like_post, unlike_post, liked_posts)
 from rest_framework.routers import DefaultRouter
 
 
@@ -19,5 +20,8 @@ urlpatterns = [
     path('api/is_following/<int:user_id>/', is_following),
     path('api/privacy-policy/', privacy_policy_view),
     path('api/current-user/', current_user_view),
+    path('api/posts/<int:post_id>/like/', like_post),
+    path('api/posts/<int:post_id>/unlike/', unlike_post),
+    path('api/liked_posts/<str:username>/', liked_posts, name='liked-posts'),
 
 ]

@@ -22,10 +22,10 @@ function UserProfile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
-  // const [currentUser, setCurrentUser] = useState(null);
+  const [likedPosts, setLikedPosts] = useState([]);
+  const [activeTab, setActiveTab] = useState("posts");
   const [isFollowing, setIsFollowing] = useState(false);
   const { user: currentUser, setUser: setCurrentUser } = useUser();
-
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/profile/${username}/`)
@@ -51,6 +51,14 @@ function UserProfile() {
         .then((data) => setIsFollowing(data.is_following));
     }
   }, [user, currentUser]);
+
+  useEffect(() => {
+    if (activeTab === "likes") {
+      fetch(`http://localhost:8000/api/liked_posts/${username}/`)
+        .then((res) => res.json())
+        .then((data) => setLikedPosts(data));
+    }
+  }, [activeTab, username]);
 
   const handleFollow = () => {
     const csrftoken = getCookie("csrftoken");
@@ -99,9 +107,15 @@ function UserProfile() {
           <img
             src={user.avatar}
             alt="Аватар"
-            width="100"
-            height="100"
-            style={{ borderRadius: "50%" }}
+            style={{
+              width: "150px",
+              height: "150px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              objectPosition: "center",
+              backgroundColor: "#333",
+              marginTop: "100px",
+            }}
           />
         ) : (
           <p>Аватар отсутствует</p>
@@ -132,27 +146,48 @@ function UserProfile() {
 
       <p style={{ marginTop: "1rem" }}>{user.bio || "О себе не указано"}</p>
 
-      {/* Кнопки выбора типа контента */}
+      {/* Вкладки */}
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "2rem" }}>
-        <button>Посты</button>
-        <button>Лайки</button>
-        <button>Избранное</button>
+        <button onClick={() => setActiveTab("posts")} style={{ backgroundColor: activeTab === "posts" ? "#007cd1" : "" }}>Посты</button>
+        <button onClick={() => setActiveTab("likes")} style={{ backgroundColor: activeTab === "likes" ? "#007cd1" : "" }}>Лайки</button>
+        <button disabled>Избранное</button> {/* Для избранного добавим позже */}
       </div>
 
-      {/* Посты */}
+      {/* Контент */}
       <div style={{ marginTop: "2rem" }}>
-        <h3>Посты:</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-          {posts.map((post) => (
-            <img
-              key={post.id}
-              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-              alt="post"
-              width="100%"
-              style={{ borderRadius: "10px" }}
-            />
-          ))}
-        </div>
+        {activeTab === "posts" && (
+          <>
+            <h3>Посты:</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+              {posts.map((post) => (
+                <img
+                  key={post.id}
+                  src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+                  alt="post"
+                  width="100%"
+                  style={{ borderRadius: "10px" }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {activeTab === "likes" && (
+          <>
+            <h3>Понравившиеся посты:</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+              {likedPosts.map((post) => (
+                <img
+                  key={post.id}
+                  src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+                  alt="liked"
+                  width="100%"
+                  style={{ borderRadius: "10px" }}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

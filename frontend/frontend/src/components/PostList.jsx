@@ -1,22 +1,61 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
-import React, { useEffect, useState } from "react";
 
 function PostList() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/posts/")
+    fetch("http://localhost:8000/api/posts/", { credentials: 'include' })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data); // Смотри, что приходит от бэка
-        setPosts(data);
-      });
+      .then((data) => setPosts(data));
   }, []);
+
+  const getCookie = (name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + "=")) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  };
+
+  const toggleLike = (postId, isCurrentlyLiked) => {
+    const csrftoken = getCookie("csrftoken");
+    const method = isCurrentlyLiked ? "DELETE" : "POST";
+
+    fetch(`http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`, {
+      method: method,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  is_liked: !isCurrentlyLiked,
+                  likes_count: post.likes_count + (isCurrentlyLiked ? -1 : 1),
+                }
+              : post
+          )
+        );
+      });
+  };
 
   return (
     <div className="center-container" style={{ textAlign: "center" }}>
-      <h2>Посты</h2>
       {posts.map((post) => (
         <div
           key={post.id}
@@ -26,20 +65,20 @@ function PostList() {
             padding: "1rem",
             borderRadius: "10px",
             maxWidth: "900px",
-            justifyContent: 'center'
+            justifyContent: 'center',
+            marginTop: "100px"
           }}
         >
-          {/* Автор поста */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {post.user.avatar && (
               <Link to={`/profile/${post.user.username}`}>
-              <img
-                src={post.user.avatar}
-                alt="Avatar"
-                width="80"
-                height="80"
-                style={{ borderRadius: "50%", objectFit: "cover" }}
-              />
+                <img
+                  src={post.user.avatar}
+                  alt="Avatar"
+                  width="80"
+                  height="80"
+                  style={{ borderRadius: "50%", objectFit: "cover" }}
+                />
               </Link>
             )}
             <Link to={`/profile/${post.user.username}`}>
@@ -47,22 +86,26 @@ function PostList() {
             </Link>
           </div>
 
-          {/* Картинка поста */}
           <div style={{ marginTop: "1rem" }}>
             {post.image && (
               <img
                 src={post.image}
                 alt="Post"
                 width="100%"
-                style={{ maxHeight: "400px", objectFit: "cover", borderRadius: "8px" }}
+                style={{ objectFit: "contain", borderRadius: "8px" }}
               />
             )}
           </div>
 
-          {/* Описание, локация и дата */}
           <p><strong>Описание:</strong> {post.caption}</p>
           {post.location && <p><strong>Локация:</strong> {post.location}</p>}
           <p><strong>Дата:</strong> {new Date(post.created_at).toLocaleString()}</p>
+
+          <div>
+            <button onClick={() => toggleLike(post.id, post.is_liked)}>
+              {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
+            </button>
+          </div>
         </div>
       ))}
     </div>
