@@ -16,8 +16,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
-
+from django.contrib.auth import logout
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class UserList(APIView):
     def get(self, request):
@@ -44,24 +46,19 @@ class RegisterView(APIView):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def login_view(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            username = data.get("username")
-            password = data.get("password")
+    try:
+        data = request.data
+        serializer = TokenObtainPairSerializer(data=data)
 
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return JsonResponse({"message": "Login successful"})
-            else:
-                return JsonResponse({"error": "Invalid credentials"}, status=401)
+        if serializer.is_valid():
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Only POST method allowed"}, status=405)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #
 # class PostViewSet(viewsets.ModelViewSet):
@@ -219,3 +216,27 @@ def liked_posts(request, username):
     posts = Post.objects.filter(id__in=likes.values_list('post_id', flat=True)).order_by('-created_at')
     serializer = PostSerializer(posts, many=True, context={'request': request})
     return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user = request.user
+    user.username = request.POST.get('username', user.username)
+    user.email = request.POST.get('email', user.email)
+    user.bio = request.POST.get('bio', user.bio)
+
+    if request.FILES.get('avatar'):
+        user.avatar = request.FILES['avatar']
+
+    user.save()
+    return Response(UserSerializer(user).data)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_profile(request):
+    logout(request)
+    request.user.delete()
+    return Response({"detail": "Профиль удалён"})

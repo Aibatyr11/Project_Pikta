@@ -1,50 +1,53 @@
 import { useEffect, useState } from "react";
 
-export default function PrivacyModal() {
+export default function PrivacyModal({ onAccept }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const access = localStorage.getItem("accessToken");
+    if (!access) {
+      setShow(false);
+      setLoading(false);
+      return;
+    }
+
     fetch("http://localhost:8000/api/privacy-policy/", {
-      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 403) {
+          setShow(false);
+          return null;
+        }
+        return res.json();
+      })
       .then((data) => {
-        setShow(!data.accepted);  // если не принял → показать
+        if (data && !data.accepted) setShow(true);
       })
       .catch(() => setShow(false))
       .finally(() => setLoading(false));
   }, []);
 
-  
+  const handleAccept = () => {
+    const access = localStorage.getItem("accessToken");
+    if (!access) return;
 
-  function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let cookie of cookies) {
-      cookie = cookie.trim();
-      if (cookie.startsWith(name + "=")) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-const acceptPolicy = () => {
-  const csrftoken = getCookie("csrftoken");
-
-  fetch("http://localhost:8000/api/privacy-policy/", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "X-CSRFToken": csrftoken,
-    },
-  }).then(() => setShow(false));
-};
-
+    fetch("http://localhost:8000/api/privacy-policy/", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Ошибка при отправке согласия");
+        setShow(false);
+        onAccept();
+      })
+      .catch((err) => alert(err.message));
+  };
 
   if (loading || !show) return null;
 
@@ -53,7 +56,7 @@ const acceptPolicy = () => {
       <div className="modal-content">
         <h2>Политика конфиденциальности</h2>
         <p>Ваш текст политики здесь...</p>
-        <button onClick={acceptPolicy}>Принять</button>
+        <button onClick={handleAccept}>Принять</button>
       </div>
     </div>
   );

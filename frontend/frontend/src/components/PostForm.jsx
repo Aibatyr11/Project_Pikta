@@ -1,20 +1,6 @@
 import React, { useState } from "react";
 import '../App.css';
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let cookie of cookies) {
-      cookie = cookie.trim();
-      if (cookie.startsWith(name + "=")) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
+import { getToken } from "../utils/auth"; // 🔥 используем JWT
 
 function PostForm() {
   const [caption, setCaption] = useState("");
@@ -24,18 +10,21 @@ function PostForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const token = getToken();
+    if (!token) {
+      alert("⚠️ Необходимо войти в аккаунт");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("caption", caption);
     formData.append("location", location);
     formData.append("image", image);
 
-    const csrftoken = getCookie("csrftoken");
-
     const response = await fetch("http://localhost:8000/api/posts/", {
       method: "POST",
-      credentials: "include",
       headers: {
-        "X-CSRFToken": csrftoken,
+        Authorization: `Bearer ${token}`, // ✅ JWT вместо CSRF
       },
       body: formData,
     });

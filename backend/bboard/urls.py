@@ -1,10 +1,13 @@
 from django.urls import path, include
 from .views import (UserList, RegisterView, login_view, UserProfileView, FollowView,
                     PostViewSet, current_user, is_following, privacy_policy_view,current_user_view,
-                    like_post, unlike_post, liked_posts)
+                    like_post, unlike_post, liked_posts, update_profile,delete_profile)
 from rest_framework.routers import DefaultRouter
 
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
 
@@ -23,5 +26,10 @@ urlpatterns = [
     path('api/posts/<int:post_id>/like/', like_post),
     path('api/posts/<int:post_id>/unlike/', unlike_post),
     path('api/liked_posts/<str:username>/', liked_posts, name='liked-posts'),
+    path('api/update_profile/', update_profile),
+    path('api/delete_profile/', delete_profile, name='delete_profile'),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
 
 ]

@@ -1,41 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getToken } from "../utils/auth"; // JWT токен
 import '../App.css';
 
 function PostList() {
   const [posts, setPosts] = useState([]);
+  const token = getToken();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/posts/", { credentials: 'include' })
+    fetch("http://localhost:8000/api/posts/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setPosts(data));
-  }, []);
-
-  const getCookie = (name) => {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + "=")) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  };
+  }, [token]);
 
   const toggleLike = (postId, isCurrentlyLiked) => {
-    const csrftoken = getCookie("csrftoken");
     const method = isCurrentlyLiked ? "DELETE" : "POST";
 
     fetch(`http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`, {
       method: method,
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

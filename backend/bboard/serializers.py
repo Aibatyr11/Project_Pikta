@@ -21,8 +21,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'avatar', 'bio']
-
+        fields = ['id', 'username', 'email', 'avatar', 'bio', 'has_accepted_policy']
+        read_only_fields = ['id', 'username']
 
 
 class PostSerializer(serializers.ModelSerializer):

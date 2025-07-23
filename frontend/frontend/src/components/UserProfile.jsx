@@ -2,21 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import '../App.css';
 import { useUser } from "../context/UserContext";
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let cookie of cookies) {
-      cookie = cookie.trim();
-      if (cookie.startsWith(name + "=")) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
+import { getToken } from "../utils/auth";
 
 function UserProfile() {
   const { username } = useParams();
@@ -27,7 +13,10 @@ function UserProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
+  const token = getToken();
+
   useEffect(() => {
+    // Получить профиль и посты
     fetch(`http://localhost:8000/api/profile/${username}/`)
       .then((res) => res.json())
       .then((data) => {
@@ -35,39 +24,49 @@ function UserProfile() {
         setPosts(data.posts);
       });
 
-    fetch("http://localhost:8000/api/current_user/", {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => setCurrentUser(data));
-  }, [username]);
+    // Получить текущего пользователя
+    if (token) {
+      fetch("http://localhost:8000/api/current_user/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => data && setCurrentUser(data))
+        .catch(() => setCurrentUser(null));
+    }
+  }, [username, token]);
 
   useEffect(() => {
-    if (user && currentUser && user.id !== currentUser.id) {
+    if (user && currentUser && user.id !== currentUser.id && token) {
       fetch(`http://localhost:8000/api/is_following/${user.id}/`, {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then((res) => res.json())
         .then((data) => setIsFollowing(data.is_following));
     }
-  }, [user, currentUser]);
+  }, [user, currentUser, token]);
 
   useEffect(() => {
-    if (activeTab === "likes") {
-      fetch(`http://localhost:8000/api/liked_posts/${username}/`)
+    if (activeTab === "likes" && token) {
+      fetch(`http://localhost:8000/api/liked_posts/${username}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => setLikedPosts(data));
     }
-  }, [activeTab, username]);
+  }, [activeTab, username, token]);
 
   const handleFollow = () => {
-    const csrftoken = getCookie("csrftoken");
     fetch("http://localhost:8000/api/follow/", {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ followed_id: user.id }),
     })
@@ -76,13 +75,11 @@ function UserProfile() {
   };
 
   const handleUnfollow = () => {
-    const csrftoken = getCookie("csrftoken");
     fetch("http://localhost:8000/api/unfollow/", {
       method: "DELETE",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ followed_id: user.id }),
     })
@@ -112,7 +109,6 @@ function UserProfile() {
               height: "150px",
               borderRadius: "50%",
               objectFit: "cover",
-              objectPosition: "center",
               backgroundColor: "#333",
               marginTop: "100px",
             }}
@@ -146,14 +142,16 @@ function UserProfile() {
 
       <p style={{ marginTop: "1rem" }}>{user.bio || "О себе не указано"}</p>
 
-      {/* Вкладки */}
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "2rem" }}>
         <button onClick={() => setActiveTab("posts")} style={{ backgroundColor: activeTab === "posts" ? "#007cd1" : "" }}>Посты</button>
         <button onClick={() => setActiveTab("likes")} style={{ backgroundColor: activeTab === "likes" ? "#007cd1" : "" }}>Лайки</button>
-        <button disabled>Избранное</button> {/* Для избранного добавим позже */}
+        <button disabled>Избранное</button>
       </div>
 
-      {/* Контент */}
+      {currentUser && currentUser.id === user.id && (
+        <button onClick={() => window.location.href = "/edit-profile"}>Настройки профиля</button>
+      )}
+
       <div style={{ marginTop: "2rem" }}>
         {activeTab === "posts" && (
           <>

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bboard',
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt'
 ]
 
 AUTH_USER_MODEL = 'bboard.User'
@@ -60,7 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'samplesite.urls'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -71,6 +72,11 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+
+CSRF_COOKIE_HTTPONLY = False
+
+
 
 TEMPLATES = [
     {
@@ -89,7 +95,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'samplesite.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = True  # или безопаснее — задать список
+# CORS_ALLOW_ALL_ORIGINS = True  # или безопаснее — задать список
 
 
 # Database
@@ -156,3 +162,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
