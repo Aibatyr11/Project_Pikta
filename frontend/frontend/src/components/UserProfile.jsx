@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import '../App.css';
+import "../App.css";
 import { useUser } from "../context/UserContext";
-import { getToken } from "../utils/auth";
+import { authFetch } from "../utils/auth";
 
 function UserProfile() {
   const { username } = useParams();
@@ -13,10 +13,8 @@ function UserProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
-  const token = getToken();
-
   useEffect(() => {
-    // Получить профиль и посты
+    // Публичный профиль
     fetch(`http://localhost:8000/api/profile/${username}/`)
       .then((res) => res.json())
       .then((data) => {
@@ -24,73 +22,44 @@ function UserProfile() {
         setPosts(data.posts);
       });
 
-    // Получить текущего пользователя
-    if (token) {
-      fetch("http://localhost:8000/api/current_user/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.ok ? res.json() : null)
-        .then((data) => data && setCurrentUser(data))
-        .catch(() => setCurrentUser(null));
-    }
-  }, [username, token]);
+    // Текущий пользователь
+    authFetch("http://localhost:8000/api/current_user/")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => data && setCurrentUser(data))
+      .catch(() => setCurrentUser(null));
+  }, [username]);
 
   useEffect(() => {
-    if (user && currentUser && user.id !== currentUser.id && token) {
-      fetch(`http://localhost:8000/api/is_following/${user.id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    if (user && currentUser && user.id !== currentUser.id) {
+      authFetch(`http://localhost:8000/api/is_following/${user.id}/`)
         .then((res) => res.json())
         .then((data) => setIsFollowing(data.is_following));
     }
-  }, [user, currentUser, token]);
+  }, [user, currentUser]);
 
   useEffect(() => {
-    if (activeTab === "likes" && token) {
-      fetch(`http://localhost:8000/api/liked_posts/${username}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    if (activeTab === "likes") {
+      authFetch(`http://localhost:8000/api/liked_posts/${username}/`)
         .then((res) => res.json())
         .then((data) => setLikedPosts(data));
     }
-  }, [activeTab, username, token]);
+  }, [activeTab, username]);
 
   const handleFollow = () => {
-    fetch("http://localhost:8000/api/follow/", {
+    authFetch("http://localhost:8000/api/follow/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
       body: JSON.stringify({ followed_id: user.id }),
-    })
-      .then((res) => res.json())
-      .then(() => setIsFollowing(true));
+    }).then(() => setIsFollowing(true));
   };
 
   const handleUnfollow = () => {
-    fetch("http://localhost:8000/api/unfollow/", {
+    authFetch("http://localhost:8000/api/unfollow/", {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
       body: JSON.stringify({ followed_id: user.id }),
     })
       .then((res) => {
-        if (res.ok) {
-          setIsFollowing(false);
-        } else {
-          return res.json().then((err) => {
-            throw new Error(err.detail || "Ошибка при отписке");
-          });
-        }
+        if (res.ok) setIsFollowing(false);
+        else return res.json().then((err) => { throw new Error(err.detail); });
       })
       .catch((err) => alert(err.message));
   };
@@ -121,23 +90,15 @@ function UserProfile() {
       <h2>@{user.username}</h2>
 
       <div style={{ display: "flex", justifyContent: "center", gap: "30px", margin: "1rem 0" }}>
-        <div>
-          <strong>{user.following_count}</strong><br />Подписки
-        </div>
-        <div>
-          <strong>{user.followers_count}</strong><br />Подписчики
-        </div>
-        <div>
-          <strong>{posts.reduce((sum, p) => sum + (p.likes_count || 0), 0)}</strong><br />Лайки
-        </div>
+        <div><strong>{user.following_count}</strong><br />Подписки</div>
+        <div><strong>{user.followers_count}</strong><br />Подписчики</div>
+        <div><strong>{posts.reduce((sum, p) => sum + (p.likes_count || 0), 0)}</strong><br />Лайки</div>
       </div>
 
       {currentUser && currentUser.id !== user.id && (
-        isFollowing ? (
-          <button onClick={handleUnfollow}>Отписаться</button>
-        ) : (
-          <button onClick={handleFollow}>Подписаться</button>
-        )
+        isFollowing
+          ? <button onClick={handleUnfollow}>Отписаться</button>
+          : <button onClick={handleFollow}>Подписаться</button>
       )}
 
       <p style={{ marginTop: "1rem" }}>{user.bio || "О себе не указано"}</p>
@@ -154,37 +115,31 @@ function UserProfile() {
 
       <div style={{ marginTop: "2rem" }}>
         {activeTab === "posts" && (
-          <>
-            <h3>Посты:</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-              {posts.map((post) => (
-                <img
-                  key={post.id}
-                  src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-                  alt="post"
-                  width="100%"
-                  style={{ borderRadius: "10px" }}
-                />
-              ))}
-            </div>
-          </>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+            {posts.map((post) => (
+              <img
+                key={post.id}
+                src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+                alt="post"
+                width="100%"
+                style={{ borderRadius: "10px" }}
+              />
+            ))}
+          </div>
         )}
 
         {activeTab === "likes" && (
-          <>
-            <h3>Понравившиеся посты:</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-              {likedPosts.map((post) => (
-                <img
-                  key={post.id}
-                  src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-                  alt="liked"
-                  width="100%"
-                  style={{ borderRadius: "10px" }}
-                />
-              ))}
-            </div>
-          </>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+            {likedPosts.map((post) => (
+              <img
+                key={post.id}
+                src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+                alt="liked"
+                width="100%"
+                style={{ borderRadius: "10px" }}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>

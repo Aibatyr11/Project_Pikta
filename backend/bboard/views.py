@@ -20,6 +20,7 @@ from django.contrib.auth import logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserList(APIView):
     def get(self, request):
@@ -240,3 +241,9 @@ def delete_profile(request):
     logout(request)
     request.user.delete()
     return Response({"detail": "Профиль удалён"})
+
+
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = TokenObtainPairSerializer

@@ -1,20 +1,23 @@
 from django.urls import path, include
-from .views import (UserList, RegisterView, login_view, UserProfileView, FollowView,
-                    PostViewSet, current_user, is_following, privacy_policy_view,current_user_view,
-                    like_post, unlike_post, liked_posts, update_profile,delete_profile)
+from .views import (
+    UserList, RegisterView, login_view, UserProfileView, FollowView,
+    PostViewSet, current_user, is_following, privacy_policy_view, current_user_view,
+    like_post, unlike_post, liked_posts, update_profile, delete_profile, CustomTokenObtainPairView
+)
 from rest_framework.routers import DefaultRouter
 
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
+    # TokenObtainPairView,  # ❌ НЕ используем стандартный login
+    TokenRefreshView,  # ✅ Оставляем, нужен для обновления токена
 )
+
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
 
 urlpatterns = [
     path('api/users/', UserList.as_view()),
     path('api/register/', RegisterView.as_view()),
-    path('api/login/', login_view),
+    # path('api/login/', login_view),  # если используется отдельно от JWT — можно оставить
     path('api/', include(router.urls)),
     path('api/profile/<str:username>/', UserProfileView.as_view()),
     path('api/follow/', FollowView.as_view()),
@@ -28,8 +31,13 @@ urlpatterns = [
     path('api/liked_posts/<str:username>/', liked_posts, name='liked-posts'),
     path('api/update_profile/', update_profile),
     path('api/delete_profile/', delete_profile, name='delete_profile'),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+
+    # ❌ Убираем стандартный login
+    # path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+
+    # ✅ Добавляем refresh
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-
+    # ✅ Используем кастомный JWT login
+    path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
 ]

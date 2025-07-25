@@ -1,20 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getToken } from "../utils/auth"; // ✅ правильно
+import { authFetch } from "../utils/auth"; // заменили getToken → authFetch
 import '../App.css';
 
 export default function Navbar() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) return;
-
-    fetch("http://localhost:8000/api/current_user/", {
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ исправлено
-      },
-    })
+    authFetch("http://localhost:8000/api/current_user/")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setCurrentUser(data))
       .catch(() => setCurrentUser(null));

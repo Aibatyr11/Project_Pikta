@@ -1,45 +1,34 @@
 import { useEffect, useState } from "react";
+import { authFetch } from "../utils/auth";
 
 export default function PrivacyModal({ onAccept }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const access = localStorage.getItem("accessToken");
-    if (!access) {
-      setShow(false);
-      setLoading(false);
-      return;
-    }
-
-    fetch("http://localhost:8000/api/privacy-policy/", {
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    })
+    authFetch("http://localhost:8000/api/privacy-policy/")
       .then((res) => {
-        if (res.status === 403) {
+        // Проверка, если токен недействителен или отсутствует
+        if (!res || res.status === 401 || res.status === 403) {
           setShow(false);
           return null;
         }
         return res.json();
       })
       .then((data) => {
-        if (data && !data.accepted) setShow(true);
+        if (data && !data.accepted) {
+          setShow(true);
+        }
       })
-      .catch(() => setShow(false))
+      .catch(() => {
+        setShow(false);
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const handleAccept = () => {
-    const access = localStorage.getItem("accessToken");
-    if (!access) return;
-
-    fetch("http://localhost:8000/api/privacy-policy/", {
+    authFetch("http://localhost:8000/api/privacy-policy/", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Ошибка при отправке согласия");

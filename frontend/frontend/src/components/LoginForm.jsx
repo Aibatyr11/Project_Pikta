@@ -14,9 +14,7 @@ function LoginForm() {
 
     const response = await fetch("http://localhost:8000/api/token/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
 
@@ -25,9 +23,7 @@ function LoginForm() {
     if (response.ok) {
       saveToken(data.access);
       const userResponse = await fetch("http://localhost:8000/api/current_user/", {
-        headers: {
-          Authorization: `Bearer ${data.access}`,
-        },
+        headers: { Authorization: `Bearer ${data.access}` },
       });
       if (userResponse.ok) {
         const userData = await userResponse.json();

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// ✅ App.jsx
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -6,43 +7,30 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import CreatePost from "./pages/CreatePost";
-import PrivacyModal from "./components/PrivacyModal";
 import EditProfile from "./components/EditProfile";
+import PrivacyModal from "./components/PrivacyModal";
 import { UserProvider } from "./context/UserContext";
+import { authFetch } from "./utils/auth";
 
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
+  const [policyChecked, setPolicyChecked] = useState(false);
 
   useEffect(() => {
-    const access = localStorage.getItem("accessToken");
-    if (!access) return;
-
-    fetch("http://localhost:8000/api/privacy-policy/", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    })
+    authFetch("http://localhost:8000/api/privacy-policy/")
       .then((res) => {
-        if (!res.ok) throw new Error("Ошибка при получении политики");
+        if (!res.ok) throw new Error();
         return res.json();
       })
       .then((data) => {
         if (!data.accepted) setShowPolicy(true);
       })
-      .catch(() => setShowPolicy(true));
+      .catch(() => {})
+      .finally(() => setPolicyChecked(true));
   }, []);
 
   const handleAccept = () => {
-    const access = localStorage.getItem("accessToken");
-    if (!access) return;
-
-    fetch("http://localhost:8000/api/privacy-policy/", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    })
+    authFetch("http://localhost:8000/api/privacy-policy/", { method: "POST" })
       .then((res) => {
         if (!res.ok) throw new Error("Ошибка при отправке согласия");
         setShowPolicy(false);
@@ -56,7 +44,7 @@ function App() {
         <div className="center-container">
           <Navbar />
           {showPolicy && <PrivacyModal onAccept={handleAccept} />}
-          {!showPolicy && (
+          {policyChecked && !showPolicy && (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<Register />} />

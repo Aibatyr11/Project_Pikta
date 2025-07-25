@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getToken } from "../utils/auth";
+import { authFetch } from "../utils/auth";
 
 const UserContext = createContext();
 
@@ -7,14 +7,7 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) return;
-
-    fetch("http://localhost:8000/api/current_user/", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    authFetch("http://localhost:8000/api/current_user/")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setUser(data))
       .catch(() => setUser(null));

@@ -1,33 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getToken } from "../utils/auth"; // JWT токен
-import '../App.css';
+import { authFetch } from "../utils/auth";
+import "../App.css";
 
 function PostList() {
   const [posts, setPosts] = useState([]);
-  const token = getToken();
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/posts/", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
-  }, [token]);
+    authFetch("http://localhost:8000/api/posts/")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Ошибка загрузки постов: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => setPosts(data))
+      .catch((err) => {
+        console.error("Ошибка загрузки постов:", err);
+        setError("Не удалось загрузить посты. Убедитесь, что вы вошли в систему.");
+      });
+  }, []);
 
   const toggleLike = (postId, isCurrentlyLiked) => {
     const method = isCurrentlyLiked ? "DELETE" : "POST";
 
-    fetch(`http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+    authFetch(`http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`, {
+      method,
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Ошибка при отправке лайка");
+        }
+        return res.json();
+      })
       .then(() => {
         setPosts((prevPosts) =>
           prevPosts.map((post) =>
@@ -40,8 +46,15 @@ function PostList() {
               : post
           )
         );
+      })
+      .catch((err) => {
+        console.error("Ошибка лайка:", err.message);
       });
   };
+
+  if (error) {
+    return <p style={{ color: "red", marginTop: "50px" }}>{error}</p>;
+  }
 
   return (
     <div className="center-container" style={{ textAlign: "center" }}>
@@ -54,8 +67,8 @@ function PostList() {
             padding: "1rem",
             borderRadius: "10px",
             maxWidth: "900px",
-            justifyContent: 'center',
-            marginTop: "100px"
+            justifyContent: "center",
+            marginTop: "100px",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import '../App.css';
-import { getToken } from "../utils/auth"; // 🔥 используем JWT
+import "../App.css";
+import { authFetch } from "../utils/auth"; // Заменили getToken на authFetch
 
 function PostForm() {
   const [caption, setCaption] = useState("");
@@ -10,22 +10,13 @@ function PostForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = getToken();
-    if (!token) {
-      alert("⚠️ Необходимо войти в аккаунт");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("caption", caption);
     formData.append("location", location);
     formData.append("image", image);
 
-    const response = await fetch("http://localhost:8000/api/posts/", {
+    const response = await authFetch("http://localhost:8000/api/posts/", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ JWT вместо CSRF
-      },
       body: formData,
     });
 
