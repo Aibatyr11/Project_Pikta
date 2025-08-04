@@ -29,7 +29,6 @@ class UserList(APIView):
         return Response(serializer.data)
 
 
-
 class RegisterView(APIView):
     def post(self, request):
         data = request.data
@@ -42,8 +41,6 @@ class RegisterView(APIView):
             return Response({'message': 'Пользователь создан'}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 @csrf_exempt
@@ -101,9 +98,6 @@ class PostViewSet(viewsets.ModelViewSet):
 #             "user": user_data,
 #             "posts": post_data
 #         })
-
-
-
 
 class UserProfileView(APIView):
     def get(self, request, username):
@@ -168,7 +162,6 @@ def is_following(request, user_id):
 
 
 
-# views.py (Django)
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def privacy_policy_view(request):
@@ -238,10 +231,10 @@ def update_profile(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_profile(request):
+    user = request.user
     logout(request)
-    request.user.delete()
+    user.delete()
     return Response({"detail": "Профиль удалён"})
-
 
 
 

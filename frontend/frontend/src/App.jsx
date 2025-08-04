@@ -11,7 +11,7 @@ import EditProfile from "./components/EditProfile";
 import PrivacyModal from "./components/PrivacyModal";
 import { UserProvider } from "./context/UserContext";
 import { authFetch } from "./utils/auth";
-
+import ResetPassword from "./pages/ResetPassword";
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
   const [policyChecked, setPolicyChecked] = useState(false);
@@ -52,6 +52,7 @@ function App() {
               <Route path="/profile/:username" element={<Profile />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/edit-profile" element={<EditProfile />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Routes>
           )}
         </div>

@@ -43,6 +43,12 @@ function LoginForm() {
       <input type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} required />
       <br /><br />
       <button type="submit">Войти</button>
+      <p>
+      <a href="/reset-password" style={{ color: "#00aaff" }}>
+        Забыли пароль?
+      </a>
+</p>
+
     </form>
   );
 }

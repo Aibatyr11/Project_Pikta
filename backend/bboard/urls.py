@@ -7,8 +7,8 @@ from .views import (
 from rest_framework.routers import DefaultRouter
 
 from rest_framework_simplejwt.views import (
-    # TokenObtainPairView,  # ❌ НЕ используем стандартный login
-    TokenRefreshView,  # ✅ Оставляем, нужен для обновления токена
+    # TokenObtainPairView,
+    TokenRefreshView,
 )
 
 router = DefaultRouter()
@@ -31,13 +31,7 @@ urlpatterns = [
     path('api/liked_posts/<str:username>/', liked_posts, name='liked-posts'),
     path('api/update_profile/', update_profile),
     path('api/delete_profile/', delete_profile, name='delete_profile'),
-
-    # ❌ Убираем стандартный login
     # path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-
-    # ✅ Добавляем refresh
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-
-    # ✅ Используем кастомный JWT login
     path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
 ]
