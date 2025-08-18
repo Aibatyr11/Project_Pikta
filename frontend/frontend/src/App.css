@@ -23,39 +23,6 @@ input, button, textarea {
   font-family: inherit;
 }
 
-/* Навбар */
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #121212;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  z-index: 1000;
-}
-.page-content {
-  margin-top: 80px; /* 👈 Отступ, чтобы контент не был под nav */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-nav a {
-  color: #d1d1d1;
-  text-decoration: none;
-  font-size: 16px;
-  transition: color 0.3s;
-}
-
-nav a:hover {
-  color: #ffffff;
-}
 
 /* Регистрация и вход */
 form {
@@ -336,4 +303,235 @@ button:hover {
   border-radius: 10px;
   color: white;
   cursor: pointer;
+}
+
+
+
+
+/* Layout */
+.center-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 300px;
+  gap: 20px;
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  color: white;
+}
+
+/* Общий контейнер */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Layout под топбаром */
+.app-layout {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.navbar {
+  width: 250px;
+  background-color: #121212;
+  padding: 2rem 1rem;
+  flex-shrink: 0; /* фикс ширины */
+}
+
+/* Контент */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+
+/* Sidebar */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 250px; /* фиксируем ширину */
+  padding: 2rem 1rem;
+  background-color: #121212;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sidebar .logo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar a {
+  color: #d1d1d1;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.sidebar a:hover {
+  color: #fff;
+}
+
+/* Основной контент */
+.main-content {
+  flex: 1; /* занимает оставшееся пространство */
+  padding: 2rem;
+}
+
+
+/* Общий layout для Home */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 600px 300px; /* три колонки */
+  gap: 20px;
+  padding: 20px;
+  justify-content: center; /* центрируем */
+}
+
+/* Центральная колонка */
+.center-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Правая колонка */
+.rightbar {
+  padding: 1rem;
+  background-color: #121212;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: fit-content;
+  margin-top: 20px;
+}
+
+/* Stories */
+.stories {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.story {
+  text-align: center;
+}
+
+.story-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #333;
+  border: 2px solid #0095f6;
+  margin: auto;
+}
+
+.story p {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Posts */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Rightbar */
+.rightbar {
+  padding: 1rem;
+  background-color: #121212;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: fit-content;
+  margin-top: 20px;
+}
+
+.suggestions h3,
+.explore h3 {
+  margin-bottom: 10px;
+}
+
+.suggestion {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.suggestion button {
+  background: none;
+  border: none;
+  color: #0095f6;
+  cursor: pointer;
+}
+
+.explore button {
+  background: #1f1f1f;
+  border: none;
+  color: #0095f6;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+
+
+.topbar {
+  position: sticky;  /* остаётся сверху */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.1rem 1.5rem;
+  border-bottom: 1px solid #1f1f1f;
+  
+}
+
+.topbar-left .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.search-input {
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 18px; /* чуть больше */
+  width: 650px;       /* 🔥 увеличил ширину */
+  color: white;
+  outline: none;
+  font-size: 15px;    /* текст чуть крупнее */
+}
+
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }

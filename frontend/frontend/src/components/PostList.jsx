@@ -25,9 +25,10 @@ function PostList() {
   const toggleLike = (postId, isCurrentlyLiked) => {
     const method = isCurrentlyLiked ? "DELETE" : "POST";
 
-    authFetch(`http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`, {
-      method,
-    })
+    authFetch(
+      `http://localhost:8000/api/posts/${postId}/${isCurrentlyLiked ? "unlike" : "like"}/`,
+      { method }
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error("Ошибка при отправке лайка");
@@ -57,28 +58,38 @@ function PostList() {
   }
 
   return (
-    <div className="center-container" style={{ textAlign: "center" }}>
+    <div
+      className="center-container"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+        marginTop: "50px",
+      }}
+    >
       {posts.map((post) => (
         <div
           key={post.id}
           style={{
             border: "1px solid #ccc",
-            margin: "1rem 0",
             padding: "1rem",
             borderRadius: "10px",
-            maxWidth: "900px",
-            justifyContent: "center",
-            marginTop: "100px",
+            maxWidth: "600px",
+            width: "100%",
+            textAlign: "left",
+           
           }}
         >
+          {/* Автор поста */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {post.user.avatar && (
               <Link to={`/profile/${post.user.username}`}>
                 <img
                   src={post.user.avatar}
                   alt="Avatar"
-                  width="80"
-                  height="80"
+                  width="50"
+                  height="50"
                   style={{ borderRadius: "50%", objectFit: "cover" }}
                 />
               </Link>
@@ -88,26 +99,39 @@ function PostList() {
             </Link>
           </div>
 
-          <div style={{ marginTop: "1rem" }}>
-            {post.image && (
+          {/* Картинка поста */}
+          {post.image && (
+            <div style={{ marginTop: "1rem" }}>
               <img
                 src={post.image}
                 alt="Post"
-                width="100%"
-                style={{ objectFit: "contain", borderRadius: "8px" }}
+                style={{
+                  width: "100%",
+                  maxHeight: "400px",
+                  objectFit: "contain",
+                  borderRadius: "8px",
+                }}
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          <p><strong>Описание:</strong> {post.caption}</p>
-          {post.location && <p><strong>Локация:</strong> {post.location}</p>}
-          <p><strong>Дата:</strong> {new Date(post.created_at).toLocaleString()}</p>
+          {/* Текстовая инфа */}
+          <p>
+            <strong>Описание:</strong> {post.caption}
+          </p>
+          {post.location && (
+            <p>
+              <strong>Локация:</strong> {post.location}
+            </p>
+          )}
+          <p>
+            <strong>Дата:</strong> {new Date(post.created_at).toLocaleString()}
+          </p>
 
-          <div>
-            <button onClick={() => toggleLike(post.id, post.is_liked)}>
-              {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
-            </button>
-          </div>
+          {/* Лайки */}
+          <button onClick={() => toggleLike(post.id, post.is_liked)}>
+            {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
+          </button>
         </div>
       ))}
     </div>

@@ -1,4 +1,3 @@
-// ✅ App.jsx
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -12,6 +11,8 @@ import PrivacyModal from "./components/PrivacyModal";
 import { UserProvider } from "./context/UserContext";
 import { authFetch } from "./utils/auth";
 import ResetPassword from "./pages/ResetPassword";
+import Topbar from "./components/Topbar";
+
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
   const [policyChecked, setPolicyChecked] = useState(false);
@@ -41,20 +42,29 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
-        <div className="center-container">
-          <Navbar />
-          {showPolicy && <PrivacyModal onAccept={handleAccept} />}
-          {policyChecked && !showPolicy && (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile/:username" element={<Profile />} />
-              <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/edit-profile" element={<EditProfile />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-            </Routes>
-          )}
+        <div className="app-container">
+          {/* ✅ Топбар сверху */}
+          <Topbar />
+
+          {/* ✅ Под ним основной layout */}
+          <div className="app-layout">
+            <Navbar />
+
+            <div className="main-content">
+              {showPolicy && <PrivacyModal onAccept={handleAccept} />}
+              {policyChecked && !showPolicy && (
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/profile/:username" element={<Profile />} />
+                  <Route path="/create-post" element={<CreatePost />} />
+                  <Route path="/edit-profile" element={<EditProfile />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                </Routes>
+              )}
+            </div>
+          </div>
         </div>
       </BrowserRouter>
     </UserProvider>
