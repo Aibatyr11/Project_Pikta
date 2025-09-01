@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "../App.css";
-import { authFetch } from "../utils/auth"; // Заменили getToken на authFetch
+import "../styles/PostForm.css"; // подключаем отдельный css
+import { authFetch } from "../utils/auth";
 
 function PostForm() {
   const [caption, setCaption] = useState("");
@@ -32,31 +32,37 @@ function PostForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data">
-      <h2>Создать пост</h2>
+    <form className="post-form" onSubmit={handleSubmit} encType="multipart/form-data">
+      <h2 className="post-form-title">Создать пост</h2>
+
       <input
         type="text"
         placeholder="Описание"
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
+        className="post-input"
         required
       />
-      <br />
+
       <input
         type="text"
         placeholder="Локация"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
+        className="post-input"
       />
-      <br />
+
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImage(e.target.files[0])}
+        className="post-file"
         required
       />
-      <br />
-      <button type="submit">Опубликовать</button>
+
+      <button type="submit" className="post-btn">
+        Опубликовать
+      </button>
     </form>
   );
 }

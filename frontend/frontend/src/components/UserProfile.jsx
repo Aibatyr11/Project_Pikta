@@ -1,6 +1,7 @@
+// src/pages/UserProfile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../App.css";
+import "./UserProfile.css";
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
 
@@ -14,7 +15,6 @@ function UserProfile() {
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
   useEffect(() => {
-    // Публичный профиль
     fetch(`http://localhost:8000/api/profile/${username}/`)
       .then((res) => res.json())
       .then((data) => {
@@ -22,7 +22,6 @@ function UserProfile() {
         setPosts(data.posts);
       });
 
-    // Текущий пользователь
     authFetch("http://localhost:8000/api/current_user/")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => data && setCurrentUser(data))
@@ -64,83 +63,87 @@ function UserProfile() {
       .catch((err) => alert(err.message));
   };
 
-  if (!user) return <p>Загрузка...</p>;
+  if (!user) return <p className="loading">Загрузка...</p>;
 
   return (
-    <div className="center-container" style={{ textAlign: "center" }}>
-      <div>
-        {user.avatar ? (
-          <img
-            src={user.avatar}
-            alt="Аватар"
-            style={{
-              width: "150px",
-              height: "150px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              backgroundColor: "#333",
-              marginTop: "100px",
-            }}
-          />
-        ) : (
-          <p>Аватар отсутствует</p>
-        )}
-      </div>
+    <div className="profile-page">
+      <div className="profile-header">
+        <div className="avatar-block">
+          {user.avatar ? (
+            <img src={user.avatar} alt="Аватар" className="profile-avatar" />
+          ) : (
+            <div className="profile-avatar empty">?</div>
+          )}
+        </div>
 
-      <h2>@{user.username}</h2>
+        <div className="profile-info">
+          <h2 className="profile-username">@{user.username}</h2>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: "30px", margin: "1rem 0" }}>
-        <div><strong>{user.following_count}</strong><br />Подписки</div>
-        <div><strong>{user.followers_count}</strong><br />Подписчики</div>
-        <div><strong>{posts.reduce((sum, p) => sum + (p.likes_count || 0), 0)}</strong><br />Лайки</div>
-      </div>
-
-      {currentUser && currentUser.id !== user.id && (
-        isFollowing
-          ? <button onClick={handleUnfollow}>Отписаться</button>
-          : <button onClick={handleFollow}>Подписаться</button>
-      )}
-
-      <p style={{ marginTop: "1rem" }}>{user.bio || "О себе не указано"}</p>
-
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "2rem" }}>
-        <button onClick={() => setActiveTab("posts")} style={{ backgroundColor: activeTab === "posts" ? "#007cd1" : "" }}>Посты</button>
-        <button onClick={() => setActiveTab("likes")} style={{ backgroundColor: activeTab === "likes" ? "#007cd1" : "" }}>Лайки</button>
-        <button disabled>Избранное</button>
-      </div>
-
-      {currentUser && currentUser.id === user.id && (
-        <button onClick={() => window.location.href = "/edit-profile"}>Настройки профиля</button>
-      )}
-
-      <div style={{ marginTop: "2rem" }}>
-        {activeTab === "posts" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-            {posts.map((post) => (
-              <img
-                key={post.id}
-                src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-                alt="post"
-                width="100%"
-                style={{ borderRadius: "10px" }}
-              />
-            ))}
+          <div className="profile-stats">
+            <div><strong>{posts.length}</strong><span>Посты</span></div>
+            <div><strong>{user.followers_count}</strong><span>Подписчики</span></div>
+            <div><strong>{user.following_count}</strong><span>Подписки</span></div>
           </div>
-        )}
 
-        {activeTab === "likes" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-            {likedPosts.map((post) => (
-              <img
-                key={post.id}
-                src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
-                alt="liked"
-                width="100%"
-                style={{ borderRadius: "10px" }}
-              />
-            ))}
-          </div>
-        )}
+          {currentUser && currentUser.id !== user.id && (
+            <div className="profile-buttons">
+              {isFollowing ? (
+                <button onClick={handleUnfollow} className="btn secondary">Отписаться</button>
+              ) : (
+                <button onClick={handleFollow} className="btn primary">Подписаться</button>
+              )}
+            </div>
+          )}
+
+          {currentUser && currentUser.id === user.id && (
+            <div className="profile-buttons">
+              <button onClick={() => (window.location.href = "/edit-profile")} className="btn primary">
+                Редактировать профиль
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <p className="profile-bio">{user.bio || "О себе не указано"}</p>
+
+      {/* Tabs */}
+      <div className="profile-tabs">
+        <button
+          onClick={() => setActiveTab("posts")}
+          className={`tab-btn ${activeTab === "posts" ? "active" : ""}`}
+        >
+          Посты
+        </button>
+        <button
+          onClick={() => setActiveTab("likes")}
+          className={`tab-btn ${activeTab === "likes" ? "active" : ""}`}
+        >
+          Лайки
+        </button>
+      </div>
+
+      {/* Posts grid */}
+      <div className="posts-grid">
+        {activeTab === "posts" &&
+          posts.map((post) => (
+            <img
+              key={post.id}
+              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+              alt="post"
+              className="post-thumb"
+            />
+          ))}
+
+        {activeTab === "likes" &&
+          likedPosts.map((post) => (
+            <img
+              key={post.id}
+              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+              alt="liked"
+              className="post-thumb"
+            />
+          ))}
       </div>
     </div>
   );

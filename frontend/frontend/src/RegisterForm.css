@@ -1,0 +1,75 @@
+/* Центрируем форму */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+/* Карточка формы */
+.register-card {
+  background: #fafafa;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+/* Заголовок */
+.register-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+/* Форма */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Поля */
+.register-form input {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.register-form input:focus {
+  border-color: #999;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Кнопка */
+.register-btn {
+  padding: 12px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.register-btn:hover {
+  background: #111;
+}
+
+/* Сообщение */
+.register-message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #444;
+}

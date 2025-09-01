@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/auth";
 import { useUser } from "../context/UserContext";
+import "../AuthForm.css"; // общий стиль для форм входа/регистрации
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -31,25 +32,34 @@ function LoginForm() {
         navigate(`/profile/${userData.username}`);
       }
     } else {
-      alert("Ошибка входа: " + (data.detail || "Неизвестная ошибка"));
+      alert("❌ Ошибка входа: " + (data.detail || "Неизвестная ошибка"));
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <div className="auth-container">
       <h2>Вход</h2>
-      <input type="text" placeholder="Имя пользователя" value={username} onChange={(e) => setUsername(e.target.value)} required />
-      <br /><br />
-      <input type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <br /><br />
-      <button type="submit">Войти</button>
-      <p>
-      <a href="/reset-password" style={{ color: "#00aaff" }}>
-        Забыли пароль?
-      </a>
-</p>
-
-    </form>
+      <form onSubmit={handleLogin} className="auth-form">
+        <input
+          type="text"
+          placeholder="Имя пользователя"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Войти</button>
+      </form>
+      <p className="auth-link">
+        <a href="/reset-password">Забыли пароль?</a>
+      </p>
+    </div>
   );
 }
 

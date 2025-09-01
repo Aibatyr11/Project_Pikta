@@ -1,0 +1,94 @@
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 65px; /* чтобы не наезжал на левый navbar */
+  right: 0;
+  height: 65px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 1000;
+}
+
+/* Лого */
+.topbar-left .topbar-logo {
+  font-size: 0px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.topbar-left .topbar-logo:hover {
+  color: #00aaff;
+}
+
+/* Центр */
+.topbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  width: 65%;
+  max-width: 420px;
+  padding: 9px 14px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 14px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  background: #222;
+  box-shadow: 0 0 4px #00aaff;
+}
+
+.search-input::placeholder {
+  color: #777;
+}
+
+/* Справа */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Кнопки (вход/регистрация/пост) */
+.link-btn {
+  background: #1a1a1a;
+  color: #ddd;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.link-btn:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* Аватар */
+.topbar-avatar {
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #333;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.topbar-avatar:hover {
+  border: 2px solid #00aaff;
+}

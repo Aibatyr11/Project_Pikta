@@ -1,53 +1,60 @@
-// src/components/Topbar.jsx
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { authFetch } from "../utils/auth";
-import "../App.css";
+import "../Topbar.css";
 
 export default function Topbar() {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    authFetch("http://localhost:8000/api/current_user/") // эндпоинт для текущего юзера
-      .then((res) => {
-        if (!res.ok) throw new Error("Ошибка загрузки пользователя");
-        return res.json();
-      })
-      .then((data) => setUser(data))
-      .catch((err) => console.error("Ошибка загрузки профиля:", err));
+    authFetch("http://localhost:8000/api/current_user/")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setCurrentUser(data))
+      .catch(() => setCurrentUser(null));
   }, []);
 
   return (
     <header className="topbar">
+      {/* Лого слева */}
       <div className="topbar-left">
-        <span className="logo">Pikta</span>
+        <Link to="/" className="topbar-logo">
+          Pikta
+        </Link>
       </div>
 
+      {/* Поиск по центру */}
       <div className="topbar-center">
-        <input type="text" placeholder="Search..." className="search-input" />
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Поиск..."
+        />
       </div>
 
+      {/* Справа — кнопки и профиль */}
       <div className="topbar-right">
-        {user ? (
-          <Link to={`/profile/${user.username}`}>
-            <img
-                src={
-                user?.avatar
-                  ? user.avatar.startsWith("http")
-                    ? user.avatar
-                    : `http://localhost:8000${user.avatar}`
-                  : "https://via.placeholder.com/40"
-              }
-              alt="avatar"
-              className="topbar-avatar"
-            />
-          </Link>
+        {!currentUser ? (
+          <>
+            <NavLink to="/login" className="link-btn">
+              Вход
+            </NavLink>
+            <NavLink to="/register" className="link-btn">
+              Регистрация
+            </NavLink>
+          </>
         ) : (
-          <img
-            src="https://via.placeholder.com/40"
-            alt="avatar"
-            className="topbar-avatar"
-          />
+          <>
+            <NavLink to="/create-post" className="link-btn">
+              + Пост
+            </NavLink>
+            <NavLink to={`/profile/${currentUser.username}`}>
+              <img
+                src={currentUser.avatar || "/default-avatar.png"}
+                alt="avatar"
+                className="topbar-avatar"
+              />
+            </NavLink>
+          </>
         )}
       </div>
     </header>

@@ -29,16 +29,6 @@ export default function Home() {
 
       {/* Центральная колонка */}
       <div className="center-feed">
-        {/* Stories */}
-        <h3>Stories</h3>
-        <div className="stories">
-          {["Emma", "Liam", "Olivia", "Noah", "Ava"].map((name, i) => (
-            <div key={i} className="story">
-              <div className="story-avatar"></div>
-              <p>{name}</p>
-            </div>
-          ))}
-        </div>
 
         {/* Posts */}
         <div className="feed">

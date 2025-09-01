@@ -1,0 +1,70 @@
+.sidebar {
+  width: 220px;
+  height: 100vh; /* высота на весь экран */
+  background: #fafafa;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  border-radius: 0 20px 20px 0;
+  position: fixed; /* фиксируем */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* чтобы было поверх */
+}
+
+.main-content {
+  margin-left: 220px; /* чтобы контент не залезал под sidebar */
+  padding: 20px;
+}
+
+
+.sidebar-logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column; /* теперь иконка сверху, текст снизу */
+  align-items: center;    /* выравнивание по центру */
+  padding: 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.25s, color 0.25s;
+}
+
+.nav-icon {
+  width: 24px; 
+  height: 24px;
+  margin: 0 0 6px 0; /* отступ снизу, чтобы текст не прилипал */
+}
+
+
+.nav-item:hover {
+  background: #eaeaea; /* спокойный серый */
+  color: #111;
+}
+
+.nav-item.active {
+  background: #dcdcdc; /* выделение активного */
+  font-weight: 600;
+  color: #000;
+}
+
+
+.nav-item:last-child {
+  margin-top: auto; /* последний элемент уходит вниз */
+}
