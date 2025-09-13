@@ -13,6 +13,8 @@ import { authFetch } from "./utils/auth";
 import ResetPassword from "./pages/ResetPassword";
 import Topbar from "./components/Topbar";
 
+import ChatPage from "./pages/ChatPage";
+
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
   const [policyChecked, setPolicyChecked] = useState(false);
@@ -61,6 +63,7 @@ function App() {
                   <Route path="/create-post" element={<CreatePost />} />
                   <Route path="/edit-profile" element={<EditProfile />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/chat" element={<ChatPage />} />
                 </Routes>
               )}
             </div>

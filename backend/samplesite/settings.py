@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'bboard',
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    "channels",
+    'chat',
 ]
 
 AUTH_USER_MODEL = 'bboard.User'
@@ -174,4 +176,15 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+}
+
+
+ASGI_APPLICATION = "samplesite.asgi.application"
+
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
 }

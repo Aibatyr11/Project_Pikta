@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { authFetch } from "../utils/auth";
-import "../Topbar.css";
+import "../styles/Topbar.css";
 
 export default function Topbar() {
   const [currentUser, setCurrentUser] = useState(null);

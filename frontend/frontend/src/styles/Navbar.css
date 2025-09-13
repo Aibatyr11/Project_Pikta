@@ -1,12 +1,12 @@
 .sidebar {
-  width: 220px;
+  width: 130px;
   height: 100vh; /* высота на весь экран */
   background: #fafafa;
   padding: 20px 15px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #e0e0e0;
-  border-radius: 0 20px 20px 0;
+  border-radius: 20px;
   position: fixed; /* фиксируем */
   top: 0;
   left: 0;

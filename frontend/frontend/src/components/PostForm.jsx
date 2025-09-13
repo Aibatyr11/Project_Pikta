@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/PostForm.css"; // подключаем отдельный css
+import "../styles/PostForm.css"; 
 import { authFetch } from "../utils/auth";
 
 function PostForm() {

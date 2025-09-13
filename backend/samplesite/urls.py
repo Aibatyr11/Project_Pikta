@@ -10,6 +10,8 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bboard.urls')),
+    path("chat/", include("chat.urls")),
+    path("api/", include("chat.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { authFetch } from "../utils/auth";
-import "../Navbar.css";
+import "../styles/Navbar.css";
+
 
 // импорт иконок
 import homeIcon from "../assets/icons/home.png";
@@ -40,10 +41,12 @@ export default function Navbar() {
           <img src={notificationsIcon} alt="Notifications" className="nav-icon" />
           <span className="nav-text">Notifications</span>
         </NavLink>
-        <NavLink to="/messages" className="nav-item">
+   
+        <NavLink to="/chat" className="nav-item">
           <img src={messagesIcon} alt="Messages" className="nav-icon" />
-          <span className="nav-text">Messages</span>
+          <span className="nav-text">Chat</span>
         </NavLink>
+
         <NavLink to="/register" className="nav-item">
           <img src={registerIcon} alt="Регистрация" className="nav-icon" />
           <span className="nav-text">Регистрация</span>
@@ -52,6 +55,9 @@ export default function Navbar() {
           <img src={loginIcon} alt="Вход" className="nav-icon" />
           <span className="nav-text">Вход</span>
         </NavLink>
+
+        
+
 
         {currentUser && (
           <>

@@ -1,7 +1,7 @@
 // src/pages/UserProfile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./UserProfile.css";
+import "../styles/UserProfile.css"; 
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
 

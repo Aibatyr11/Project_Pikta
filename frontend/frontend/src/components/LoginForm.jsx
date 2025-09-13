@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/auth";
 import { useUser } from "../context/UserContext";
-import "../AuthForm.css"; // общий стиль для форм входа/регистрации
+import "../styles/AuthForm.css"; // общий стиль для форм входа/регистрации
 
 function LoginForm() {
   const [username, setUsername] = useState("");
