@@ -1,0 +1,127 @@
+/* SearchPage.css */
+
+.search-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 20px;
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.723); /* стеклянный эффект */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(30px) saturate(150%);
+
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.search-page h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #010101;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #000000;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+
+.search-form input::placeholder {
+  color: #000000;
+}
+
+.search-form input:focus {
+  border: 1px solid rgba(0, 150, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.search-form button {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 500;
+}
+
+.search-form button:hover {
+  background: linear-gradient(135deg, #5aa2f0, #3b82f6);
+  transform: translateY(-2px);
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.search-user:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.search-user a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(0, 150, 255, 0.8);
+}
+
+.avatar.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 150, 255, 0.2);
+  color: #000000;
+  font-weight: bold;
+}

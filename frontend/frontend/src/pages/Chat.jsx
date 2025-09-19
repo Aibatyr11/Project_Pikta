@@ -1,38 +1,20 @@
 import { useEffect, useState } from "react";
 
-export default function Chat() {
+export default function ChatWindow({ currentUser, targetUser }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
-
-  const [targetUser, setTargetUser] = useState(""); // собеседник
-  const [currentUser, setCurrentUser] = useState(""); // ⚡ теперь динамично
 
   useEffect(() => {
     if (!targetUser || !currentUser) return;
 
     const roomName = [currentUser, targetUser].sort().join("_");
 
-    // 1. Загружаем историю сообщений
-    fetch(`http://localhost:8000/chat/history/${currentUser}/${targetUser}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMessages(data);
-      })
-      .catch((err) => console.error("Ошибка загрузки истории:", err));
-
-    // 2. Подключаем WebSocket
     const ws = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
-
-    ws.onopen = () => console.log("✅ WebSocket открыт");
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("📩 Пришло:", data);
-
       setMessages((prev) => [...prev, data]);
     };
-    ws.onclose = () => console.log("❌ WebSocket закрыт");
-
     setSocket(ws);
 
     return () => ws.close();
@@ -44,72 +26,53 @@ export default function Chat() {
 
     const msgData = {
       sender: currentUser,
-      receiver: targetUser, // ⚡ добавляем
+      receiver: targetUser,
       message: input,
     };
-
     socket.send(JSON.stringify(msgData));
     setInput("");
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Чат</h2>
-
-      {/* вводим своего юзера */}
-      <div style={{ marginBottom: 10 }}>
-        <input
-          type="text"
-          placeholder="Ваш username..."
-          value={currentUser}
-          onChange={(e) => setCurrentUser(e.target.value)}
-        />
+    <div className="flex flex-col h-full">
+      {/* Заголовок */}
+      <div className="px-4 py-3 border-b font-bold text-lg bg-white shadow-sm">
+        Чат с {targetUser}
       </div>
 
-      {/* выбор собеседника */}
-      <div style={{ marginBottom: 10 }}>
-        <input
-          type="text"
-          placeholder="Собеседник..."
-          value={targetUser}
-          onChange={(e) => setTargetUser(e.target.value)}
-        />
-      </div>
-
-      {/* окно чата */}
-      <div
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: 8,
-          padding: 10,
-          height: 250,
-          overflowY: "auto",
-          marginBottom: 10,
-        }}
-      >
+      {/* Сообщения */}
+      <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3">
         {messages.map((msg, i) => (
           <div
             key={i}
-            style={{
-              textAlign: msg.sender === currentUser ? "right" : "left",
-              margin: "5px 0",
-            }}
+            className={`max-w-xs p-3 rounded-2xl shadow-sm ${
+              msg.sender === currentUser
+                ? "ml-auto bg-blue-500 text-white rounded-br-none"
+                : "mr-auto bg-white text-gray-800 border rounded-bl-none"
+            }`}
           >
-            <b>{msg.sender}: </b>
-            {msg.message}
+            <div className="text-sm">{msg.message}</div>
           </div>
         ))}
       </div>
 
-      {/* форма отправки */}
-      <form onSubmit={handleSend} style={{ display: "flex", gap: 10 }}>
+      {/* Форма */}
+      <form
+        onSubmit={handleSend}
+        className="flex p-3 border-t bg-white gap-2"
+      >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Введите сообщение..."
-          style={{ flex: 1, padding: 8 }}
+          className="flex-1 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-        <button type="submit">Отправить</button>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"
+        >
+          Отправить
+        </button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../utils/auth";
 import { useUser } from "../context/UserContext";
+import "../styles/ChatsList.css";
 
 export default function ChatsList({ onSelectChat }) {
   const { user } = useUser();
@@ -14,6 +15,13 @@ export default function ChatsList({ onSelectChat }) {
     }
   }, [user]);
 
+  const getAvatarUrl = (avatar) => {
+    if (!avatar) return "/default-avatar.png";
+    return avatar.startsWith("http")
+      ? avatar
+      : `http://localhost:8000${avatar}`;
+  };
+
   return (
     <div className="chats-list">
       {chats.map((chat) => (
@@ -23,7 +31,7 @@ export default function ChatsList({ onSelectChat }) {
           onClick={() => onSelectChat(chat.username)}
         >
           <img
-            src={chat.avatar || "/default-avatar.png"}
+            src={getAvatarUrl(chat.avatar)}
             alt={chat.username}
             className="chat-avatar"
           />
@@ -33,7 +41,8 @@ export default function ChatsList({ onSelectChat }) {
               {chat.last_message}
             </div>
             <small>
-              {new Date(chat.last_message_time).toLocaleTimeString()}
+              {chat.last_message_time &&
+                new Date(chat.last_message_time).toLocaleTimeString()}
             </small>
           </div>
         </div>

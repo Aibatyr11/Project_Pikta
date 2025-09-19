@@ -12,8 +12,9 @@ import { UserProvider } from "./context/UserContext";
 import { authFetch } from "./utils/auth";
 import ResetPassword from "./pages/ResetPassword";
 import Topbar from "./components/Topbar";
-
+import NotificationsBell from "./components/NotificationsBell";
 import ChatPage from "./pages/ChatPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
@@ -64,6 +65,9 @@ function App() {
                   <Route path="/edit-profile" element={<EditProfile />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/chat" element={<ChatPage />} />
+                  <Route path="/notifications" element={<NotificationsBell />} />
+                  <Route path="/search" element={<SearchPage />} />
+
                 </Routes>
               )}
             </div>

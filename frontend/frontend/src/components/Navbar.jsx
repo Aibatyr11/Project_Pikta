@@ -33,7 +33,7 @@ export default function Navbar() {
           <img src={homeIcon} alt="Home" className="nav-icon" />
           <span className="nav-text">Home</span>
         </NavLink>
-        <NavLink to="/explore" className="nav-item">
+        <NavLink to="/search" className="nav-item">
           <img src={exploreIcon} alt="Explore" className="nav-icon" />
           <span className="nav-text">Explore</span>
         </NavLink>

@@ -1,9 +1,10 @@
 // src/pages/UserProfile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../styles/UserProfile.css"; 
+import "../styles/UserProfile.css";
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
+import PostDetailModal from "../components/PostDetailModal"; // ✅ модалка
 
 function UserProfile() {
   const { username } = useParams();
@@ -12,6 +13,7 @@ function UserProfile() {
   const [likedPosts, setLikedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("posts");
   const [isFollowing, setIsFollowing] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null); // ✅ для модалки
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
   useEffect(() => {
@@ -58,7 +60,10 @@ function UserProfile() {
     })
       .then((res) => {
         if (res.ok) setIsFollowing(false);
-        else return res.json().then((err) => { throw new Error(err.detail); });
+        else
+          return res.json().then((err) => {
+            throw new Error(err.detail);
+          });
       })
       .catch((err) => alert(err.message));
   };
@@ -80,24 +85,40 @@ function UserProfile() {
           <h2 className="profile-username">@{user.username}</h2>
 
           <div className="profile-stats">
-            <div><strong>{posts.length}</strong><span>Посты</span></div>
-            <div><strong>{user.followers_count}</strong><span>Подписчики</span></div>
-            <div><strong>{user.following_count}</strong><span>Подписки</span></div>
+            <div>
+              <strong>{posts.length}</strong>
+              <span>Посты</span>
+            </div>
+            <div>
+              <strong>{user.followers_count}</strong>
+              <span>Подписчики</span>
+            </div>
+            <div>
+              <strong>{user.following_count}</strong>
+              <span>Подписки</span>
+            </div>
           </div>
 
           {currentUser && currentUser.id !== user.id && (
             <div className="profile-buttons">
               {isFollowing ? (
-                <button onClick={handleUnfollow} className="btn secondary">Отписаться</button>
+                <button onClick={handleUnfollow} className="btn secondary">
+                  Отписаться
+                </button>
               ) : (
-                <button onClick={handleFollow} className="btn primary">Подписаться</button>
+                <button onClick={handleFollow} className="btn primary">
+                  Подписаться
+                </button>
               )}
             </div>
           )}
 
           {currentUser && currentUser.id === user.id && (
             <div className="profile-buttons">
-              <button onClick={() => (window.location.href = "/edit-profile")} className="btn primary">
+              <button
+                onClick={() => (window.location.href = "/edit-profile")}
+                className="btn primary"
+              >
                 Редактировать профиль
               </button>
             </div>
@@ -129,9 +150,14 @@ function UserProfile() {
           posts.map((post) => (
             <img
               key={post.id}
-              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+              src={
+                post.image.startsWith("http")
+                  ? post.image
+                  : `http://localhost:8000${post.image}`
+              }
               alt="post"
               className="post-thumb"
+              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки
             />
           ))}
 
@@ -139,12 +165,24 @@ function UserProfile() {
           likedPosts.map((post) => (
             <img
               key={post.id}
-              src={post.image.startsWith("http") ? post.image : `http://localhost:8000${post.image}`}
+              src={
+                post.image.startsWith("http")
+                  ? post.image
+                  : `http://localhost:8000${post.image}`
+              }
               alt="liked"
               className="post-thumb"
+              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки
             />
           ))}
       </div>
+
+      {/* Модалка деталей поста */}
+      <PostDetailModal
+        postId={selectedPostId}
+        isOpen={!!selectedPostId}
+        onClose={() => setSelectedPostId(null)}
+      />
     </div>
   );
 }

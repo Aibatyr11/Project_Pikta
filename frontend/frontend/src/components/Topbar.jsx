@@ -13,6 +13,13 @@ export default function Topbar() {
       .catch(() => setCurrentUser(null));
   }, []);
 
+  const getAvatarUrl = (avatar) => {
+    if (!avatar) return "/default-avatar.png";
+    return avatar.startsWith("http")
+      ? avatar
+      : `http://localhost:8000${avatar}`;
+  };
+
   return (
     <header className="topbar">
       {/* Лого слева */}
@@ -22,14 +29,14 @@ export default function Topbar() {
         </Link>
       </div>
 
-      {/* Поиск по центру */}
+      {/* Поиск по центру
       <div className="topbar-center">
         <input
           type="text"
           className="search-input"
           placeholder="Поиск..."
         />
-      </div>
+      </div> */}
 
       {/* Справа — кнопки и профиль */}
       <div className="topbar-right">
@@ -44,12 +51,10 @@ export default function Topbar() {
           </>
         ) : (
           <>
-            <NavLink to="/create-post" className="link-btn">
-              + Пост
-            </NavLink>
+           
             <NavLink to={`/profile/${currentUser.username}`}>
               <img
-                src={currentUser.avatar || "/default-avatar.png"}
+                src={getAvatarUrl(currentUser.avatar)}
                 alt="avatar"
                 className="topbar-avatar"
               />

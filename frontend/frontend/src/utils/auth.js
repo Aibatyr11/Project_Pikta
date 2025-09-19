@@ -51,28 +51,35 @@ async function refreshAccessToken() {
 export async function authFetch(url, options = {}) {
   let token = getToken();
 
+  // Базовые заголовки
   const headers = {
     ...options.headers,
     Authorization: token ? `Bearer ${token}` : "",
-    "Content-Type": "application/json",
   };
+
+  // Только если body не FormData, ставим Content-Type
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   let response = await fetch(url, {
     ...options,
     headers,
   });
 
+  // Если 401, обновляем токен
   if (response.status === 401) {
-    // Попробуем обновить токен
     const newToken = await refreshAccessToken();
-    if (!newToken) return response; // не удалось обновить
+    if (!newToken) return response;
 
-    // Повторный запрос с новым токеном
     const retryHeaders = {
       ...options.headers,
       Authorization: `Bearer ${newToken}`,
-      "Content-Type": "application/json",
     };
+
+    if (!(options.body instanceof FormData)) {
+      retryHeaders["Content-Type"] = "application/json";
+    }
 
     response = await fetch(url, {
       ...options,

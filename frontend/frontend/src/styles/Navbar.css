@@ -1,70 +1,76 @@
 .sidebar {
-  width: 130px;
-  height: 100vh; /* высота на весь экран */
-  background: #fafafa;
-  padding: 20px 15px;
+  width: 110px;
+  height: 100vh;
+  background: var(--bg-light, #fff);
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #e0e0e0;
-  border-radius: 20px;
-  position: fixed; /* фиксируем */
+  border-right: 1px solid #e6e6e6;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* чтобы было поверх */
+  z-index: 1000;
+
+  /* Тень и закругления */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
 .main-content {
-  margin-left: 220px; /* чтобы контент не залезал под sidebar */
+  margin-left: 120px; /* отступ, чтобы контент не заходил под меню */
   padding: 20px;
 }
 
-
 .sidebar-logo {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
-  color: #222;
+  color: var(--text-dark, #222);
   margin-bottom: 30px;
   text-align: center;
+  letter-spacing: -0.5px;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .nav-item {
   display: flex;
-  flex-direction: column; /* теперь иконка сверху, текст снизу */
-  align-items: center;    /* выравнивание по центру */
-  padding: 10px;
-  border-radius: 15px;
+  flex-direction: column; 
+  align-items: center;
+  padding: 12px 6px;
+  border-radius: 12px;
   text-decoration: none;
-  color: #333;
-  font-size: 14px;
+  color: var(--text-dark, #444);
+  font-size: 13px;
   font-weight: 500;
-  transition: background 0.25s, color 0.25s;
+  transition: all 0.25s ease;
 }
 
 .nav-icon {
-  width: 24px; 
-  height: 24px;
-  margin: 0 0 6px 0; /* отступ снизу, чтобы текст не прилипал */
+  width: 26px;
+  height: 26px;
+  margin-bottom: 5px;
+  opacity: 0.85;
+  transition: opacity 0.25s;
 }
 
-
 .nav-item:hover {
-  background: #eaeaea; /* спокойный серый */
-  color: #111;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--primary, #111);
+}
+
+.nav-item:hover .nav-icon {
+  opacity: 1;
 }
 
 .nav-item.active {
-  background: #dcdcdc; /* выделение активного */
+  background: var(--primary-light, #f0f0f0);
+  color: var(--primary, #000);
   font-weight: 600;
-  color: #000;
 }
 
-
 .nav-item:last-child {
-  margin-top: auto; /* последний элемент уходит вниз */
+  margin-top: auto;
 }

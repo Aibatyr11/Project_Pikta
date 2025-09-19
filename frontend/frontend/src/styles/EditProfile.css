@@ -1,0 +1,106 @@
+/* EditProfile.css */
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  padding: 20px;
+  text-align: center;
+}
+
+.edit-form {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(7, 7, 7, 0.2);
+  backdrop-filter: blur(25px) saturate(150%);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.edit-form h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.edit-form label {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.edit-form input,
+.edit-form textarea {
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(26, 26, 26, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #000000;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+  font-size: 14px;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  border: 1px solid rgba(0, 150, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.edit-form textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+.edit-form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.25s;
+}
+
+.edit-form button[type="submit"] {
+  margin-top: 10px;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: #fff;
+}
+
+.edit-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #5aa2f0, #3b82f6);
+  transform: translateY(-2px);
+}
+
+.edit-form button[type="button"] {
+  margin-top: 12px;
+  background: rgba(255, 50, 50, 0.8);
+  color: #fff;
+}
+
+.edit-form button[type="button"]:hover {
+  background: rgba(255, 80, 80, 0.95);
+  transform: translateY(-2px);
+}

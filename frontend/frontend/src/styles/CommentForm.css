@@ -1,0 +1,70 @@
+/* CommentForm.css */
+
+.comment-form {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  color: #fff;
+
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+
+  transition: all 0.25s ease;
+}
+
+.comment-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.comment-textarea:focus {
+  border: 1px solid rgba(0, 150, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 8px rgba(0, 150, 255, 0.4);
+  outline: none;
+}
+
+.comment-error {
+  color: #ff6b6b;
+  margin-top: -4px;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.comment-button {
+  align-self: flex-end;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.comment-button:hover {
+  background: linear-gradient(135deg, #5aa2f0, #3b82f6);
+  transform: translateY(-2px);
+}
+
+.comment-button:disabled {
+  background: rgba(200, 200, 200, 0.2);
+  cursor: not-allowed;
+  box-shadow: none;
+}

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";   // 👈 добавляем
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
 import PostList from "../components/PostList";
-import "../App.css";
+import "../styles/Home.css";
 
 export default function Home() {
   const { user } = useUser(); // текущий юзер

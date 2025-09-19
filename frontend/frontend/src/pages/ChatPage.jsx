@@ -2,23 +2,28 @@ import { useState } from "react";
 import { useUser } from "../context/UserContext";
 import ChatsList from "../components/ChatsList";
 import ChatWindow from "../components/ChatWindow";
+import "../styles/ChatPage.css";
 
 export default function ChatPage() {
-  const { user } = useUser(); // 🔥 берём текущего юзера из контекста
+  const { user } = useUser();
   const [selectedUser, setSelectedUser] = useState(null);
 
   if (!user) {
-    return <div style={{ padding: 20 }}>⚠ Войдите, чтобы увидеть чаты</div>;
+    return <div className="chat-page">⚠ Войдите, чтобы увидеть чаты</div>;
   }
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      <ChatsList currentUser={user.username} onSelectChat={setSelectedUser} />
-      <div style={{ flex: 1 }}>
+    <div className="chat-page">
+      <aside className="chats-sidebar">
+        <div className="chats-sidebar-header">Ваши чаты</div>
+        <ChatsList currentUser={user.username} onSelectChat={setSelectedUser} />
+      </aside>
+
+      <div className="chat-window">
         {selectedUser ? (
           <ChatWindow currentUser={user.username} targetUser={selectedUser} />
         ) : (
-          <div style={{ textAlign: "center", marginTop: 50 }}>
+          <div className="flex items-center justify-center h-full text-gray-500">
             Выберите чат
           </div>
         )}

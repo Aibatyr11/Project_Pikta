@@ -1,94 +1,96 @@
 .topbar {
-  position: fixed;
-  top: 0;
-  left: 65px; /* чтобы не наезжал на левый navbar */
-  right: 0;
-  height: 65px;
-  background: #111;
-  border-bottom: 1px solid #222;
+  position: fixed;          /* фиксируем */
+  top: 0;                   /* прижимаем к верху */
+  left: 0;
+  width: 100%;              /* растягиваем на всю ширину */
+  z-index: 1000;            /* чтобы был поверх контента */
+  
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 18px;
-  z-index: 1000;
+  align-items: center;
+  padding: 1px 20px;
+  background: linear-gradient(225deg, #000000, #ffffff);
+  border-radius: 0 0 14px 14px;  /* скругление только снизу */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  color: #fff;
 }
 
-/* Лого */
-.topbar-left .topbar-logo {
-  font-size: 0px;
-  font-weight: bold;
-  color: #fff;
+/* Чтобы контент не залезал под топбар */
+body {
+  margin: 0;
+  padding-top: 75px; /* отступ под высоту топбара */
+}
+
+
+/* Логотип */
+.topbar-logo {
+  font-size: 22px;
+  font-weight: 700;
   text-decoration: none;
+  color: #ff7b00;
   transition: color 0.2s;
 }
-
-.topbar-left .topbar-logo:hover {
-  color: #00aaff;
+.topbar-logo:hover {
+  color: #006eff;
 }
 
-/* Центр */
+/* Центр — поиск */
 .topbar-center {
   flex: 1;
   display: flex;
   justify-content: center;
+  padding: 0 20px;
 }
-
 .search-input {
-  width: 65%;
-  max-width: 420px;
-  padding: 9px 14px;
-  border-radius: 16px;
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 14px;
+  border-radius: 20px;
   border: none;
-  outline: none;
   background: #1a1a1a;
   color: #fff;
   font-size: 14px;
-  transition: background 0.2s, box-shadow 0.2s;
+  outline: none;
+  transition: background 0.2s;
 }
-
 .search-input:focus {
   background: #222;
-  box-shadow: 0 0 4px #00aaff;
 }
 
-.search-input::placeholder {
-  color: #777;
-}
-
-/* Справа */
+/* Справа — кнопки + профиль */
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
-/* Кнопки (вход/регистрация/пост) */
 .link-btn {
   background: #1a1a1a;
-  color: #ddd;
   padding: 8px 14px;
   border-radius: 14px;
+  color: #ddd;
   font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
-
 .link-btn:hover {
   background: #2a2a2a;
   color: #fff;
 }
 
-/* Аватар */
 .topbar-avatar {
-  width: 420px;
-  height: 420px;
+  width: 55px;              /* увеличенный размер */
+  height: 55px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #333;
+  object-fit: cover;        /* чтобы лицо не обрезалось странно */
+  border: 2px solid #ddd;   /* тонкая рамка для видимости */
+  background: #fff;
   cursor: pointer;
-  transition: border 0.2s;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .topbar-avatar:hover {
-  border: 2px solid #00aaff;
+  transform: scale(1.08);
+  border-color: #000000;
 }

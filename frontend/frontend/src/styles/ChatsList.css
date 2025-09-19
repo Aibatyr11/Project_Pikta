@@ -1,0 +1,68 @@
+.chats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: #dcd9d9; /* светло-серый фон под список */
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  max-height: calc(100vh - 120px); /* ограничиваем высоту */
+  overflow-y: auto; /* скролл если чатов много */
+}
+
+/* Один чат */
+.chat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.chat-item:hover {
+  background: #eaeaea;
+  transform: translateX(3px);
+}
+
+/* Аватар */
+.chat-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #bbb;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+/* Блок с текстом */
+.chat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-info b {
+  font-size: 15px;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+.chat-last-message {
+  font-size: 13px;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* длинные сообщения обрезаются */
+  margin-bottom: 3px;
+}
+
+.chat-info small {
+  font-size: 11px;
+  color: #777;
+  align-self: flex-end;
+}

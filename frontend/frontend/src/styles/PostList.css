@@ -1,0 +1,133 @@
+/* PostList.css */
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 960px;
+  width: 800px;
+  margin: 0 auto;
+  transform: translateX(-8%);
+}
+
+.post {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px) saturate(160%);
+  border-radius: 20px;
+  padding: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.post:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.post-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.post-user {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #373535;
+  transition: color 0.2s;
+}
+
+.post-user:hover {
+  color: #4aa8ff;
+}
+
+.post-time {
+  font-size: 13px;
+  color: #474040;
+  margin-left: auto;
+}
+
+.post-content {
+  margin: 16px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #eee;
+}
+
+.post-content strong {
+  color: #4aa8ff;
+}
+
+.post-image img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 10px;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.post-actions button {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  color: #636161;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.post-actions button:hover {
+  color: #ff4d6d;
+  transform: scale(1.15);
+}
+
+.post-comments {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-preview {
+  font-size: 14px;
+  color: #383434;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.view-comments-btn {
+  align-self: flex-start;
+  margin-top: 6px;
+  background: rgba(74, 168, 255, 0.15);
+  border: 1px solid rgba(74, 168, 255, 0.3);
+  color: #4aa8ff;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.view-comments-btn:hover {
+  background: rgba(74, 168, 255, 0.25);
+  transform: translateY(-2px);
+}
