@@ -2,7 +2,8 @@ from django.urls import path, include
 from .views import (
     UserList, RegisterView, login_view, UserProfileView, FollowView,
     PostViewSet, current_user, is_following, privacy_policy_view, current_user_view,
-    like_post, unlike_post, liked_posts, update_profile, delete_profile, CustomTokenObtainPairView
+    like_post, unlike_post, liked_posts, update_profile, delete_profile, CustomTokenObtainPairView,
+    CommentListCreateView, CommentDetailView, search_users
 )
 from rest_framework.routers import DefaultRouter
 
@@ -34,4 +35,8 @@ urlpatterns = [
     # path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("posts/<int:post_id>/comments/", CommentListCreateView.as_view(), name="comment-list-create"),
+    path("comments/<int:pk>/", CommentDetailView.as_view(), name="comment-detail"),
+    path("api/search_users/", search_users, name="search-users"),
+
 ]

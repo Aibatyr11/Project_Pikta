@@ -51,3 +51,15 @@ class FollowSerializer(serializers.ModelSerializer):
         read_only_fields = ['follower', 'created_at']
 
 
+
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "user", "content", "created_at"]
+
+    def get_user(self, obj):
+        return {"id": obj.user.id, "username": obj.user.username} if obj.user else None

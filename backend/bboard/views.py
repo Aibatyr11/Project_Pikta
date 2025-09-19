@@ -21,7 +21,14 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework import generics, permissions
+from .models import Comment
+from .serializers import CommentSerializer
+from rest_framework import generics, permissions
+from rest_framework.exceptions import NotFound
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
+from rest_framework.decorators import action
 class UserList(APIView):
     def get(self, request):
         users = User.objects.all()
@@ -85,6 +92,22 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @action(detail=True, methods=["get", "post"], url_path="comments")
+    def comments(self, request, pk=None):
+        """Комментарии к конкретному посту"""
+        post = self.get_object()
+
+        if request.method == "GET":
+            comments = post.comments.all().order_by("created_at")
+            serializer = CommentSerializer(comments, many=True)
+            return Response(serializer.data)
+
+        elif request.method == "POST":
+            serializer = CommentSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=request.user, post=post)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -240,3 +263,60 @@ def delete_profile(request):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
+
+
+
+
+class CommentListCreateView(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        post_id = self.kwargs.get("post_id")
+        try:
+            post = Post.objects.get(pk=post_id)
+        except Post.DoesNotExist:
+            raise NotFound("Post not found")
+        return Comment.objects.filter(post=post).order_by("created_at")
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get("post_id")
+        try:
+            post = Post.objects.get(pk=post_id)
+        except Post.DoesNotExist:
+            raise NotFound("Post not found")
+        serializer.save(post=post, user=self.request.user if self.request.user.is_authenticated else None)
+
+
+class CommentDetailView(generics.RetrieveDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+
+
+#Search
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from django.db.models import Q
+from .serializers import UserSerializer
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def search_users(request):
+    query = request.GET.get("q", "").strip()
+    if not query:
+        return Response([], status=200)
+
+    users = User.objects.filter(
+        Q(username__icontains=query) | Q(email__icontains=query)
+    )[:20]  # ограничим до 20 результатов
+
+    serializer = UserSerializer(users, many=True, context={"request": request})
+    return Response(serializer.data)
+
+
+
+
+
