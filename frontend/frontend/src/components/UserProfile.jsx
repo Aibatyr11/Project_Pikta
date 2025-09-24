@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import "../styles/UserProfile.css";
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
-import PostDetailModal from "../components/PostDetailModal"; // ✅ модалка
+import PostDetailModal from "../components/PostDetailModal"; // ✅ модалка поста
+import FollowersModal from "../components/FollowersModal";   // ✅ модалка подписчиков/подписок
 
 function UserProfile() {
   const { username } = useParams();
@@ -13,7 +14,9 @@ function UserProfile() {
   const [likedPosts, setLikedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("posts");
   const [isFollowing, setIsFollowing] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null); // ✅ для модалки
+  const [selectedPostId, setSelectedPostId] = useState(null); // ✅ для модалки поста
+  const [showModal, setShowModal] = useState(false);          // ✅ для модалки подписчиков/подписок
+  const [modalType, setModalType] = useState(null);           // ✅ followers | following
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
   useEffect(() => {
@@ -89,11 +92,23 @@ function UserProfile() {
               <strong>{posts.length}</strong>
               <span>Посты</span>
             </div>
-            <div>
+            <div
+              onClick={() => {
+                setModalType("followers");
+                setShowModal(true);
+              }}
+              style={{ cursor: "pointer" }}
+            >
               <strong>{user.followers_count}</strong>
               <span>Подписчики</span>
             </div>
-            <div>
+            <div
+              onClick={() => {
+                setModalType("following");
+                setShowModal(true);
+              }}
+              style={{ cursor: "pointer" }}
+            >
               <strong>{user.following_count}</strong>
               <span>Подписки</span>
             </div>
@@ -110,6 +125,13 @@ function UserProfile() {
                   Подписаться
                 </button>
               )}
+
+                <button
+                  onClick={() => (window.location.href = `/chats?with=${user.username}`)}
+                  className="btn secondary"
+                  >
+                  Написать сообщение
+                </button>
             </div>
           )}
 
@@ -157,7 +179,7 @@ function UserProfile() {
               }
               alt="post"
               className="post-thumb"
-              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки
+              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки поста
             />
           ))}
 
@@ -172,7 +194,7 @@ function UserProfile() {
               }
               alt="liked"
               className="post-thumb"
-              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки
+              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки поста
             />
           ))}
       </div>
@@ -182,6 +204,14 @@ function UserProfile() {
         postId={selectedPostId}
         isOpen={!!selectedPostId}
         onClose={() => setSelectedPostId(null)}
+      />
+
+      {/* Модалка подписчиков/подписок */}
+      <FollowersModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        username={user.username}
+        type={modalType}
       />
     </div>
   );

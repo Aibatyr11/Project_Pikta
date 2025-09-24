@@ -1,105 +1,111 @@
-/* PostList.css */
-
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  max-width: 960px;
-  width: 800px;
+  gap: 32px;
+  max-width: 860px;
   margin: 0 auto;
-  transform: translateX(-8%);
+  transform: translateX(-6%);
 }
 
+/* Карточка поста */
 .post {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px) saturate(160%);
+  background: #ffffff;
   border-radius: 20px;
-  padding: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
-  transition: transform 0.25s ease, background 0.25s ease;
+  padding: 22px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .post:hover {
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
+/* Шапка */
 .post-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
 .post-avatar {
-  width: 72px;
-  height: 72px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .post-user {
   font-weight: 600;
-  font-size: 1.1rem;
-  color: #373535;
+  font-size: 1rem;
+  color: #222;
   transition: color 0.2s;
 }
 
 .post-user:hover {
-  color: #4aa8ff;
+  color: #16c0a9;
 }
 
 .post-time {
   font-size: 13px;
-  color: #474040;
+  color: #8a8a8a;
   margin-left: auto;
 }
 
+/* Контент */
 .post-content {
-  margin: 16px 0;
-  font-size: 17px;
+  margin: 14px 0;
+  font-size: 15px;
   line-height: 1.6;
-  color: #eee;
+  color: #444;
 }
 
 .post-content strong {
-  color: #4aa8ff;
+  color: #16c0a9;
 }
 
+/* Картинка */
 .post-image img {
   width: 100%;
-  max-height: 520px;
+  max-height: 480px;
   object-fit: cover;
   border-radius: 14px;
   margin-top: 10px;
 }
 
+/* Лайки и действия */
 .post-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 .post-actions button {
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  color: #636161;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  font-size: 15px;
+  color: #444;
   cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: all 0.25s ease;
 }
 
 .post-actions button:hover {
+  background: #ffe5ea;
+  border-color: #ff4d6d;
   color: #ff4d6d;
-  transform: scale(1.15);
+  transform: translateY(-2px);
 }
 
+/* Комментарии превью */
 .post-comments {
-  margin-top: 18px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -107,27 +113,28 @@
 
 .comment-preview {
   font-size: 14px;
-  color: #383434;
-  background: rgba(255, 255, 255, 0.05);
+  color: #333;
+  background: #f7f7f7;
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e0e0e0;
 }
 
+/* Кнопка "Посмотреть все" */
 .view-comments-btn {
   align-self: flex-start;
   margin-top: 6px;
-  background: rgba(74, 168, 255, 0.15);
-  border: 1px solid rgba(74, 168, 255, 0.3);
-  color: #4aa8ff;
+  background: #e6f8f6;
+  border: 1px solid #b9ece6;
+  color: #0ea89a;
   font-size: 14px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 .view-comments-btn:hover {
-  background: rgba(74, 168, 255, 0.25);
+  background: #d2f6f0;
   transform: translateY(-2px);
 }

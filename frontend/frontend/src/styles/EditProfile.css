@@ -1,5 +1,4 @@
-/* EditProfile.css */
-
+/* Контейнер */
 .center-container {
   display: flex;
   justify-content: center;
@@ -8,19 +7,24 @@
   text-align: center;
 }
 
+/* Форма */
 .edit-form {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 32px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 34px;
   width: 100%;
   max-width: 420px;
-
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(7, 7, 7, 0.2);
-  backdrop-filter: blur(25px) saturate(150%);
-  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5f2f1;
+  animation: fadeIn 0.35s ease-in-out;
+  transition: transform 0.25s ease;
 }
 
+.edit-form:hover {
+  transform: translateY(-4px);
+}
+
+/* Анимация появления */
 @keyframes fadeIn {
   from {
     transform: translateY(20px);
@@ -32,75 +36,86 @@
   }
 }
 
+/* Заголовок */
 .edit-form h2 {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-size: 22px;
   font-weight: 600;
-  color: #000000;
+  color: #0e3e3c;
 }
 
+/* Лейблы */
 .edit-form label {
   font-size: 14px;
-  color: #000000;
+  color: #234;
   font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+  text-align: left;
 }
 
+/* Поля ввода */
 .edit-form input,
 .edit-form textarea {
   width: 100%;
-  margin-top: 6px;
   margin-bottom: 16px;
-  padding: 10px 14px;
-
-  border-radius: 12px;
-  border: 1px solid rgba(26, 26, 26, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  color: #000000;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #ccefea;
+  background: #f9fefe;
+  color: #222;
   outline: none;
-  transition: border 0.2s, background 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   font-size: 14px;
 }
 
 .edit-form input:focus,
 .edit-form textarea:focus {
-  border: 1px solid rgba(0, 150, 255, 0.8);
-  background: rgba(255, 255, 255, 0.15);
+  border-color: #0ea89a;
+  box-shadow: 0 0 0 3px rgba(14, 168, 154, 0.15);
+  background: #ffffff;
 }
 
+/* Текстовое поле */
 .edit-form textarea {
   resize: none;
-  min-height: 80px;
+  min-height: 90px;
 }
 
+/* Кнопки */
 .edit-form button {
   width: 100%;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
   font-size: 15px;
   font-weight: 500;
-  transition: 0.25s;
+  transition: all 0.25s ease;
 }
 
+/* Сохранить */
 .edit-form button[type="submit"] {
   margin-top: 10px;
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  background: #0ea89a;
   color: #fff;
+  box-shadow: 0 4px 12px rgba(14, 168, 154, 0.3);
 }
 
 .edit-form button[type="submit"]:hover {
-  background: linear-gradient(135deg, #5aa2f0, #3b82f6);
+  background: #0b9085;
   transform: translateY(-2px);
 }
 
+/* Отмена / Удалить */
 .edit-form button[type="button"] {
   margin-top: 12px;
-  background: rgba(255, 50, 50, 0.8);
+  background: rgba(255, 77, 101, 0.9);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 77, 101, 0.25);
 }
 
 .edit-form button[type="button"]:hover {
-  background: rgba(255, 80, 80, 0.95);
+  background: rgba(227, 16, 16, 0.95);
   transform: translateY(-2px);
 }

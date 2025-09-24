@@ -1,53 +1,55 @@
 .auth-container {
-  width: 380px; /* немного шире */
+  width: 380px;
   margin: 80px auto;
   background: #ffffff;
-  padding: 36px;
-  border-radius: 18px;
-  border: 1px solid #e5e5e5;
+  padding: 40px 36px;
+  border-radius: 20px;
+  border: 1px solid #f0f0f0;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-container:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
 }
 
 .auth-container h2 {
-  margin-bottom: 24px;
-  color: #111;
-  font-size: 24px;
-  font-weight: 600;
+  margin-bottom: 28px;
+  color: #111827;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .auth-form input {
-  padding: 14px;
+  padding: 14px 16px;
   border: 1px solid #ddd;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 15px;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   background: #fafafa;
 }
 
 .auth-form input:focus {
   border-color: #0077ff;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+  box-shadow: 0 0 0 4px rgba(0, 119, 255, 0.1);
 }
 
 .auth-form button {
   padding: 14px;
   border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #f6f7f7, #000000);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #47f59e, #00d89e);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -56,22 +58,23 @@
 }
 
 .auth-form button:hover {
-  background: linear-gradient(135deg, #434445, #d8d8d8);
+  background: linear-gradient(135deg, #00d8b0, #cfdcdd);
   transform: translateY(-1px);
 }
 
 .auth-form button:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .auth-link {
-  margin-top: 18px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .auth-link a {
-  color: #6f7173;
+  color: #0077ff;
   text-decoration: none;
-  font-size: 14px;
   font-weight: 500;
 }
 

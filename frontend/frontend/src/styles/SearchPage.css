@@ -1,13 +1,21 @@
-/* SearchPage.css */
+:root {
+  --teal-700: #0ea89a;
+  --teal-500: #16c0a9;
+  --bg-soft: #e9fbfb;
+  --card-radius: 20px;
+  --muted: #6b7280;
+  --white: #ffffff;
+}
 
+/* Search Page */
 .search-page {
   max-width: 600px;
   margin: 40px auto;
   padding: 24px;
-  border-radius: 20px;
+  border-radius: var(--card-radius);
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.723); /* стеклянный эффект */
+  background: rgba(255, 255, 255, 0.72); /* стеклянный эффект */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(30px) saturate(150%);
@@ -30,9 +38,10 @@
   margin-bottom: 20px;
   font-size: 22px;
   font-weight: 600;
-  color: #010101;
+  color: #062125;
 }
 
+/* Форма поиска */
 .search-form {
   display: flex;
   gap: 10px;
@@ -53,17 +62,17 @@
 }
 
 .search-form input::placeholder {
-  color: #000000;
+  color: #333;
 }
 
 .search-form input:focus {
-  border: 1px solid rgba(0, 150, 255, 0.8);
+  border: 1px solid var(--teal-500);
   background: rgba(255, 255, 255, 0.15);
 }
 
 .search-form button {
   padding: 10px 18px;
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -73,10 +82,11 @@
 }
 
 .search-form button:hover {
-  background: linear-gradient(135deg, #5aa2f0, #3b82f6);
+  background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
   transform: translateY(-2px);
 }
 
+/* Результаты */
 .search-results {
   list-style: none;
   padding: 0;
@@ -105,23 +115,24 @@
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: #000000;
+  color: #062125;
   font-weight: 500;
 }
 
+/* Аватарка */
 .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(0, 150, 255, 0.8);
+  border: 2px solid var(--teal-500);
 }
 
 .avatar.empty {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 150, 255, 0.2);
+  background: rgba(14, 168, 154, 0.2);
   color: #000000;
   font-weight: bold;
 }

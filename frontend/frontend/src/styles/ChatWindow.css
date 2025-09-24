@@ -1,67 +1,113 @@
+/* Окно чата */
 .chat-window {
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  width: 820px;
+  border: 1px solid #e5f2f1;
+  border-radius: 20px;
   overflow: hidden;
-  background: #fff;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
+/* Шапка */
 .chat-header {
-  padding: 12px;
-  background: #f5f5f5;
-  font-weight: bold;
-  border-bottom: 1px solid #ddd;
+  padding: 14px 18px;
+  background: #f5fcfc;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid #e5f2f1;
+  color: #0e3e3c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
+/* Сообщения */
 .chat-messages {
   flex: 1;
-  padding: 10px;
+  padding: 14px;
   overflow-y: auto;
-  background: #fafafa;
+  background: url("../assets/bg/bg_chatwindow3.jpg") center no-repeat;
+  background-size: auto 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
+/* Пузырьки сообщений */
 .message-bubble {
   max-width: 70%;
-  padding: 8px 12px;
-  border-radius: 16px;
+  padding: 10px 14px;
+  border-radius: 18px;
   word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
 }
 
+.message-bubble:hover {
+  transform: translateY(-2px);
+}
+
+/* Сообщение слева */
 .message-left {
   align-self: flex-start;
-  background: #e4e6eb;
+  background: #e8fdfa;
+  border: 1px solid #ccefea;
+  color: #234;
+  border-top-left-radius: 6px;
 }
 
+/* Сообщение справа */
 .message-right {
   align-self: flex-end;
-  background: #0084ff;
+  background: #0ea89a;
   color: #fff;
+  border: 1px solid #0b9085;
+  border-top-right-radius: 6px;
 }
 
+/* Форма отправки */
 .chat-form {
   display: flex;
-  padding: 8px;
-  border-top: 1px solid #ddd;
+  padding: 10px 12px;
+  border-top: 1px solid #e5f2f1;
   gap: 8px;
+  background: #f9fefe;
 }
 
 .chat-form input {
   flex: 1;
-  padding: 8px;
+  padding: 10px 14px;
   border-radius: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #ccefea;
+  background: #ffffff;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.chat-form input:focus {
+  outline: none;
+  border-color: #0ea89a;
+  box-shadow: 0 0 0 3px rgba(14, 168, 154, 0.15);
+}
+
+/* Кнопка */
 .chat-form button {
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
   border-radius: 20px;
-  background: #0084ff;
-  color: white;
+  background: #0ea89a;
+  color: #fff;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.chat-form button:hover {
+  background: #0b9085;
+  transform: translateY(-2px);
 }

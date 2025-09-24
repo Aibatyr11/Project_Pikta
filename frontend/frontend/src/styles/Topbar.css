@@ -1,37 +1,37 @@
 .topbar {
-  position: fixed;          /* фиксируем */
-  top: 0;                   /* прижимаем к верху */
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100%;              /* растягиваем на всю ширину */
-  z-index: 1000;            /* чтобы был поверх контента */
-  
+  width: 100%;
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px 20px;
-  background: linear-gradient(225deg, #000000, #ffffff);
-  border-radius: 0 0 14px 14px;  /* скругление только снизу */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  color: #fff;
+  padding: 1px 25px;
+
+  background: #7cedc598;             /* чисто белый фон */
+  border-bottom: 1px solid #eeeeee;   /* тонкая линия снизу */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  color: #333;
 }
 
-/* Чтобы контент не залезал под топбар */
+/* Чтобы контент не заезжал под топбар */
 body {
   margin: 0;
-  padding-top: 75px; /* отступ под высоту топбара */
+  padding-top: 70px;
 }
-
 
 /* Логотип */
 .topbar-logo {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   text-decoration: none;
-  color: #ff7b00;
+  color: #00bfa6;                  /* бирюзовый акцент */
   transition: color 0.2s;
 }
 .topbar-logo:hover {
-  color: #006eff;
+  color: #008c77;
 }
 
 /* Центр — поиск */
@@ -43,21 +43,22 @@ body {
 }
 .search-input {
   width: 100%;
-  max-width: 360px;
+  max-width: 340px;
   padding: 8px 14px;
   border-radius: 20px;
-  border: none;
-  background: #1a1a1a;
-  color: #fff;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  color: #333;
   font-size: 14px;
   outline: none;
-  transition: background 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 .search-input:focus {
-  background: #222;
+  background: #fff;
+  border-color: #00bfa6;
 }
 
-/* Справа — кнопки + профиль */
+/* Справа */
 .topbar-right {
   display: flex;
   align-items: center;
@@ -65,32 +66,32 @@ body {
 }
 
 .link-btn {
-  background: #1a1a1a;
+  background: #00bfa6;          /* кнопки как акцент */
   padding: 8px 14px;
-  border-radius: 14px;
-  color: #ddd;
+  border-radius: 8px;
+  color: #fff;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 .link-btn:hover {
-  background: #2a2a2a;
-  color: #fff;
+  background: #009e8e;
+  transform: translateY(-2px);
 }
 
+/* Аватар */
 .topbar-avatar {
-  width: 55px;              /* увеличенный размер */
-  height: 55px;
+  width: 60px;              /* как в макете — меньше */
+  height: 60px;
   border-radius: 50%;
-  object-fit: cover;        /* чтобы лицо не обрезалось странно */
-  border: 2px solid #ddd;   /* тонкая рамка для видимости */
-  background: #fff;
+  object-fit: cover;
+  border: 2px solid #eee;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .topbar-avatar:hover {
-  transform: scale(1.08);
-  border-color: #000000;
+  transform: scale(1.05);
+  border-color: #00bfa6;
 }

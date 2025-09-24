@@ -97,7 +97,7 @@
 /* кнопка лайка */
 .likes button {
   border: none;
-  background: #ff4d6d;
+  background: #767676;
   color: white;
   cursor: pointer;
   font-size: 15px;
@@ -106,7 +106,7 @@
   transition: background 0.2s, transform 0.2s;
 }
 .likes button:hover {
-  background: #e63956;
+  background: #5c5b5b;
   transform: scale(1.05);
 }
 
@@ -132,13 +132,13 @@
   outline: none;
 }
 .comment-form input:focus {
-  border-color: #ff4d6d;
+  border-color: #444444;
 }
 .comment-form button {
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg, #ff4d6d, #ff7a8d);
+  background: linear-gradient(90deg, #464646, #636060);
   color: white;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;

@@ -1,76 +1,123 @@
-.sidebar {
-  width: 110px;
-  height: 100vh;
-  background: var(--bg-light, #fff);
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #e6e6e6;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-
-  /* Тень и закругления */
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+:root {
+  --teal-700: #0ea89b;
+  --teal-500: #16c0a9;
+  --bg-soft: #e9fbfb;
+  --card-radius: 20px;
+  --muted: #6b7280;
+  --white: #ffffff;
 }
 
-.main-content {
-  margin-left: 120px; /* отступ, чтобы контент не заходил под меню */
-  padding: 20px;
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  height: calc(100vh - 40px);
+  background-color: #0ea89b49;
+  color: var(--white);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  box-shadow: 0 8px 30px rgba(11, 58, 55, 0.12);
+  z-index: 1000;
 }
 
 .sidebar-logo {
   font-size: 20px;
-  font-weight: bold;
-  color: var(--text-dark, #222);
-  margin-bottom: 30px;
-  text-align: center;
-  letter-spacing: -0.5px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--white);
 }
 
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+/* Пункты меню */
 .nav-item {
   display: flex;
-  flex-direction: column; 
   align-items: center;
-  padding: 12px 6px;
+  gap: 12px;
+  padding: 10px 14px;
   border-radius: 12px;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
-  color: var(--text-dark, #444);
-  font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 14px;
   transition: all 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 
-.nav-icon {
-  width: 26px;
-  height: 26px;
-  margin-bottom: 5px;
-  opacity: 0.85;
-  transition: opacity 0.25s;
+/* Активный пункт соединяется с белым фоном */
+/* Активный пункт соединяется с белым фоном */
+.nav-item.active {
+  background: var(--white);
+  color: #062125;
+  transform: translateX(22px);
+  border-top-left-radius: 102px;
+  border-bottom-left-radius: 102px;
+  border-top-right-radius: 102px;
+  border-bottom-right-radius: 102px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Белая панель, выдвигающаяся на заднем плане */
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -22px; /* совпадает со сдвигом */
+  width: 200px; /* тянем белый фон до правого края */
+  height: 50px;
+  background: var(--white);
+  border-top-left-radius: 102px;
+  border-bottom-left-radius: 102px;
+  z-index: -1;
+}
+
+
+/* Иконка перекрашивается */
+.nav-item.active .nav-icon {
+  filter: brightness(0) saturate(100%) invert(44%) sepia(63%) saturate(404%)
+    hue-rotate(125deg) brightness(95%) contrast(91%);
+}
+
+.nav-item .nav-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.95;
+  transition: filter 0.2s;
 }
 
 .nav-item:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--primary, #111);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.nav-item:hover .nav-icon {
-  opacity: 1;
-}
-
-.nav-item.active {
-  background: var(--primary-light, #f0f0f0);
-  color: var(--primary, #000);
-  font-weight: 600;
-}
-
-.nav-item:last-child {
+/* Upgrade card */
+.upgrade-card {
   margin-top: auto;
+  background: rgba(255, 0, 0, 0.08);
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+}
+.upgrade-card .btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #ffd166;
+  color: #062125;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Контент справа */
+.main-with-sidebar {
+  margin-left: 260px;
+  margin-right: 20px;
+  padding: 28px;
+  background: linear-gradient(180deg, #f4fbfb, #f7fcfc);
+  min-height: 100vh;
 }

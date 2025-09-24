@@ -1,41 +1,46 @@
+/* Список чатов */
 .chats-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 15px;
-  background: #dcd9d9; /* светло-серый фон под список */
-  border-radius: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  max-height: calc(100vh - 120px); /* ограничиваем высоту */
-  overflow-y: auto; /* скролл если чатов много */
+  gap: 14px;
+  padding: 18px;
+  background: #f5fcfc; /* мягкий светло-бирюзовый фон */
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
 }
 
 /* Один чат */
 .chat-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #f5f5f5;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e5f2f1;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .chat-item:hover {
-  background: #eaeaea;
-  transform: translateX(3px);
+  background: #e9f9f7;
+  transform: translateX(4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 /* Аватар */
 .chat-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px; /* вместо круга — мягкий квадрат (squircle) */
   object-fit: cover;
-  border: 2px solid #bbb;
+  border: 2px solid #c7ebe7;
   background: #fff;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 /* Блок с текстом */
@@ -48,21 +53,27 @@
 
 .chat-info b {
   font-size: 15px;
-  color: #111;
+  color: #222;
+  font-weight: 600;
   margin-bottom: 4px;
+  transition: color 0.2s;
+}
+
+.chat-item:hover .chat-info b {
+  color: #0ea89a; /* подсветка имени */
 }
 
 .chat-last-message {
   font-size: 13px;
-  color: #444;
+  color: #555;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* длинные сообщения обрезаются */
+  text-overflow: ellipsis;
   margin-bottom: 3px;
 }
 
 .chat-info small {
   font-size: 11px;
-  color: #777;
+  color: #8fa3aa;
   align-self: flex-end;
 }

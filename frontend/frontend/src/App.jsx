@@ -67,6 +67,8 @@ function App() {
                   <Route path="/chat" element={<ChatPage />} />
                   <Route path="/notifications" element={<NotificationsBell />} />
                   <Route path="/search" element={<SearchPage />} />
+                  <Route path="/chats" element={<ChatPage />} />
+
 
                 </Routes>
               )}

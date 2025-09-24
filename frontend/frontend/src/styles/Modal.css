@@ -1,0 +1,111 @@
+/* styles/Modal.css */
+
+/* затемнение фона */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 20, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* сама модалка */
+.modal {
+  background: #1e1e1e;
+  border-radius: 16px;
+  padding: 24px;
+  width: 400px;
+  max-height: 70vh;
+  overflow-y: auto;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* заголовок */
+.modal h3 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+/* список пользователей */
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2a2a2a;
+  padding: 10px 14px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+
+.user-item:hover {
+  background: #333;
+}
+
+/* аватар */
+.user-item img,
+.avatar-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #bbb;
+}
+
+/* ник */
+.user-item span {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ddd;
+}
+
+/* кнопка закрыть */
+.modal .btn.secondary {
+  width: 100%;
+  background: #2d2d2d;
+  border: 1px solid #444;
+  color: #eee;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal .btn.secondary:hover {
+  background: #3a3a3a;
+}
+
+/* анимация появления */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

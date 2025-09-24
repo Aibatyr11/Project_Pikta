@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { authFetch } from "../utils/auth";
 import { useUser } from "../context/UserContext";
 import "../styles/ChatsList.css";
@@ -6,14 +7,24 @@ import "../styles/ChatsList.css";
 export default function ChatsList({ onSelectChat }) {
   const { user } = useUser();
   const [chats, setChats] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     if (user) {
       authFetch(`http://localhost:8000/api/chats/${user.username}/`)
         .then((res) => res.json())
-        .then((data) => setChats(data));
+        .then((data) => {
+          setChats(data);
+
+          // ✅ если в URL есть ?with=someone → сразу открыть чат
+          const params = new URLSearchParams(location.search);
+          const withUser = params.get("with");
+          if (withUser) {
+            onSelectChat(withUser);
+          }
+        });
     }
-  }, [user]);
+  }, [user, location.search]);
 
   const getAvatarUrl = (avatar) => {
     if (!avatar) return "/default-avatar.png";

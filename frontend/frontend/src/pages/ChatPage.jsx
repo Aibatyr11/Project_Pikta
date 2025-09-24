@@ -19,11 +19,11 @@ export default function ChatPage() {
         <ChatsList currentUser={user.username} onSelectChat={setSelectedUser} />
       </aside>
 
-      <div className="chat-window">
+      <div className="chat-window empty">
         {selectedUser ? (
           <ChatWindow currentUser={user.username} targetUser={selectedUser} />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="empty-message">
             Выберите чат
           </div>
         )}

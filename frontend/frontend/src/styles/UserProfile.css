@@ -1,9 +1,29 @@
+:root {
+  --teal-700: #0ea89a;
+  --teal-500: #16c0a9;
+  --bg-soft: #e9fbfb;
+  --card-radius: 20px;
+  --muted: #6b7280;
+  --white: #ffffff;
+}
+
+/* Общий фон */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(180deg, var(--teal-700), var(--teal-500), var(--bg-soft));
+  min-height: 100vh;
+}
+
 /* Profile Page */
 .profile-page {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
   color: #3e3c3c;
+  background: linear-gradient(180deg, #f4fbfb, #f7fcfc);
+  border-radius: var(--card-radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* Header */
@@ -95,17 +115,18 @@
 }
 
 .btn.primary {
-  background: linear-gradient(135deg, #000000, #545353);
+  background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
   color: #fff;
 }
 
 .btn.primary:hover {
-  background: linear-gradient(155deg, #ffffff, #030303);
+  background: linear-gradient(155deg, #ffffff, var(--teal-700));
+  color: #000;
 }
 
 .btn.secondary {
   background: #222;
-  color: #2c2b2b;
+  color: #f5f5f5;
   border: 1px solid #444;
 }
 
@@ -143,12 +164,12 @@
 }
 
 .tab-btn:hover {
-  background: #2a2a2a;
+  background: var(--teal-500);
   color: #fff;
 }
 
 .tab-btn.active {
-  background: #1f1f1f;
+  background: var(--teal-700);
   color: #fff;
 }
 

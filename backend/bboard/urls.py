@@ -3,7 +3,7 @@ from .views import (
     UserList, RegisterView, login_view, UserProfileView, FollowView,
     PostViewSet, current_user, is_following, privacy_policy_view, current_user_view,
     like_post, unlike_post, liked_posts, update_profile, delete_profile, CustomTokenObtainPairView,
-    CommentListCreateView, CommentDetailView, search_users
+    CommentListCreateView, CommentDetailView, search_users, followers_list, following_list
 )
 from rest_framework.routers import DefaultRouter
 
@@ -38,5 +38,8 @@ urlpatterns = [
     path("posts/<int:post_id>/comments/", CommentListCreateView.as_view(), name="comment-list-create"),
     path("comments/<int:pk>/", CommentDetailView.as_view(), name="comment-detail"),
     path("api/search_users/", search_users, name="search-users"),
+    path("api/followers/<str:username>/", followers_list, name="followers-list"),
+    path("api/following/<str:username>/", following_list, name="following-list"),
+
 
 ]

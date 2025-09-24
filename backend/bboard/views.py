@@ -317,6 +317,28 @@ def search_users(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def followers_list(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found"}, status=404)
+
+    followers = user.followers.all().select_related("follower")
+    data = [{"id": f.follower.id, "username": f.follower.username, "avatar": f.follower.avatar.url if f.follower.avatar else None} for f in followers]
+    return Response(data)
+
+
+@api_view(['GET'])
+def following_list(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found"}, status=404)
+
+    following = user.following.all().select_related("followed")
+    data = [{"id": f.followed.id, "username": f.followed.username, "avatar": f.followed.avatar.url if f.followed.avatar else None} for f in following]
+    return Response(data)
 
 
 
