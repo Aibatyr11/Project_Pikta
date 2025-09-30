@@ -1,26 +1,40 @@
 :root {
   --teal-700: #0ea89a;
   --teal-500: #16c0a9;
-  --bg-soft: #e9fbfb;
   --card-radius: 20px;
-  --muted: #6b7280;
+  --muted: #ddd;
   --white: #ffffff;
 }
 
+/* Общий фон */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center / cover;
+  position: relative;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+
+
 /* Search Page */
 .search-page {
+  position: relative;
+  z-index: 1;
   max-width: 600px;
-  margin: 40px auto;
-  padding: 24px;
+  margin: 60px auto;
+  padding: 28px;
   border-radius: var(--card-radius);
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.72); /* стеклянный эффект */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(30px) saturate(150%);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(22px) saturate(140%);
 
-  animation: fadeIn 0.25s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -36,42 +50,42 @@
 
 .search-page h2 {
   margin-bottom: 20px;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
-  color: #062125;
+  color: #fff;
 }
 
 /* Форма поиска */
 .search-form {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
   margin-bottom: 20px;
 }
 
 .search-form input {
   flex: 1;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   font-size: 16px;
   outline: none;
   transition: border 0.2s, background 0.2s;
 }
 
 .search-form input::placeholder {
-  color: #333;
+  color: #ccc;
 }
 
 .search-form input:focus {
   border: 1px solid var(--teal-500);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .search-form button {
-  padding: 10px 18px;
+  padding: 12px 20px;
   background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
   color: #fff;
   border: none;
@@ -97,16 +111,18 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px;
+  padding: 14px;
   margin-bottom: 12px;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   transition: background 0.25s, transform 0.25s;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 .search-user:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
@@ -115,7 +131,7 @@
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: #062125;
+  color: #fff;
   font-weight: 500;
 }
 
@@ -126,13 +142,14 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--teal-500);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .avatar.empty {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(14, 168, 154, 0.2);
-  color: #000000;
+  background: rgba(14, 168, 154, 0.25);
+  color: #fff;
   font-weight: bold;
 }

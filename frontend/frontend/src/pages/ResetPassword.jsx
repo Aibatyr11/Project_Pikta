@@ -1,48 +1,60 @@
 import React, { useState } from "react";
+import "../styles/ResetPassword.css"; // подключаем стили
 
 function ResetPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Фейковый сброс пароля
-    if (email.trim()) {
-      setMessage("📨 Пароль сброшен. Проверьте вашу почту.");
-      setEmail("");
-    } else {
+    if (!email.trim()) {
       setMessage("❌ Введите корректный email.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8000/api/password-reset/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      // пробуем прочитать JSON, но если пусто — не падаем
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (err) {
+        data = {};
+      }
+
+      if (res.ok) {
+        setMessage("📨 Письмо для сброса отправлено на вашу почту.");
+        setEmail("");
+      } else {
+        setMessage(data.error || "❌ Ошибка при сбросе пароля.");
+      }
+    } catch (err) {
+      setMessage("⚠️ Ошибка соединения с сервером.");
     }
   };
 
   return (
-    <div className="center-container" style={{ marginTop: "100px", textAlign: "center" }}>
-      <h2>Сброс пароля</h2>
-      <form onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
-        <input
-          type="email"
-          placeholder="Введите ваш email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ padding: "10px", width: "100%", borderRadius: "8px" }}
-        />
-        <br /><br />
-        <button
-          type="submit"
-          style={{
-            background: "#00aaff",
-            color: "white",
-            padding: "10px",
-            borderRadius: "10px",
-            width: "100%",
-          }}
-        >
-          Сбросить пароль
-        </button>
-        {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
-      </form>
+    <div className="reset-container">
+      <div className="reset-card">
+        <h2>Сброс пароля</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Введите ваш email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Сбросить пароль</button>
+          {message && <p className="reset-message">{message}</p>}
+        </form>
+      </div>
     </div>
   );
 }

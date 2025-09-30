@@ -23,11 +23,9 @@ def get_history(request, user1, user2):
 
 def user_chats(request, username):
     pipeline = [
-        {"$match": {"$or": [{"sender": username}, {"receiver": username}]}},
+        {"$match": {"$or": [{"sender": username}, {"receiver": username}] }},
         {"$project": {
-            "contact": {
-                "$cond": [{"$eq": ["$sender", username]}, "$receiver", "$sender"]
-            },
+            "contact": {"$cond": [{"$eq": ["$sender", username]}, "$receiver", "$sender"]},
             "content": 1,
             "timestamp": 1
         }},
@@ -46,7 +44,8 @@ def user_chats(request, username):
     for c in chats:
         try:
             u = User.objects.get(username=c["_id"])
-            avatar = u.profile.avatar.url if hasattr(u, "profile") and u.profile.avatar else None
+            # берём аватар прямо из User
+            avatar = u.avatar.url if u.avatar else None
         except User.DoesNotExist:
             avatar = None
 
@@ -58,6 +57,7 @@ def user_chats(request, username):
         })
 
     return JsonResponse(data, safe=False)
+
 
 
 from django.http import JsonResponse

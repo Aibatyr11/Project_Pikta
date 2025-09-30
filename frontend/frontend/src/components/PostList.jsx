@@ -102,18 +102,20 @@ function PostList() {
             </div>
           )}
 
+                    {/* Лайки */}
+          <div className="post-actions">
+            <button onClick={() => toggleLike(post.id, post.is_liked)}>
+              {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
+            </button>
+          </div>
+
           {/* Контент */}
           <div className="post-content">
             <p>{post.caption}</p>
             {post.location && <p><strong>{post.location}</strong></p>}
           </div>
 
-          {/* Лайки */}
-          <div className="post-actions">
-            <button onClick={() => toggleLike(post.id, post.is_liked)}>
-              {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
-            </button>
-          </div>
+
 
           {/* Превью комментариев */}
           <div className="post-comments">

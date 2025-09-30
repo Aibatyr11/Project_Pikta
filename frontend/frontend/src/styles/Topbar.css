@@ -10,8 +10,8 @@
   align-items: center;
   padding: 1px 25px;
 
-  background: #7cedc598;             /* чисто белый фон */
-  border-bottom: 1px solid #eeeeee;   /* тонкая линия снизу */
+  background: #b4f6df00;             /* чисто белый фон */
+  border-bottom: 1px solid #eeeeee00;   /* тонкая линия снизу */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   color: #333;
 }
@@ -47,15 +47,15 @@ body {
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid #ddd;
-  background: #fafafa;
+  background: #fafafa00;
   color: #333;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s, background 0.2s;
 }
 .search-input:focus {
-  background: #fff;
-  border-color: #00bfa6;
+  background: #ffffff00;
+  border-color: #00bfa600;
 }
 
 /* Справа */
@@ -66,7 +66,7 @@ body {
 }
 
 .link-btn {
-  background: #00bfa6;          /* кнопки как акцент */
+  background: #00bfa600;          /* кнопки как акцент */
   padding: 8px 14px;
   border-radius: 8px;
   color: #fff;
@@ -89,9 +89,24 @@ body {
   border: 2px solid #eee;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  color: #eee;
 }
 
 .topbar-avatar:hover {
   transform: scale(1.05);
   border-color: #00bfa6;
 }
+
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* отступ между именем и аватаркой */
+  text-decoration: none;
+  color: #eee;
+}
+
+.username {
+  font-weight: 500;
+}
+

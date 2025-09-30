@@ -15,6 +15,7 @@ export default function ChatsList({ onSelectChat }) {
         .then((res) => res.json())
         .then((data) => {
           setChats(data);
+          console.log(data);
 
           // ✅ если в URL есть ?with=someone → сразу открыть чат
           const params = new URLSearchParams(location.search);
@@ -23,6 +24,7 @@ export default function ChatsList({ onSelectChat }) {
             onSelectChat(withUser);
           }
         });
+        
     }
   }, [user, location.search]);
 

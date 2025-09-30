@@ -1,17 +1,17 @@
 /* PostForm.css */
 
 .post-form {
-  width: 600px; /* на ~30% больше */
+  width: 600px; 
   margin: 80px auto;
-  margin-left: 30%; /* сдвиг левее */
+  margin-left: 30%;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(186, 183, 183, 0.321);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   gap: 18px;
   color: #ffffff;
-
+  margin-top: 1px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(7, 7, 7, 0.2);
   backdrop-filter: blur(25px) saturate(150%);
@@ -34,7 +34,7 @@
   margin-bottom: 14px;
   text-align: center;
   font-weight: 700;
-  color: #ffffff;
+  color: #f7f5f5;
 }
 
 .post-input,

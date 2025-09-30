@@ -2,44 +2,62 @@
   --card-radius: 18px;
   --container-radius: 22px;
   --muted: #6b7280;
-  --heading: #0f172a;
-  --bg-surface: #f8ffff;
+  --heading: #ffffff; /* на фото лучше белый текст */
+  --bg-surface: rgba(255, 255, 255, 0.1);
 
-  --shadow-soft: 0 6px 18px rgba(11,58,55,0.06);
-  --shadow-card: 0 4px 14px rgba(11,58,55,0.04);
-  --shadow-item: 0 2px 10px rgba(11,58,55,0.03);
+  --shadow-soft: 0 6px 18px rgba(0,0,0,0.25);
+  --shadow-card: 0 4px 14px rgba(0,0,0,0.2);
+  --shadow-item: 0 2px 10px rgba(0,0,0,0.15);
 
   --teal-700: #0ea89a;
   --teal-500: #16c0a9;
-  --gray-border: #e5e7eb;
+  --gray-border: rgba(255,255,255,0.2);
 }
 
 /* Общий фон */
 .app {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(180deg, #eafbf9, #f7fcfc);
+  width: 100%;
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center / cover;
+  position: relative;
   font-family: 'Poppins', 'Inter', sans-serif;
   color: var(--heading);
+  overflow-x: hidden;
+}
+
+/* затемняющий слой для читаемости текста */
+.app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 0;
 }
 
 /* Контентные карточки */
 .content-card {
-  background: #ffffff;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: var(--container-radius);
   padding: 28px;
   box-shadow: var(--shadow-soft);
   margin: 20px;
+  backdrop-filter: blur(14px) saturate(140%);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  color: #fff;
 }
 
 .content-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(11,58,55,0.08);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5);
 }
 
 /* Шапка */
 .header {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -60,11 +78,17 @@
   font-size: 15px;
   outline: none;
   transition: border 0.2s, background 0.2s;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.header .search input::placeholder {
+  color: #ddd;
 }
 
 .header .search input:focus {
   border: 1px solid var(--teal-500);
-  background: #f0fdfa;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .header .profile {
@@ -80,6 +104,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--teal-500);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 /* Блоки графиков */
@@ -88,15 +113,19 @@
   gap: 20px;
   align-items: flex-start;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 .chart-card {
-  background: linear-gradient(180deg, #fff, #fbffff);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   padding: 18px;
   box-shadow: var(--shadow-card);
   flex: 1;
   min-width: 300px;
+  backdrop-filter: blur(12px) saturate(130%);
+  color: #fff;
 }
 
 /* Список "Arriving today" */
@@ -110,25 +139,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 12px 14px;
   box-shadow: var(--shadow-item);
+  color: #fff;
   transition: background 0.25s;
+  backdrop-filter: blur(10px);
 }
 
 .item:hover {
-  background: #f9fdfd;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Тексты */
 h1, h2, h3 {
-  color: var(--heading);
+  color: #fff;
   margin: 0;
 }
 
 p, .muted {
-  color: var(--muted);
+  color: #ddd;
   margin: 0;
 }
 
@@ -137,6 +168,8 @@ p, .muted {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Кнопки */
@@ -161,13 +194,13 @@ p, .muted {
 }
 
 .btn.secondary {
-  background: #f9fafb;
+  background: rgba(255,255,255,0.15);
   border: 1px solid var(--gray-border);
-  color: var(--heading);
+  color: #fff;
 }
 
 .btn.secondary:hover {
-  background: #f3f4f6;
+  background: rgba(255,255,255,0.25);
 }
 
 /* Адаптивность */

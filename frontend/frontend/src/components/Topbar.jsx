@@ -25,7 +25,7 @@ export default function Topbar() {
       {/* Лого слева */}
       <div className="topbar-left">
         <Link to="/" className="topbar-logo">
-          Pikta
+          
         </Link>
       </div>
 
@@ -52,13 +52,15 @@ export default function Topbar() {
         ) : (
           <>
            
-            <NavLink to={`/profile/${currentUser.username}`}>
+            <NavLink to={`/profile/${currentUser.username}`} className="profile-link">
+              <p className="username">{currentUser.username}</p>
               <img
                 src={getAvatarUrl(currentUser.avatar)}
                 alt="avatar"
                 className="topbar-avatar"
               />
             </NavLink>
+
           </>
         )}
       </div>

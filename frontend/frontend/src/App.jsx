@@ -15,6 +15,7 @@ import Topbar from "./components/Topbar";
 import NotificationsBell from "./components/NotificationsBell";
 import ChatPage from "./pages/ChatPage";
 import SearchPage from "./pages/SearchPage";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
@@ -68,7 +69,7 @@ function App() {
                   <Route path="/notifications" element={<NotificationsBell />} />
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/chats" element={<ChatPage />} />
-
+                  <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirm />}/>
 
                 </Routes>
               )}

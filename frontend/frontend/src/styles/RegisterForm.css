@@ -1,27 +1,48 @@
-/* Центрируем форму */
+/* Контейнер с фоном */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 60px);
-  background: #f5f5f5;
+
+  /* 👇 фото-фон */
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center fixed;
+  background-size: cover;
+
+  position: relative;
+  z-index: 0;
   padding: 20px;
+}
+
+/* Затемнение для читаемости */
+.register-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35); /* легкая тень поверх фона */
+  backdrop-filter: blur(2px);
+  z-index: 0;
 }
 
 /* Карточка формы */
 .register-card {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 32px 28px;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  background: rgba(254, 254, 254, 0.326);
+  padding: 60px 40px;
+  border-radius: 50px;              /* убираем скругления */
+  width: 100%;                   /* растягиваем на всю ширину */
+  max-width: 420px;            /* снимаем ограничение */
+  min-height: 50vh;             /* на всю высоту экрана */
   text-align: center;
-
-  border: 1px solid rgba(7, 7, 7, 0.2);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(25px) saturate(150%);
-  animation: fadeIn 0.3s ease-in-out;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: blur(15px) saturate(150%);
 }
+
 
 @keyframes fadeIn {
   from {
@@ -39,7 +60,7 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 22px;
-  color: #000;
+  color: #fff; /* белый, чтобы читался на фоне */
 }
 
 /* Форма */
@@ -54,15 +75,15 @@
   padding: 14px 16px;
   border-radius: 12px;
   border: 1px solid rgba(26, 26, 26, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  color: #000;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   font-size: 15px;
   outline: none;
   transition: border 0.2s, background 0.25s, transform 0.2s;
 }
 
 .register-form input:focus {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(63, 67, 69, 0.8);
   transform: scale(1.02);
 }
@@ -70,7 +91,7 @@
 /* Кнопка */
 .register-btn {
   padding: 12px;
-  background: linear-gradient(135deg, #03f6a5, #eff0f1);
+  background: linear-gradient(135deg, #84fed5, #00ffc8);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -81,7 +102,7 @@
 }
 
 .register-btn:hover {
-  background: linear-gradient(135deg, #1bfea7, #03f6a5);
+  background: linear-gradient(135deg, #47f5b2, #03f6a5);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
@@ -90,5 +111,5 @@
 .register-message {
   margin-top: 18px;
   font-size: 14px;
-  color: #222;
+  color: #eee;
 }

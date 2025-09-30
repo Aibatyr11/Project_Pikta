@@ -21,7 +21,7 @@ body {
   margin: 0 auto;
   padding: 2rem 1rem;
   color: #3e3c3c;
-  background: linear-gradient(180deg, #f4fbfb, #f7fcfc);
+  background: linear-gradient(180deg, #f4fbfb55, #f7fcfcd2);
   border-radius: var(--card-radius);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }

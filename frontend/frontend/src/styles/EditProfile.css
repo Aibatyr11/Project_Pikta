@@ -9,7 +9,7 @@
 
 /* Форма */
 .edit-form {
-  background: #ffffff;
+  background: #ffffff86;
   border-radius: 22px;
   padding: 34px;
   width: 100%;
@@ -62,7 +62,7 @@
   padding: 12px 14px;
   border-radius: 14px;
   border: 1px solid #ccefea;
-  background: #f9fefe;
+  background: #f9fefe8e;
   color: #222;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;

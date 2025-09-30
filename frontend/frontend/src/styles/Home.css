@@ -1,22 +1,44 @@
 :root {
   --teal-700: #0ea89a;
   --teal-500: #16c0a9;
-  --bg-soft: #f9fafb;
   --card-radius: 16px;
-  --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  --text-dark: #111;
-  --text-muted: #666;
+  --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --text-dark: #fff;
+  --text-muted: #bbb;
 }
 
-/* Основная раскладка */
+/* Контейнер страницы */
 .home-layout {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   gap: 24px;
   padding: 28px;
-  background: var(--bg-soft);
   min-height: 100vh;
   font-family: "Inter", sans-serif;
+
+  /* Фон */
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  z-index: 0;
+}
+
+/* Затемнение поверх фона */
+.home-layout::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 0;
+}
+
+.home-layout > * {
+  position: relative;
+  z-index: 1; /* карточки поверх затемнения */
 }
 
 /* Левая колонка (плейсхолдер) */
@@ -32,10 +54,12 @@
 }
 
 .feed {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: var(--card-radius);
   padding: 24px;
   box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  color: var(--text-dark);
 }
 
 /* Правая колонка */
@@ -47,17 +71,19 @@
 
 /* Suggestions */
 .suggestions {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.552);
   border-radius: var(--card-radius);
   padding: 18px;
   box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  color: var(--text-dark);
 }
 
 .suggestions h3 {
   margin-bottom: 14px;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #fff;
 }
 
 .suggestion {
@@ -65,7 +91,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .suggestion:last-child {
@@ -75,7 +101,7 @@
 .suggestion strong {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-dark);
+  color: #fff;
 }
 
 .suggestion button {
@@ -97,17 +123,19 @@
 
 /* Explore */
 .explore {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.381);
   border-radius: var(--card-radius);
   padding: 18px;
   box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  color: var(--text-dark);
 }
 
 .explore h3 {
   margin-bottom: 14px;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #fff;
 }
 
 .explore button {
@@ -115,14 +143,14 @@
   padding: 6px 14px;
   border: none;
   border-radius: 20px;
-  background: #f4f5f7;
-  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   cursor: pointer;
   font-size: 13px;
   transition: background 0.25s, transform 0.2s;
 }
 
 .explore button:hover {
-  background: #e2e8f0;
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
 }
