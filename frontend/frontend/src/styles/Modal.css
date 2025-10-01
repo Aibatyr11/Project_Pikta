@@ -16,14 +16,14 @@
 
 /* сама модалка */
 .modal {
-  background: #1e1e1e;
+  background: #01443b60;
   border-radius: 16px;
   padding: 24px;
   width: 400px;
   max-height: 70vh;
   overflow-y: auto;
   color: #fff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(3, 212, 245, 0.218);
   animation: fadeIn 0.2s ease-in-out;
 }
 
@@ -32,7 +32,7 @@
   margin-bottom: 16px;
   font-size: 20px;
   font-weight: 600;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #00c8ff53;
   padding-bottom: 8px;
   text-align: center;
 }
@@ -51,14 +51,14 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #2a2a2a;
+  background: #00a2bf38;
   padding: 10px 14px;
   border-radius: 12px;
   transition: background 0.2s;
 }
 
 .user-item:hover {
-  background: #333;
+  background: #014e6a63;
 }
 
 /* аватар */
@@ -67,7 +67,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #444;
+  background: #02f9bb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,14 +79,14 @@
 .user-item span {
   font-size: 15px;
   font-weight: 500;
-  color: #ddd;
+  color: #fbfbfb;
 }
 
 /* кнопка закрыть */
 .modal .btn.secondary {
   width: 100%;
-  background: #2d2d2d;
-  border: 1px solid #444;
+  background: #02f1f57e;
+  border: 1px solid #02d6f6;
   color: #eee;
   padding: 10px;
   border-radius: 10px;
@@ -95,7 +95,7 @@
 }
 
 .modal .btn.secondary:hover {
-  background: #3a3a3a;
+  background: #02f1f5b9;
 }
 
 /* анимация появления */

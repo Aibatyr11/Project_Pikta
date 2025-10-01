@@ -4,21 +4,21 @@ from asgiref.sync import sync_to_async
 from .mongo import messages_collection
 from datetime import datetime
 
+# ⚡ импортируем уведомления
+from notify.utils import create_notification
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # пример URL: ws://localhost:8000/ws/chat/asd_qwe/
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
-        # подключаемся к группе
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
         await self.accept()
 
-        # ⚡ Загружаем последние 20 сообщений при подключении
         users = self.room_name.split("_")
         history = await sync_to_async(
             lambda: list(messages_collection.find({
@@ -28,7 +28,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }).sort("timestamp", -1).limit(20))
         )()
 
-        # отправляем истории клиенту в порядке «старые → новые»
         for msg in reversed(history):
             await self.send(text_data=json.dumps({
                 "message": msg["content"],
@@ -48,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         sender = data["sender"]
         receiver = data["receiver"]
 
-        # сохраняем в Mongo
+        # сохраняем сообщение в Mongo
         await sync_to_async(messages_collection.insert_one)({
             "sender": sender,
             "receiver": receiver,
@@ -56,7 +55,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "timestamp": datetime.utcnow()
         })
 
-        # рассылаем только новое сообщение
+        # ⚡ создаём уведомление получателю
+        await sync_to_async(create_notification)(
+            target=receiver,
+            actor=sender,
+            verb="message",
+            description=f"{sender} отправил(а) вам сообщение",
+            payload={"content": message}
+        )
+
+        # рассылаем сообщение в комнату
         await self.channel_layer.group_send(
             self.room_group_name,
             {

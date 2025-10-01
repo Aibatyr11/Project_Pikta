@@ -6,15 +6,16 @@ import "../styles/Navbar.css";
 // импорт иконок
 import homeIcon from "../assets/icons/home.png";
 import exploreIcon from "../assets/icons/explore.png";
-import notificationsIcon from "../assets/icons/notifications.png";
 import messagesIcon from "../assets/icons/messages.png";
 import registerIcon from "../assets/icons/register.png";
 import loginIcon from "../assets/icons/login.png";
 import createIcon from "../assets/icons/create.png";
 import profileIcon from "../assets/icons/profile.png";
+import notificationsIcon from "../assets/icons/notifications.png";
 
 export default function Navbar() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     authFetch("http://localhost:8000/api/current_user/")
@@ -22,6 +23,28 @@ export default function Navbar() {
       .then((data) => setCurrentUser(data))
       .catch(() => setCurrentUser(null));
   }, []);
+
+  // подгружаем непрочитанные уведомления
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchUnreadCount = async () => {
+      try {
+        const res = await authFetch("http://localhost:8000/api/notifications/");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const count = data.filter((n) => !n.is_read).length;
+        setUnreadCount(count);
+      } catch (err) {
+        console.error("Ошибка загрузки количества уведомлений:", err);
+      }
+    };
+
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 10000); // обновляем каждые 10 сек
+    return () => clearInterval(interval);
+  }, [currentUser]);
 
   // Функция для NavLink
   const linkClass = ({ isActive }) =>
@@ -42,8 +65,18 @@ export default function Navbar() {
           <span className="nav-text">Explore</span>
         </NavLink>
 
+        {/* 🔔 Уведомления с бейджем */}
         <NavLink to="/notifications" className={linkClass}>
-          <img src={notificationsIcon} alt="Notifications" className="nav-icon" />
+          <div className="nav-icon-wrapper">
+            <img
+              src={notificationsIcon}
+              alt="notifications"
+              className="nav-icon"
+            />
+            {unreadCount > 0 && (
+              <span className="badge">{unreadCount}</span>
+            )}
+          </div>
           <span className="nav-text">Notifications</span>
         </NavLink>
 

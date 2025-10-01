@@ -29,11 +29,11 @@ body {
   border-radius: var(--card-radius);
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(1, 69, 81, 0.396);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(22px) saturate(140%);
-
+  box-shadow: 0 10px 40px rgb(1, 228, 249);
   animation: fadeIn 0.3s ease-in-out;
 }
 

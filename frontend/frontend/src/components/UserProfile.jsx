@@ -150,7 +150,6 @@ function UserProfile() {
 
       <p className="profile-bio">{user.bio || "О себе не указано"}</p>
 
-      {/* Tabs */}
       <div className="profile-tabs">
         <button
           onClick={() => setActiveTab("posts")}
@@ -158,13 +157,18 @@ function UserProfile() {
         >
           Посты
         </button>
-        <button
-          onClick={() => setActiveTab("likes")}
-          className={`tab-btn ${activeTab === "likes" ? "active" : ""}`}
-        >
-          Лайки
-        </button>
+              
+        {/* Лайки видны только если свой профиль */}
+        {currentUser && currentUser.id === user.id && (
+          <button
+            onClick={() => setActiveTab("likes")}
+            className={`tab-btn ${activeTab === "likes" ? "active" : ""}`}
+          >
+            Лайки
+          </button>
+        )}
       </div>
+
 
       {/* Posts grid */}
       <div className="posts-grid">

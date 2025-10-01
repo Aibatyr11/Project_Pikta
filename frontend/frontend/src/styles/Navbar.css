@@ -102,3 +102,24 @@
   min-height: 100vh;
   border-radius: 20px;
 }
+
+.nav-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: red;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1;
+}
+

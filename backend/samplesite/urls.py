@@ -38,6 +38,10 @@ urlpatterns = [
     path('', include('bboard.urls')),
     path("chat/", include("chat.urls")),
     path("api/", include("chat.urls")),
+
+    path("api/", include("notify.urls")),
+
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

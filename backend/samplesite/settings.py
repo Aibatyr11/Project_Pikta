@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "channels",
     'chat',
+    'notify',
+
 ]
 
 AUTH_USER_MODEL = 'bboard.User'
@@ -178,13 +180,14 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-ASGI_APPLICATION = "samplesite.asgi.application"
+ASGI_APPLICATION = "samplesite.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
 
 
 

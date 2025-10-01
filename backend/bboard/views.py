@@ -137,6 +137,39 @@ class UserProfileView(APIView):
 
 
 
+# class FollowView(APIView):
+#     permission_classes = [IsAuthenticated]
+#
+#     def post(self, request):
+#         followed_id = request.data.get("followed_id")
+#         try:
+#             followed_user = User.objects.get(id=followed_id)
+#             if Follow.objects.filter(follower=request.user, followed=followed_user).exists():
+#                 return Response({"detail": "Already following"}, status=400)
+#             Follow.objects.create(follower=request.user, followed=followed_user)
+#             return Response({"detail": "Followed!"}, status=201)
+#         except User.DoesNotExist:
+#             return Response({"detail": "User not found"}, status=404)
+#
+#     def delete(self, request):
+#         followed_id = request.data.get("followed_id")
+#         try:
+#             followed_user = User.objects.get(id=followed_id)
+#             follow = Follow.objects.filter(follower=request.user, followed=followed_user).first()
+#             if follow:
+#                 follow.delete()
+#                 return Response({"detail": "Unfollowed"}, status=204)
+#             return Response({"detail": "Not following"}, status=400)
+#         except User.DoesNotExist:
+#             return Response({"detail": "User not found"}, status=404)
+
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import User, Follow
+
+
 class FollowView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -146,7 +179,19 @@ class FollowView(APIView):
             followed_user = User.objects.get(id=followed_id)
             if Follow.objects.filter(follower=request.user, followed=followed_user).exists():
                 return Response({"detail": "Already following"}, status=400)
+
             Follow.objects.create(follower=request.user, followed=followed_user)
+
+            # 🔔 создаём уведомление
+            from notify.utils import create_notification
+            create_notification(
+                target=followed_user.username,           # кому
+                actor=request.user.username,             # кто
+                verb="follow",
+                description=f"{request.user.username} подписался на вас",
+                payload={"follower_id": request.user.id}
+            )
+
             return Response({"detail": "Followed!"}, status=201)
         except User.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
@@ -155,13 +200,18 @@ class FollowView(APIView):
         followed_id = request.data.get("followed_id")
         try:
             followed_user = User.objects.get(id=followed_id)
-            follow = Follow.objects.filter(follower=request.user, followed=followed_user).first()
+            follow = Follow.objects.filter(
+                follower=request.user,
+                followed=followed_user
+            ).first()
             if follow:
                 follow.delete()
                 return Response({"detail": "Unfollowed"}, status=204)
             return Response({"detail": "Not following"}, status=400)
         except User.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
+
+
 
 
 
@@ -209,20 +259,62 @@ def current_user_view(request):
 
 
 
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def like_post(request, post_id):
+#     post = Post.objects.get(id=post_id)
+#     Like.objects.get_or_create(post=post, user=request.user)
+#     return Response({'detail': 'Post liked.'}, status=status.HTTP_201_CREATED)
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Post, Like
+from notify.utils import create_notification  # импортируем утилиту
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, post_id):
     post = Post.objects.get(id=post_id)
-    Like.objects.get_or_create(post=post, user=request.user)
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    print("⚡ СОЗДАЁМ УВЕДОМЛЕНИЕ для", post.user.username)
+    if created:
+        # ⚡ создаём уведомление в MongoDB
+        create_notification(
+            target=post.user.username,              # кому
+            actor=request.user.username,            # кто
+            verb="like",
+            description=f"{request.user.username} лайкнул ваш пост",
+            payload={"post_id": post.id}
+        )
+
     return Response({'detail': 'Post liked.'}, status=status.HTTP_201_CREATED)
+
+
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def unlike_post(request, post_id):
+#     post = Post.objects.get(id=post_id)
+#     Like.objects.filter(post=post, user=request.user).delete()
+#     return Response({'detail': 'Post unliked.'}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def unlike_post(request, post_id):
-    post = Post.objects.get(id=post_id)
-    Like.objects.filter(post=post, user=request.user).delete()
-    return Response({'detail': 'Post unliked.'}, status=status.HTTP_204_NO_CONTENT)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return Response({'detail': 'Post not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+    deleted, _ = Like.objects.filter(post=post, user=request.user).delete()
+    if deleted:
+        return Response(
+            {'detail': 'Post unliked.', 'likes_count': post.likes.count()},
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

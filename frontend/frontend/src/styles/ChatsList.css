@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 18px;
-  background: #f5fcfc87; /* мягкий светло-бирюзовый фон */
+  background: rgb(1, 91, 107); /* мягкий светло-бирюзовый фон */
   border-radius: 20px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   max-height: calc(100vh - 120px);

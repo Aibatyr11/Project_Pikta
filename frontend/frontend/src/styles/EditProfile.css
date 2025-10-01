@@ -9,13 +9,13 @@
 
 /* Форма */
 .edit-form {
-  background: #ffffff86;
+  background: #01c1be38;
   border-radius: 22px;
   padding: 34px;
   width: 100%;
   max-width: 420px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5f2f1;
+  border: 1px solid #01f4c3;
   animation: fadeIn 0.35s ease-in-out;
   transition: transform 0.25s ease;
 }
@@ -61,8 +61,8 @@
   margin-bottom: 16px;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid #ccefea;
-  background: #f9fefe8e;
+  border: 1px solid #00ffe1;
+  background: #ffffff69;
   color: #222;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -73,7 +73,7 @@
 .edit-form textarea:focus {
   border-color: #0ea89a;
   box-shadow: 0 0 0 3px rgba(14, 168, 154, 0.15);
-  background: #ffffff;
+  background: #ffffffdb;
 }
 
 /* Текстовое поле */
@@ -97,13 +97,13 @@
 /* Сохранить */
 .edit-form button[type="submit"] {
   margin-top: 10px;
-  background: #0ea89a;
+  background: #00ffeaab;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(14, 168, 154, 0.3);
+  box-shadow: 0 4px 12px rgba(14, 168, 153, 0.3);
 }
 
 .edit-form button[type="submit"]:hover {
-  background: #0b9085;
+  background: #00ffea;
   transform: translateY(-2px);
 }
 
