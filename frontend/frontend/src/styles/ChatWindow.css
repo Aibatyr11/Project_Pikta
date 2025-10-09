@@ -1,17 +1,20 @@
-/* Окно чата */
+/* 🌐 Основное окно */
 .chat-window {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 960px;
+  max-width: 100%;
   border: 1px solid #e5f2f1;
-  border-radius: 50px;
+  border-radius: 30px;
   overflow: hidden;
   background: #ffffff;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  margin: 0 auto;
+  transition: all 0.3s ease;
 }
 
-/* Шапка */
+/* 🧢 Шапка */
 .chat-header {
   padding: 14px 18px;
   background: #f5fcfc;
@@ -24,21 +27,19 @@
   justify-content: space-between;
 }
 
-/* Сообщения */
+/* 💬 Сообщения */
 .chat-messages {
   flex: 1;
   padding: 14px;
   overflow-y: auto;
   background: url("../assets/bg/bg_chatwindow3.jpg") center no-repeat;
-  background-size: auto 100%;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-
-
-/* Пузырьки сообщений */
+/* 💭 Сообщения */
 .message-bubble {
   max-width: 70%;
   padding: 10px 14px;
@@ -46,7 +47,7 @@
   word-wrap: break-word;
   font-size: 14px;
   line-height: 1.5;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s;
 }
 
@@ -54,16 +55,15 @@
   transform: translateY(-2px);
 }
 
-/* Сообщение слева */
+/* Лево и право */
 .message-left {
   align-self: flex-start;
   background: #e8fdfa;
   border: 1px solid #ccefea;
-  color: #234;
+  color: rgb(0, 0, 0);
   border-top-left-radius: 6px;
 }
 
-/* Сообщение справа */
 .message-right {
   align-self: flex-end;
   background: #0ea89a;
@@ -72,7 +72,7 @@
   border-top-right-radius: 6px;
 }
 
-/* Форма отправки */
+/* ✉️ Форма */
 .chat-form {
   display: flex;
   padding: 10px 12px;
@@ -112,4 +112,114 @@
 .chat-form button:hover {
   background: #0b9085;
   transform: translateY(-2px);
+}
+
+/* 🖼️ Карточка поста */
+.chat-post-card {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(2, 240, 252, 0.15);
+}
+
+.chat-post-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-post-body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-post-caption {
+  font-size: 14px;
+  color: #eee;
+}
+
+.chat-post-link {
+  font-size: 13px;
+  color: #02f0fc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.chat-post-link:hover {
+  text-decoration: underline;
+}
+
+/* ================================ */
+/* 📱 АДАПТИВНОСТЬ */
+/* ================================ */
+
+/* планшеты */
+@media (max-width: 1024px) {
+  .chat-window {
+    width: 90%;
+    border-radius: 24px;
+  }
+
+  .message-bubble {
+    max-width: 80%;
+  }
+}
+
+/* телефоны */
+@media (max-width: 768px) {
+  .chat-window {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .chat-header {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .message-bubble {
+    font-size: 13px;
+    max-width: 85%;
+  }
+
+  .chat-form input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .chat-form button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .chat-post-card {
+    width: 180px;
+  }
+}
+
+/* очень маленькие экраны */
+@media (max-width: 480px) {
+  .message-bubble {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .chat-form {
+    gap: 5px;
+  }
+
+  .chat-form button {
+    padding: 6px 10px;
+  }
+
+  .chat-post-card {
+    width: 150px;
+  }
 }

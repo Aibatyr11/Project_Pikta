@@ -1,18 +1,17 @@
-// frontend/src/pages/PostList.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { authFetch } from "../utils/auth";
 import { getComments } from "../api";
 import PostDetailModal from "../components/PostDetailModal";
+import SharePostModal from "../components/SharePostModal";
 import "../styles/PostList.css";
-
+import like from "../assets/icons/like.png";
 function PostList() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [previewComments, setPreviewComments] = useState({});
-
-  // состояние модалки
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [sharePostId, setSharePostId] = useState(null);
 
   useEffect(() => {
     authFetch("http://localhost:8000/api/posts/")
@@ -64,13 +63,8 @@ function PostList() {
       .catch((err) => console.error("Ошибка лайка:", err.message));
   };
 
-  const openModal = (postId) => {
-    setSelectedPostId(postId);
-  };
-
-  const closeModal = () => {
-    setSelectedPostId(null);
-  };
+  const openModal = (postId) => setSelectedPostId(postId);
+  const closeModal = () => setSelectedPostId(null);
 
   if (error) {
     return <p style={{ color: "red", marginTop: "50px" }}>{error}</p>;
@@ -80,7 +74,6 @@ function PostList() {
     <div className="post-list">
       {posts.map((post) => (
         <div key={post.id} className="post">
-          {/* Автор поста */}
           <div className="post-header">
             {post.user.avatar && (
               <Link to={`/profile/${post.user.username}`}>
@@ -95,36 +88,36 @@ function PostList() {
             </span>
           </div>
 
-          {/* Картинка поста (по клику откроется модалка) */}
           {post.image && (
             <div className="post-image" onClick={() => openModal(post.id)}>
               <img src={post.image} alt="Post" />
             </div>
           )}
 
-                    {/* Лайки */}
           <div className="post-actions">
             <button onClick={() => toggleLike(post.id, post.is_liked)}>
               {post.is_liked ? "❤️" : "🤍"} {post.likes_count}
             </button>
+            <button
+              className="share-btn"
+              onClick={() => setSharePostId(post.id)}
+              title="Отправить пост"
+            >
+              📩
+            </button>
           </div>
 
-          {/* Контент */}
           <div className="post-content">
             <p>{post.caption}</p>
             {post.location && <p><strong>{post.location}</strong></p>}
           </div>
 
-
-
-          {/* Превью комментариев */}
           <div className="post-comments">
             {previewComments[post.id]?.map((c) => (
               <div key={c.id} className="comment-preview">
                 <strong>{c.user?.username || "Аноним"}:</strong> {c.content}
               </div>
             ))}
-
             <button
               className="view-comments-btn"
               onClick={() => openModal(post.id)}
@@ -133,12 +126,19 @@ function PostList() {
             </button>
           </div>
 
-          {/* Модалка рендерится прямо здесь, если пост выбран */}
           {selectedPostId === post.id && (
             <PostDetailModal
               postId={post.id}
               isOpen={true}
               onClose={closeModal}
+            />
+          )}
+
+          {sharePostId === post.id && (
+            <SharePostModal
+              postId={sharePostId}
+              postImage={post.image}
+              onClose={() => setSharePostId(null)}
             />
           )}
         </div>

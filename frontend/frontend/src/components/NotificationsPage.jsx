@@ -3,8 +3,8 @@ import "../styles/NotificationsPage.css";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
-  const [filter, setFilter] = useState("all"); // all | unread | read
-  const [showAll, setShowAll] = useState(false); // 🔘 управляем "Показать все"
+  const [filter, setFilter] = useState("all");
+  const [showAll, setShowAll] = useState(false); 
 
   useEffect(() => {
     fetchNotifications();
@@ -34,7 +34,6 @@ export default function NotificationsPage() {
     }
   };
 
-  // 🔘 отметить все как прочитанные
   const markAllAsRead = async () => {
     try {
       const token =
@@ -58,14 +57,12 @@ export default function NotificationsPage() {
     }
   };
 
-  // фильтруем уведомления
   const filteredNotifications = notifications.filter((n) => {
     if (filter === "unread") return !n.is_read;
     if (filter === "read") return n.is_read;
     return true;
   });
 
-  // если showAll = false → показываем только последние 10
   const displayedNotifications = showAll
     ? filteredNotifications
     : filteredNotifications.slice(0, 10);
@@ -76,7 +73,6 @@ export default function NotificationsPage() {
         <h2 className="notifications-title">Уведомления</h2>
 
         <div className="notifications-actions">
-          {/* фильтры */}
           <div className="notifications-filters">
             <button
               className={filter === "all" ? "active" : ""}
@@ -120,7 +116,6 @@ export default function NotificationsPage() {
         ))}
       </ul>
 
-      {/* кнопка "Показать все" если уведомлений больше 10 */}
       {filteredNotifications.length > 10 && (
         <div className="show-more-container">
           <button

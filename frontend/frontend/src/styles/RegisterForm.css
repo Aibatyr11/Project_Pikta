@@ -22,8 +22,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.35); /* легкая тень поверх фона */
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.45); /* чуть сильнее затемнение */
+  backdrop-filter: blur(3px);
   z-index: 0;
 }
 
@@ -31,23 +31,30 @@
 .register-card {
   position: relative;
   z-index: 1;
-  background: rgba(254, 254, 254, 0.326);
+  background: rgba(255, 255, 255, 0.12);
   padding: 60px 40px;
-  border-radius: 50px;              /* убираем скругления */
-  width: 100%;                   /* растягиваем на всю ширину */
-  max-width: 420px;            /* снимаем ограничение */
-  min-height: 50vh;             /* на всю высоту экрана */
+  border-radius: 36px;
+  width: 100%;
+  max-width: 420px;
+  min-height: 50vh;
   text-align: center;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: blur(15px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px) saturate(180%);
+  animation: fadeIn 0.8s ease forwards;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.register-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
 
+/* Анимация появления */
 @keyframes fadeIn {
   from {
-    transform: translateY(20px);
-    opacity: 0.3;
+    transform: translateY(25px);
+    opacity: 0;
   }
   to {
     transform: translateY(0);
@@ -57,10 +64,11 @@
 
 /* Заголовок */
 .register-title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 22px;
-  color: #fff; /* белый, чтобы читался на фоне */
+  margin-bottom: 26px;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 /* Форма */
@@ -74,37 +82,42 @@
 .register-form input {
   padding: 14px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(26, 26, 26, 0.25);
-  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
   color: #fff;
   font-size: 15px;
   outline: none;
-  transition: border 0.2s, background 0.25s, transform 0.2s;
+  transition: all 0.25s ease;
+}
+
+.register-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .register-form input:focus {
   background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(63, 67, 69, 0.8);
+  border: 1px solid #00ffc8;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
   transform: scale(1.02);
 }
 
 /* Кнопка */
 .register-btn {
   padding: 12px;
-  background: linear-gradient(135deg, #84fed5, #00ffc8);
+  background: linear-gradient(135deg, #00ffc8, #47f5b2);
   color: #fff;
   border: none;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.25s;
+  transition: all 0.25s ease;
 }
 
 .register-btn:hover {
   background: linear-gradient(135deg, #47f5b2, #03f6a5);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 255, 200, 0.4);
 }
 
 /* Сообщение */
@@ -112,4 +125,24 @@
   margin-top: 18px;
   font-size: 14px;
   color: #eee;
+  transition: opacity 0.3s ease;
+}
+
+.register-message a {
+  color: #00ffc8;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.register-message a:hover {
+  color: #03f6a5;
+}
+
+
+.register-banner {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  
 }

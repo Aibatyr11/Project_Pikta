@@ -11,14 +11,14 @@ export default function ChatWindow({ currentUser, targetUser }) {
     if (!targetUser || !currentUser) return;
 
     const roomName = [currentUser, targetUser].sort().join("_");
-
     const ws = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
+
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setMessages((prev) => [...prev, data]);
     };
-    setSocket(ws);
 
+    setSocket(ws);
     return () => ws.close();
   }, [targetUser, currentUser]);
 
@@ -30,9 +30,45 @@ export default function ChatWindow({ currentUser, targetUser }) {
       sender: currentUser,
       receiver: targetUser,
       message: input,
+      type: "text",
     };
     socket.send(JSON.stringify(msgData));
     setInput("");
+  };
+
+  const renderMessage = (msg) => {
+    if (typeof msg.message === "string") {
+      return <p>{msg.message}</p>;
+    }
+
+    if (typeof msg.message === "object" && msg.message.type === "post") {
+      const post = msg.message;
+      return (
+        <div className="chat-post-card">
+          {post.image && (
+            <img
+              src={post.image}
+              alt="post"
+              className="chat-post-image"
+            />
+          )}
+          <div className="chat-post-body">
+            <p className="chat-post-caption">{post.caption}</p>
+            <p className="chat-post-author">Автор: {post.author}</p>
+            <a
+              href={`/posts/${post.post_id}`}
+              className="chat-post-link"
+              target="_blank"
+              rel="noreferrer"
+            >
+              
+            </a>
+          </div>
+        </div>
+      );
+    }
+
+    return <pre>{JSON.stringify(msg.message, null, 2)}</pre>;
   };
 
   return (
@@ -47,7 +83,7 @@ export default function ChatWindow({ currentUser, targetUser }) {
               msg.sender === currentUser ? "message-right" : "message-left"
             }`}
           >
-            {msg.message}
+            {renderMessage(msg)}
           </div>
         ))}
       </div>

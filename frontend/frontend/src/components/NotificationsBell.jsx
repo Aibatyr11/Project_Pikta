@@ -39,11 +39,9 @@ export default function NotificationsBell({ currentUser }) {
       }
     };
 
-    // первый вызов
     fetchNotifications();
 
-    // обновление каждые 10 секунд
-    const interval = setInterval(fetchNotifications, 10000);
+    const interval = setInterval(fetchNotifications, 5000);
 
     return () => clearInterval(interval);
   }, [currentUser]);
@@ -52,7 +50,6 @@ export default function NotificationsBell({ currentUser }) {
 
   return (
     <div style={{ position: "relative" }}>
-      {/* колокольчик */}
       <img
         src={notificationsIcon}
         alt="Notifications"
@@ -60,7 +57,6 @@ export default function NotificationsBell({ currentUser }) {
         onClick={() => setOpen((o) => !o)}
       />
 
-      {/* кружок с количеством */}
       {unreadCount > 0 && (
         <div
           style={{
@@ -78,7 +74,6 @@ export default function NotificationsBell({ currentUser }) {
         </div>
       )}
 
-      {/* выпадающий список */}
       {open && (
         <div
           style={{

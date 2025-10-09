@@ -4,54 +4,60 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-
-  /* 👇 фон */
   background: url("../assets/bg/bg_login2.jpg") no-repeat center center fixed;
   background-size: cover;
-
   position: relative;
   z-index: 0;
-  padding: 20px; 
+  padding: 20px;
 }
 
 /* Затемнение */
 .auth-page::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(2px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
   z-index: 0;
 }
 
-/* Карточка формы */  
+/* Карточка формы */
 .auth-container {
   position: relative;
   z-index: 1;
-  width: 380px;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.178); /* слегка прозрачная */
-  padding: 40px 36px;
-  border-radius: 50px;
+  width: 400px;
+  padding: 50px 36px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 36px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  backdrop-filter: blur(15px) saturate(160%);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px) saturate(180%);
+  animation: fadeIn 0.8s ease forwards;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .auth-container:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.45);
 }
 
+/* Фото сверху */
+.auth-logo {
+  margin-bottom: 18px;
+}
+
+.auth-logo img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Заголовок */
 .auth-container h2 {
   margin-bottom: 28px;
-  color: #fff; /* белый текст для контраста */
+  color: #fff;
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -71,15 +77,20 @@
   border-radius: 14px;
   font-size: 15px;
   outline: none;
-  transition: all 0.25s ease;
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
+  transition: all 0.25s ease;
+}
+
+.auth-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .auth-form input:focus {
-  border-color: #00b0ff;
+  border-color: #00ffc8;
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 0 4px rgba(0, 176, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+  transform: scale(1.02);
 }
 
 /* Кнопка */
@@ -87,24 +98,21 @@
   padding: 14px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, #47f59e, #00d89e);
+  background: linear-gradient(135deg, #00ffc8, #47f5b2);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.25s, transform 0.15s;
+  transition: all 0.25s ease;
 }
 
 .auth-form button:hover {
-  background: linear-gradient(135deg, #00d8b0, #00b0ff);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #47f5b2, #03f6a5);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 255, 200, 0.4);
 }
 
-.auth-form button:active {
-  transform: scale(0.97);
-}
-
-/* Ссылки */
+/* Ссылка */
 .auth-link {
   margin-top: 20px;
   font-size: 14px;
@@ -112,11 +120,84 @@
 }
 
 .auth-link a {
-  color: #03f6a5;
+  color: #00ffc8;
   text-decoration: none;
   font-weight: 500;
 }
 
 .auth-link a:hover {
+  color: #03f6a5;
   text-decoration: underline;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+  from {
+    transform: translateY(25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Верхняя часть с логотипом */
+.auth-header {
+  position: absolute;
+  top: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 2;
+  animation: fadeIn 1s ease forwards;
+}
+
+.auth-header img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+}
+
+.auth-header .app-title {
+  font-family: "Pacifico", cursive;
+  font-size: 42px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(90deg, #ffffff, #ffffff, #ffffff);
+  
+  -webkit-text-fill-color: transparent;
+  margin-top: 8px;
+}
+
+/* Чтобы карточка не прилипала к верху */
+.auth-container {
+  margin-top: 180px; /* отступ вниз, чтобы не перекрывал логотип */
+}
+
+
+.auth-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.auth-banner {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  margin-bottom: 10px;
+}
+
+.app-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #262626;
+  margin: 0;
 }

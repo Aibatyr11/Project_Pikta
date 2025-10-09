@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";   // 👈 добавляем
+import { Link } from "react-router-dom";  
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
 import PostList from "../components/PostList";
 import "../styles/Home.css";
 
 export default function Home() {
-  const { user } = useUser(); // текущий юзер
+  const { user } = useUser(); 
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    if (!user) return; // ждём пока загрузится текущий
+    if (!user) return; 
 
     authFetch("http://localhost:8000/api/users/")
       .then((res) => res.json())
       .then((data) => {
-        // исключаем текущего юзера
         const filtered = data.filter((u) => u.username !== user.username);
         setSuggestions(filtered);
       })
@@ -24,19 +23,13 @@ export default function Home() {
 
   return (
     <div className="home-layout">
-      {/* Левая пустая колонка */}
       <div className="left-placeholder"></div>
-
-      {/* Центральная колонка */}
       <div className="center-feed">
-
-        {/* Posts */}
         <div className="feed">
           <PostList />
         </div>
       </div>
 
-      {/* Правая колонка */}
       <div className="rightbar">
         <div className="suggestions">
           <h3>Suggestions for you</h3>
@@ -45,7 +38,6 @@ export default function Home() {
           ) : (
             suggestions.map((u) => (
               <div key={u.id} className="suggestion" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                {/* Аватар (если есть) */}
                 <Link to={`/profile/${u.username}`}>
                   <img
                     src={
@@ -60,15 +52,10 @@ export default function Home() {
                     height="40"
                     style={{ borderRadius: "50%", objectFit: "cover" }}
                   />
-                </Link>
-
-                {/* Имя пользователя */}
-                
+                </Link>                
                 <strong>{u.username}</strong>
                 
-                <Link to={`/profile/${u.username}`}>
-                  <button style={{ marginLeft: "auto" }}>Follow</button>
-                </Link>
+                
               </div>
             ))
           )}

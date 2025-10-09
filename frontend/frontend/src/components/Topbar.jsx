@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { authFetch } from "../utils/auth";
 import "../styles/Topbar.css";
-
+import banner from "../assets/icons/insta.png";
 export default function Topbar() {
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -22,14 +22,13 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      {/* Лого слева */}
       <div className="topbar-left">
         <Link to="/" className="topbar-logo">
-          
+          <img src={banner} alt="banner" className="topbar-logo" />
         </Link>
       </div>
 
-      {/* Поиск по центру
+      {/* 
       <div className="topbar-center">
         <input
           type="text"
@@ -38,7 +37,6 @@ export default function Topbar() {
         />
       </div> */}
 
-      {/* Справа — кнопки и профиль */}
       <div className="topbar-right">
         {!currentUser ? (
           <>

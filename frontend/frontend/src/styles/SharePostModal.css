@@ -1,0 +1,186 @@
+/* 🌌 Общий фон модального окна */
+.modal-backdrop {
+  position: fixed !important; /* ✅ фиксировано поверх всего */
+  inset: 0;
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999 !important; /* ✅ поверх всех постов и элементов */
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* 🌙 Затемнение и размытие */
+.modal-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+/* 💎 Стеклянная карточка модалки (в стиле register-card) */
+.modal-content {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(18px) saturate(180%);
+  color: #fff;
+  padding: 48px 36px;
+  border-radius: 36px;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5);
+  animation: modalFadeIn 0.6s ease forwards;
+  transform: translateY(20px);
+  opacity: 0;
+  overflow: visible !important; /* ✅ чтобы ничего не обрезалось */
+}
+
+/* 🌈 Анимация появления */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🔹 Hover эффект — лёгкое парение */
+.modal-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 55px rgba(0, 0, 0, 0.55);
+}
+
+/* 💫 Заголовок */
+.modal-content h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #00ffc8;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+/* 🖼️ Превью поста */
+.post-preview {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.post-preview-image {
+  width: 250px;
+  height: 150px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* 👥 Список пользователей */
+.user-list {
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 200, 0.3) transparent;
+  position: relative;
+  z-index: 2;
+}
+
+/* Элемент пользователя */
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.user-item:hover {
+  background: rgba(0, 255, 200, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 200, 0.3);
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 255, 200, 0.3);
+}
+
+/* ✅ Сообщение об успехе */
+.success-message {
+  background: rgba(0, 255, 200, 0.18);
+  color: #00ffc8;
+  text-align: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 0 12px rgba(0, 255, 200, 0.3);
+  animation: fadeInMsg 0.3s ease;
+}
+
+@keyframes fadeInMsg {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🔘 Кнопка закрытия */
+.close-btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00ffc8, #47f5b2);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 255, 200, 0.25);
+}
+
+.close-btn:hover {
+  background: linear-gradient(135deg, #47f5b2, #03f6a5);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 255, 200, 0.4);
+}
+
+/* 🔹 Scrollbar кастомизация */
+.user-list::-webkit-scrollbar {
+  width: 6px;
+}
+.user-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 255, 200, 0.35);
+  border-radius: 4px;
+}
+.user-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 255, 200, 0.55);
+}

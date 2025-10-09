@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/ResetPassword.css"; // подключаем стили
+import "../styles/ResetPassword.css"; 
 
 function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -20,7 +20,6 @@ function ResetPassword() {
         body: JSON.stringify({ email }),
       });
 
-      // пробуем прочитать JSON, но если пусто — не падаем
       let data = {};
       try {
         data = await res.json();
@@ -32,10 +31,10 @@ function ResetPassword() {
         setMessage("📨 Письмо для сброса отправлено на вашу почту.");
         setEmail("");
       } else {
-        setMessage(data.error || "❌ Ошибка при сбросе пароля.");
+        setMessage(data.error || "Ошибка при сбросе пароля.");
       }
     } catch (err) {
-      setMessage("⚠️ Ошибка соединения с сервером.");
+      setMessage("Ошибка соединения с сервером.");
     }
   };
 

@@ -9,7 +9,7 @@ export default function ChatPage() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   if (!user) {
-    return <div className="chat-page">⚠ Войдите, чтобы увидеть чаты</div>;
+    return <div className="chat-page">Войдите, чтобы увидеть чаты</div>;
   }
 
   return (

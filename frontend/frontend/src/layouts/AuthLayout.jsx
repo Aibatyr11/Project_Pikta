@@ -9,6 +9,7 @@ export default function AuthLayout({ children }) {
         <img src={insta} alt="Pikta logo" />
         <h1 className="app-title">Pikta</h1>
       </div>
+
       <div className="auth-card">{children}</div>
     </div>
   );

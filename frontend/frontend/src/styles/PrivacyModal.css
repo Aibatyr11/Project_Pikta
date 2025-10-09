@@ -1,0 +1,104 @@
+/* затемнение заднего фона */
+.modal-backdrop {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 20px;
+}
+
+/* контент окна */
+.modal-content {
+  width: 100%;
+  max-width: 640px;
+  max-height: 80vh; /* ограничивает высоту, чтобы кнопка всегда видна */
+  background: linear-gradient(180deg, rgba(3,53,48,0.98), rgba(3,53,48,0.98));
+  color: #ffffff;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(1, 191, 249, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* заголовок */
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #dffcff;
+  text-align: center;
+  letter-spacing: -0.2px;
+}
+
+/* тело с текстом — растягиваемое и скроллируемое */
+.modal-body {
+  margin-top: 12px;
+  flex: 1 1 auto; /* занимает всё доступное пространство между заголовком и футером */
+  overflow-y: auto;
+  padding-right: 6px; /* место для скролла */
+}
+
+/* сам текст */
+.modal-text {
+  margin: 0;
+  color: #e6fbfb;
+  line-height: 1.55;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* футер с кнопкой — не растягивается и всегда внизу */
+.modal-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+}
+
+/* маленькая аккуратная кнопка внизу */
+.accept-btn {
+  width: 120px;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #053233;
+  background: linear-gradient(90deg, #a6fff8, #68d7ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(2, 178, 201, 0.14);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* hover / focus */
+.accept-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(2, 178, 201, 0.18);
+}
+.accept-btn:active {
+  transform: translateY(0);
+}
+.accept-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(2, 178, 201, 0.12);
+}
+
+/* маленький экран — уменьшаем отступы и ширину кнопки */
+@media (max-width: 420px) {
+  .modal-content {
+    padding: 16px;
+    max-width: 420px;
+  }
+  .accept-btn {
+    width: 100px;
+    height: 34px;
+    font-size: 13px;
+  }
+}

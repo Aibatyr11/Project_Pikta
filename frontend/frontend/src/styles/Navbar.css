@@ -6,7 +6,10 @@
   --white: #ffffff;
 }
 
-/* Sidebar */
+/* ====================== */
+/* 📋 Сайдбар */
+/* ====================== */
+
 .sidebar {
   width: 220px;
   background: rgba(185, 241, 236, 0.3);
@@ -20,6 +23,7 @@
   box-shadow: 0 8px 30px rgba(11, 58, 55, 0.12);
   z-index: 1000;
   height: 500px;
+  transition: all 0.3s ease;
 }
 
 .sidebar-logo {
@@ -52,12 +56,10 @@
   transition: filter 0.25s;
 }
 
-/* Ховер */
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Активный пункт — белая таблетка */
 .nav-item.active {
   background: var(--white);
   color: #062125;
@@ -67,7 +69,6 @@
   z-index: 2;
 }
 
-/* Иконка активного пункта перекрашивается */
 .nav-item.active .nav-icon {
   filter: brightness(0) saturate(100%) invert(44%) sepia(63%) saturate(404%)
     hue-rotate(125deg) brightness(95%) contrast(91%);
@@ -101,8 +102,10 @@
   background: linear-gradient(180deg, #f4fbfb, #f7fcfc);
   min-height: 100vh;
   border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
+/* Бейджик уведомлений */
 .nav-icon-wrapper {
   position: relative;
   display: inline-block;
@@ -123,3 +126,93 @@
   line-height: 1;
 }
 
+/* ====================== */
+/* 📱 АДАПТИВНОСТЬ */
+/* ====================== */
+
+/* Планшеты */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 180px;
+    padding: 18px;
+  }
+
+  .main-with-sidebar {
+    margin-left: 210px;
+    padding: 20px;
+  }
+
+  .nav-item {
+    font-size: 13px;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+}
+
+/* Телефоны (меньше 768px) */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: rgba(14, 168, 155, 0.95);
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-with-sidebar {
+    margin: 0;
+    padding: 16px;
+  }
+
+  /* Добавим бургер */
+  .sidebar-toggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--teal-700);
+    color: white;
+    font-size: 20px;
+    border: none;
+    z-index: 1100;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-toggle:hover {
+    background: var(--teal-500);
+  }
+
+  /* Текст меньше */
+  .nav-item {
+    font-size: 13px;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .nav-item {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .main-with-sidebar {
+    padding: 12px;
+  }
+}

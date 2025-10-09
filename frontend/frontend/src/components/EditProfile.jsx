@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { getToken } from "../utils/auth";
-import "../styles/EditProfile.css"; // ✅ стили
+import "../styles/EditProfile.css"; 
 
 function EditProfile() {
   const [formData, setFormData] = useState({

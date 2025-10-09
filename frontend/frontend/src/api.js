@@ -1,4 +1,3 @@
-// frontend/frontend/src/api.js
 import { authFetch } from "./utils/auth";
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000/api";
 

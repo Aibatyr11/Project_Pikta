@@ -74,3 +74,6 @@ def chat_history(request, user1, user2):
         msg["_id"] = str(msg["_id"])
         msg["timestamp"] = msg["timestamp"].isoformat()
     return JsonResponse(history[::-1], safe=False)
+
+
+

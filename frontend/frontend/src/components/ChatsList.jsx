@@ -15,16 +15,11 @@ export default function ChatsList({ onSelectChat }) {
         .then((res) => res.json())
         .then((data) => {
           setChats(data);
-          console.log(data);
-
-          // ✅ если в URL есть ?with=someone → сразу открыть чат
+          console.log("Chats data:", data);
           const params = new URLSearchParams(location.search);
           const withUser = params.get("with");
-          if (withUser) {
-            onSelectChat(withUser);
-          }
+          if (withUser) onSelectChat(withUser);
         });
-        
     }
   }, [user, location.search]);
 
@@ -33,6 +28,23 @@ export default function ChatsList({ onSelectChat }) {
     return avatar.startsWith("http")
       ? avatar
       : `http://localhost:8000${avatar}`;
+  };
+
+  const renderLastMessage = (msg) => {
+    if (!msg) return <i>Нет сообщений</i>;
+    if (typeof msg === "string") return msg;
+    if (typeof msg === "object") {
+      if (msg.type === "post") {
+        return (
+          <span className="post-message-preview">
+            📎 Пост: {msg.caption || "без описания"}
+          </span>
+        );
+      }
+      return <span>[Объект сообщения]</span>;
+    }
+
+    return String(msg);
   };
 
   return (
@@ -51,7 +63,7 @@ export default function ChatsList({ onSelectChat }) {
           <div className="chat-info">
             <b>{chat.username}</b>
             <div className="chat-last-message">
-              {chat.last_message}
+              {renderLastMessage(chat.last_message)}
             </div>
             <small>
               {chat.last_message_time &&

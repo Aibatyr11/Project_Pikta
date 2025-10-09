@@ -16,9 +16,6 @@ def read_notification(request, notif_id):
     mark_as_read(notif_id)
     return Response({"status": "ok"})
 
-
-
-
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def mark_all_read(request):

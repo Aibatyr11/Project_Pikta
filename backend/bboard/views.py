@@ -7,28 +7,29 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status, permissions
-from .serializers import UserSerializer, PostSerializer, UserDetailSerializer
+from rest_framework import status, permissions, generics, viewsets
+from .serializers import UserSerializer, PostSerializer, UserDetailSerializer, CommentSerializer
 from django.shortcuts import get_object_or_404
-
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from django.contrib.auth import logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics, permissions
-from .models import Comment
-from .serializers import CommentSerializer
-from rest_framework import generics, permissions
 from rest_framework.exceptions import NotFound
-from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
 from rest_framework.decorators import action
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.conf import settings
+from notify.utils import create_notification
+from rest_framework.permissions import AllowAny
+from django.db.models import Q
+from django.contrib.auth.models import User
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+
 class UserList(APIView):
     def get(self, request):
         users = User.objects.all()
@@ -43,7 +44,7 @@ class RegisterView(APIView):
             user = User.objects.create(
                 username=data['username'],
                 email=data['email'],
-                password=make_password(data['password']),  # Шифруем пароль
+                password=make_password(data['password']),
             )
             return Response({'message': 'Пользователь создан'}, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -65,23 +66,6 @@ def login_view(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#
-# class PostViewSet(viewsets.ModelViewSet):
-#     queryset = Post.objects.all().order_by('-created_at')
-#     serializer_class = PostSerializer
-#
-#
-# class PostCreateView(APIView):
-#     parser_classes = (MultiPartParser, FormParser)
-#     permission_classes = [permissions.IsAuthenticated]
-#
-#     def post(self, request, format=None):
-#         serializer = PostSerializer(data=request.data, context={'request': request})
-#         if serializer.is_valid():
-#             serializer.save(user=request.user)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -94,7 +78,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get", "post"], url_path="comments")
     def comments(self, request, pk=None):
-        """Комментарии к конкретному посту"""
         post = self.get_object()
 
         if request.method == "GET":
@@ -111,16 +94,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 
-# class UserProfileView(APIView):
-#     def get(self, request, username):
-#         user = get_object_or_404(User, username=username)
-#         posts = Post.objects.filter(user=user).order_by('-created_at')
-#         user_data = UserSerializer(user).data
-#         post_data = PostSerializer(posts, many=True).data
-#         return Response({
-#             "user": user_data,
-#             "posts": post_data
-#         })
 
 class UserProfileView(APIView):
     def get(self, request, username):
@@ -135,41 +108,6 @@ class UserProfileView(APIView):
 
 
 
-
-
-# class FollowView(APIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     def post(self, request):
-#         followed_id = request.data.get("followed_id")
-#         try:
-#             followed_user = User.objects.get(id=followed_id)
-#             if Follow.objects.filter(follower=request.user, followed=followed_user).exists():
-#                 return Response({"detail": "Already following"}, status=400)
-#             Follow.objects.create(follower=request.user, followed=followed_user)
-#             return Response({"detail": "Followed!"}, status=201)
-#         except User.DoesNotExist:
-#             return Response({"detail": "User not found"}, status=404)
-#
-#     def delete(self, request):
-#         followed_id = request.data.get("followed_id")
-#         try:
-#             followed_user = User.objects.get(id=followed_id)
-#             follow = Follow.objects.filter(follower=request.user, followed=followed_user).first()
-#             if follow:
-#                 follow.delete()
-#                 return Response({"detail": "Unfollowed"}, status=204)
-#             return Response({"detail": "Not following"}, status=400)
-#         except User.DoesNotExist:
-#             return Response({"detail": "User not found"}, status=404)
-
-
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from .models import User, Follow
-
-
 class FollowView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -182,11 +120,10 @@ class FollowView(APIView):
 
             Follow.objects.create(follower=request.user, followed=followed_user)
 
-            # 🔔 создаём уведомление
             from notify.utils import create_notification
             create_notification(
-                target=followed_user.username,           # кому
-                actor=request.user.username,             # кто
+                target=followed_user.username,
+                actor=request.user.username,
                 verb="follow",
                 description=f"{request.user.username} подписался на вас",
                 payload={"follower_id": request.user.id}
@@ -213,8 +150,6 @@ class FollowView(APIView):
 
 
 
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def current_user(request):
@@ -234,7 +169,6 @@ def is_following(request, user_id):
         return Response({"detail": "User not found"}, status=404)
 
 
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def privacy_policy_view(request):
@@ -244,7 +178,6 @@ def privacy_policy_view(request):
         request.user.has_accepted_policy = True
         request.user.save()
         return Response({'status': 'accepted'})
-
 
 
 @api_view(['GET'])
@@ -259,20 +192,6 @@ def current_user_view(request):
 
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def like_post(request, post_id):
-#     post = Post.objects.get(id=post_id)
-#     Like.objects.get_or_create(post=post, user=request.user)
-#     return Response({'detail': 'Post liked.'}, status=status.HTTP_201_CREATED)
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Post, Like
-from notify.utils import create_notification  # импортируем утилиту
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, post_id):
@@ -280,10 +199,9 @@ def like_post(request, post_id):
     like, created = Like.objects.get_or_create(post=post, user=request.user)
     print("⚡ СОЗДАЁМ УВЕДОМЛЕНИЕ для", post.user.username)
     if created:
-        # ⚡ создаём уведомление в MongoDB
         create_notification(
-            target=post.user.username,              # кому
-            actor=request.user.username,            # кто
+            target=post.user.username,
+            actor=request.user.username,
             verb="like",
             description=f"{request.user.username} лайкнул ваш пост",
             payload={"post_id": post.id}
@@ -291,13 +209,6 @@ def like_post(request, post_id):
 
     return Response({'detail': 'Post liked.'}, status=status.HTTP_201_CREATED)
 
-
-# @api_view(['DELETE'])
-# @permission_classes([IsAuthenticated])
-# def unlike_post(request, post_id):
-#     post = Post.objects.get(id=post_id)
-#     Like.objects.filter(post=post, user=request.user).delete()
-#     return Response({'detail': 'Post unliked.'}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -315,7 +226,6 @@ def unlike_post(request, post_id):
         )
     else:
         return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
@@ -357,8 +267,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
 
 
-
-
 class CommentListCreateView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.AllowAny]
@@ -388,12 +296,6 @@ class CommentDetailView(generics.RetrieveDestroyAPIView):
 
 
 
-#Search
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from django.db.models import Q
-from .serializers import UserSerializer
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def search_users(request):
@@ -403,7 +305,7 @@ def search_users(request):
 
     users = User.objects.filter(
         Q(username__icontains=query) | Q(email__icontains=query)
-    )[:20]  # ограничим до 20 результатов
+    )[:20]
 
     serializer = UserSerializer(users, many=True, context={"request": request})
     return Response(serializer.data)
@@ -434,17 +336,6 @@ def following_list(request, username):
 
 
 
-
-from django.contrib.auth.models import User
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.conf import settings
-
 class PasswordResetRequestView(APIView):
     def post(self, request):
         email = request.data.get("email")
@@ -467,22 +358,11 @@ class PasswordResetRequestView(APIView):
         return Response({"message": "Письмо отправлено на почту"}, status=status.HTTP_200_OK)
 
 
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth import get_user_model
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.core.mail import send_mail
-from django.conf import settings
 
 User = get_user_model()
 
-# bboard/views.py
-from django.contrib.auth.hashers import make_password
-
 class PasswordResetConfirmApiView(APIView):
+
     def post(self, request, uidb64, token, *args, **kwargs):
         from django.utils.http import urlsafe_base64_decode
         try:
@@ -502,3 +382,79 @@ class PasswordResetConfirmApiView(APIView):
         user.save()
 
         return Response({"message": "Пароль успешно изменён"}, status=status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def share_post(request):
+    from chat.mongo import messages_collection
+    from datetime import datetime
+
+    post_id = request.data.get("post_id")
+    target_username = request.data.get("target_username")
+
+    if not post_id or not target_username:
+        return Response({"detail": "Нужно указать post_id и target_username"}, status=400)
+
+    try:
+        post = Post.objects.get(id=post_id)
+        target_user = User.objects.get(username=target_username)
+    except (Post.DoesNotExist, User.DoesNotExist):
+        return Response({"detail": "Пост или пользователь не найден"}, status=404)
+
+    sender = request.user.username
+    receiver = target_user.username
+
+    image_url = request.build_absolute_uri(post.image.url) if post.image else None
+    message = {
+        "type": "post",
+        "post_id": post.id,
+        "caption": post.caption,
+        "image": image_url,
+        "author": post.user.username,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+    messages_collection.insert_one({
+        "sender": sender,
+        "receiver": receiver,
+        "content": message,
+        "timestamp": datetime.utcnow()
+    })
+
+    from notify.utils import create_notification
+    create_notification(
+        target=receiver,
+        actor=sender,
+        verb="share_post",
+        description=f"{sender} отправил(а) вам пост",
+        payload={"post_id": post.id, "image": image_url}
+    )
+
+    return Response({"detail": "Пост отправлен", "message": message}, status=201)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_post(request):
+    recipient_id = request.data.get('recipient_id')
+    post_id = request.data.get('post_id')
+
+    try:
+        recipient = User.objects.get(id=recipient_id)
+        post = Post.objects.get(id=post_id)
+    except User.DoesNotExist:
+        return Response({'error': 'Пользователь не найден'}, status=404)
+    except Post.DoesNotExist:
+        return Response({'error': 'Пост не найден'}, status=404)
+
+    chat, _ = Chat.objects.get_or_create_between(request.user, recipient)
+    message = Message.objects.create(
+        chat=chat,
+        sender=request.user,
+        post=post,  # 👈 поле post в модели Message
+    )
+
+    return Response({'success': True, 'message_id': message.id})

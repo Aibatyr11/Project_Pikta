@@ -2,5 +2,5 @@
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["chatdb"]         # база будет создана автоматически
+db = client["chatdb"]
 messages_collection = db["messages"]

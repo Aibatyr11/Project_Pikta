@@ -10,16 +10,14 @@
   align-items: center;
   padding: 1px 25px;
 
-  background: #b4f6df00;             /* чисто белый фон */
-  border-bottom: 1px solid #eeeeee00;   /* тонкая линия снизу */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  background: #00ffa600;            
   color: #333;
 }
 
-/* Чтобы контент не заезжал под топбар */
+
 body {
   margin: 0;
-  padding-top: 70px;
+  
 }
 
 /* Логотип */
@@ -29,6 +27,8 @@ body {
   text-decoration: none;
   color: #00bfa6;                  /* бирюзовый акцент */
   transition: color 0.2s;
+  height: 70px;
+  width: 80px;
 }
 .topbar-logo:hover {
   color: #008c77;
@@ -46,7 +46,6 @@ body {
   max-width: 340px;
   padding: 8px 14px;
   border-radius: 20px;
-  border: 1px solid #ddd;
   background: #fafafa00;
   color: #333;
   font-size: 14px;
@@ -82,8 +81,8 @@ body {
 
 /* Аватар */
 .topbar-avatar {
-  width: 60px;              /* как в макете — меньше */
-  height: 60px;
+  width: 80px;              /* как в макете — меньше */
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #eee;

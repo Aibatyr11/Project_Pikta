@@ -4,8 +4,8 @@ from bson import ObjectId
 
 def create_notification(target, actor, verb, description="", payload=None):
     notif = {
-        "target": target,   # username получателя
-        "actor": actor,     # username отправителя
+        "target": target,
+        "actor": actor,
         "verb": verb,
         "description": description,
         "payload": payload or {},
@@ -14,13 +14,11 @@ def create_notification(target, actor, verb, description="", payload=None):
     }
     result = notifications_collection.insert_one(notif)
     notif["_id"] = str(result.inserted_id)
-    print("✅ Уведомление сохранено в MongoDB:", notif)
+    print("Уведомление сохранено в MongoDB:", notif)
     return notif
 
 def get_user_notifications(username):
-    """Все уведомления для пользователя"""
     docs = list(notifications_collection.find({"target": username}).sort("created_at", -1))
-    # приводим _id к строке
     for d in docs:
         d["_id"] = str(d["_id"])
     return docs

@@ -1,0 +1,280 @@
+/* === Общий контейнер с фоном === */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("../assets/bg/bg_login2.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  padding: 20px;
+  z-index: 0;
+}
+
+/* Затемнение и эффект блюра */
+.auth-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+}
+
+/* === Карточка формы === */
+.auth-container {
+  position: relative;
+  z-index: 1;
+  width: 400px;
+  padding: 50px 36px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px) saturate(180%);
+  animation: fadeIn 0.8s ease forwards;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-top: 1px;
+}
+
+.auth-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.45);
+  color: #000;
+}
+
+/* === Верхний логотип и заголовок === */
+.auth-header {
+  position: absolute;
+  top: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 2;
+  animation: fadeIn 1s ease forwards;
+}
+
+.auth-header img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+}
+
+.auth-header .app-title {
+  font-family: "Pacifico", cursive;
+  font-size: 42px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(90deg, #ffffff, #ffffff, #ffffff);
+  
+  -webkit-text-fill-color: transparent;
+  margin-top: 8px;
+}
+
+
+/* === Дополнительные поля для регистрации === */
+.auth-form input[type="email"],
+.auth-form input[type="number"],
+.auth-form select {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+  font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+/* Цвет текста в выпадающем списке */
+.auth-form select option {
+  color: #000;
+  background: #fff;
+}
+
+/* Подсветка при фокусе */
+.auth-form input[type="email"]:focus,
+.auth-form input[type="number"]:focus,
+.auth-form select:focus {
+  border-color: #00ffc8;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+  transform: scale(1.02);
+}
+
+/* Плейсхолдеры */
+.auth-form input[type="email"]::placeholder,
+.auth-form input[type="number"]::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Добавим плавное появление при переключении Вход / Регистрация */
+.auth-form input,
+.auth-form select {
+  animation: fadeSlide 0.4s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* === Фото в карточке (аватар или логотип) === */
+.auth-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.auth-banner {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+ 
+  
+  margin-bottom: 10px;
+}
+
+.app-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+/* === Заголовок (например: Вход, Регистрация) === */
+.auth-container h2 {
+  margin-bottom: 28px;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* === Поля формы === */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-form input,
+.auth-form select {
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 14px;
+  font-size: 15px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transition: all 0.25s ease;
+}
+
+.auth-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  border-color: #00ffc8;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+  transform: scale(1.02);
+}
+
+/* === Кнопка === */
+.auth-form button {
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00ffc8, #47f5b2);
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.auth-form button:hover {
+  background: linear-gradient(135deg, #47f5b2, #03f6a5);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 255, 200, 0.4);
+}
+
+/* === Ссылка под формой === */
+.auth-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.auth-link a {
+  color: #00ffc8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link a:hover {
+  color: #03f6a5;
+  text-decoration: underline;
+}
+
+/* === Анимация появления === */
+@keyframes fadeIn {
+  from {
+    transform: translateY(25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* === Переключатели Вход / Регистрация === */
+.auth-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.auth-tabs button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+
+.auth-tabs button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.auth-tabs button.active {
+  background: linear-gradient(135deg, #00ffc8, #47f5b2);
+  color: #000;
+  box-shadow: 0 4px 12px rgba(0, 255, 200, 0.4);
+  transform: scale(1.05);
+}

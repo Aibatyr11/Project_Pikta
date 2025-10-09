@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/auth";
 import { useUser } from "../context/UserContext";
-import "../styles/AuthForm.css"; // общий стиль для форм входа/регистрации
+import "../styles/AuthForm.css";
+import banner from "../assets/photo_2025-10-05_13-52-52.jpg"; 
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -37,8 +38,13 @@ function LoginForm() {
   };
 
   return (
-    <div className="auth-page">   {/* 👈 добавил фон-контейнер */}
+    <div className="auth-page">
       <div className="auth-container">
+        <div className="auth-logo">
+          <img src={banner} alt="banner" className="auth-banner" />
+          <h1 className="app-title">Pikta</h1>
+        </div>
+
         <h2>Вход</h2>
         <form onSubmit={handleLogin} className="auth-form">
           <input

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styles/ResetPassword.css"; // можно использовать те же стили
+import "../styles/ResetPassword.css";
 
 function ResetPasswordConfirm() {
   const { uid, token } = useParams();
@@ -16,7 +16,7 @@ function ResetPasswordConfirm() {
     e.preventDefault();
 
     if (password !== password2) {
-      setMessage("❌ Пароли не совпадают.");
+      setMessage("Пароли не совпадают.");
       return;
     }
 
@@ -33,13 +33,13 @@ function ResetPasswordConfirm() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage("✅ Пароль успешно изменён! Перенаправляем на вход...");
-        setTimeout(() => navigate("/login"), 2000);
+        setMessage("Пароль успешно изменён! Перенаправляем на вход...");
+        setTimeout(() => navigate("/auth"), 2000);
       } else {
-        setMessage(data.error || "❌ Ошибка при сбросе пароля.");
+        setMessage(data.error || "Ошибка при сбросе пароля.");
       }
     } catch (err) {
-      setMessage("⚠️ Ошибка соединения с сервером.");
+      setMessage("Ошибка соединения с сервером.");
     }
   };
 

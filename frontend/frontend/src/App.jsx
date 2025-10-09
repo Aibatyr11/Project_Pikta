@@ -17,6 +17,8 @@ import SearchPage from "./pages/SearchPage";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import NotificationsBell from "./components/NotificationsBell";
 import NotificationsPage from "./components/NotificationsPage";
+import AuthPage from "./pages/AuthPage";
+
 function App() {
   const [showPolicy, setShowPolicy] = useState(false);
   const [policyChecked, setPolicyChecked] = useState(false);
@@ -47,10 +49,7 @@ function App() {
     <UserProvider>
       <BrowserRouter>
         <div className="app-container">
-          {/* ✅ Топбар сверху */}
           <Topbar />
-
-          {/* ✅ Под ним основной layout */}
           <div className="app-layout">
             <Navbar />
 
@@ -70,6 +69,7 @@ function App() {
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/chats" element={<ChatPage />} />
                   <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirm />}/>
+                  <Route path="/auth" element={<AuthPage />} />
 
                 </Routes>
               )}

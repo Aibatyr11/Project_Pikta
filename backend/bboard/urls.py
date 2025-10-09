@@ -4,7 +4,7 @@ from .views import (
     PostViewSet, current_user, is_following, privacy_policy_view, current_user_view,
     like_post, unlike_post, liked_posts, update_profile, delete_profile, CustomTokenObtainPairView,
     CommentListCreateView, CommentDetailView, search_users, followers_list, following_list,
-    PasswordResetRequestView, PasswordResetConfirmApiView
+    PasswordResetRequestView, PasswordResetConfirmApiView, share_post, send_post
 )
 from django.contrib.auth.views import PasswordResetConfirmView
 from rest_framework.routers import DefaultRouter
@@ -38,4 +38,10 @@ urlpatterns = [
     path("api/following/<str:username>/", following_list, name="following-list"),
     path("api/password-reset/", PasswordResetRequestView.as_view(), name="password-reset"),
     path("api/password-reset-confirm/<uidb64>/<token>/", PasswordResetConfirmApiView.as_view(), name="password-reset-confirm-api"),
+    path("api/share_post/", share_post, name="share_post"),
+
+
+
+
+
 ]

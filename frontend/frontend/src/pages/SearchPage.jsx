@@ -7,14 +7,14 @@ function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false); // <-- новое состояние
+  const [searched, setSearched] = useState(false); 
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
 
     setLoading(true);
-    setSearched(true); // <-- отмечаем, что поиск выполнялся
+    setSearched(true);
     try {
       const users = await searchUsers(query);
       setResults(users);

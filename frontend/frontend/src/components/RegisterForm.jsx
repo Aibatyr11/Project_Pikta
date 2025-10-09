@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "../styles/RegisterForm.css";
-
+// import instaBanner from "../assets/images/insta_banner.jpg"; // добавь любое изображение в папку assets/images
+import insta from "../assets/icons/insta.png";
 function RegisterForm() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    age: "",
+    gender: "",
   });
   const [message, setMessage] = useState("");
 
@@ -26,20 +29,27 @@ function RegisterForm() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage("✅ Регистрация прошла успешно!");
-        setFormData({ username: "", email: "", password: "" });
+        setMessage("Регистрация прошла успешно!");
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          age: "",
+          gender: "",
+        });
       } else {
-        setMessage(`❌ Ошибка: ${data.error || JSON.stringify(data)}`);
+        setMessage(`Ошибка: ${data.error || JSON.stringify(data)}`);
       }
     } catch (error) {
-      setMessage(`⚠️ Сетевая ошибка: ${error.message}`);
+      setMessage(`Сетевая ошибка: ${error.message}`);
     }
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2 className="register-title">Регистрация</h2>
+        <img src={insta} alt="banner" className="register-banner" />
+        <h2 className="register-title">Создайте аккаунт</h2>
         <form onSubmit={handleSubmit} className="register-form">
           <input
             type="text"
@@ -52,7 +62,7 @@ function RegisterForm() {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Электронная почта"
             value={formData.email}
             onChange={handleChange}
             required
@@ -65,6 +75,28 @@ function RegisterForm() {
             onChange={handleChange}
             required
           />
+          <input
+            type="number"
+            name="age"
+            placeholder="Возраст"
+            value={formData.age}
+            onChange={handleChange}
+            min="10"
+            max="100"
+            required
+          />
+          <select
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Выберите пол</option>
+            <option value="male">Мужской</option>
+            <option value="female">Женский</option>
+            <option value="other">Другое</option>
+          </select>
+
           <button type="submit" className="register-btn">
             Зарегистрироваться
           </button>

@@ -1,11 +1,10 @@
-// src/pages/UserProfile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/UserProfile.css";
 import { useUser } from "../context/UserContext";
 import { authFetch } from "../utils/auth";
-import PostDetailModal from "../components/PostDetailModal"; // ✅ модалка поста
-import FollowersModal from "../components/FollowersModal";   // ✅ модалка подписчиков/подписок
+import PostDetailModal from "../components/PostDetailModal"; 
+import FollowersModal from "../components/FollowersModal";   
 
 function UserProfile() {
   const { username } = useParams();
@@ -14,9 +13,9 @@ function UserProfile() {
   const [likedPosts, setLikedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("posts");
   const [isFollowing, setIsFollowing] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null); // ✅ для модалки поста
-  const [showModal, setShowModal] = useState(false);          // ✅ для модалки подписчиков/подписок
-  const [modalType, setModalType] = useState(null);           // ✅ followers | following
+  const [selectedPostId, setSelectedPostId] = useState(null); 
+  const [showModal, setShowModal] = useState(false);          
+  const [modalType, setModalType] = useState(null);    
   const { user: currentUser, setUser: setCurrentUser } = useUser();
 
   useEffect(() => {
@@ -85,7 +84,7 @@ function UserProfile() {
         </div>
 
         <div className="profile-info">
-          <h2 className="profile-username">@{user.username}</h2>
+          <h2 className="profile-username">{user.username}</h2>
 
           <div className="profile-stats">
             <div>
@@ -158,7 +157,6 @@ function UserProfile() {
           Посты
         </button>
               
-        {/* Лайки видны только если свой профиль */}
         {currentUser && currentUser.id === user.id && (
           <button
             onClick={() => setActiveTab("likes")}
@@ -169,8 +167,6 @@ function UserProfile() {
         )}
       </div>
 
-
-      {/* Posts grid */}
       <div className="posts-grid">
         {activeTab === "posts" &&
           posts.map((post) => (
@@ -183,7 +179,7 @@ function UserProfile() {
               }
               alt="post"
               className="post-thumb"
-              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки поста
+              onClick={() => setSelectedPostId(post.id)}
             />
           ))}
 
@@ -198,19 +194,17 @@ function UserProfile() {
               }
               alt="liked"
               className="post-thumb"
-              onClick={() => setSelectedPostId(post.id)} // ✅ открытие модалки поста
+              onClick={() => setSelectedPostId(post.id)} 
             />
           ))}
       </div>
 
-      {/* Модалка деталей поста */}
       <PostDetailModal
         postId={selectedPostId}
         isOpen={!!selectedPostId}
         onClose={() => setSelectedPostId(null)}
       />
 
-      {/* Модалка подписчиков/подписок */}
       <FollowersModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
