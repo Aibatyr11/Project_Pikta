@@ -37,9 +37,16 @@
 
 ## 📷 Скриншоты
 
-![Главная страница](./screenshots/home.png)
-![Профиль пользователя](./screenshots/profile.png)
-![Чат](./screenshots/chat.png)
+| Экран | Превью |
+|-------|--------|
+| 🔑 Авторизация | ![Auth](./screenshots/Auth.png) |
+| 💬 Чат | ![Chat](./screenshots/Chat.png) |
+| 📝 Создание поста | ![Create Post](./screenshots/Create%20Post.png) |
+| 🌍 Лента публикаций (Explore) | ![Explore](./screenshots/Explore.png) |
+| 🔔 Уведомления | ![Notifications](./screenshots/Notifications.png) |
+| 📰 Пост | ![Post](./screenshots/Post.png) |
+| 📄 Детали поста | ![PostDetail](./screenshots/PostDetail.png) |
+| 👤 Профиль пользователя | ![Profile](./screenshots/Profile.png) |
 
 ---
 
